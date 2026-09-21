@@ -258287,6 +258287,12 @@ var init_addVendor = __esm({
                 resolution: external_exports.array(external_exports.string())
               })
             )
+          }),
+          external_exports.object({
+            name: external_exports.string(),
+            modelName: external_exports.string(),
+            type: external_exports.literal("tts"),
+            voices: external_exports.array(external_exports.object({ title: external_exports.string(), voice: external_exports.string() })).default([])
           })
         ])
       )
@@ -258912,6 +258918,12 @@ var init_updateCode = __esm({
                 resolution: external_exports.array(external_exports.string())
               })
             )
+          }),
+          external_exports.object({
+            name: external_exports.string(),
+            modelName: external_exports.string(),
+            type: external_exports.literal("tts"),
+            voices: external_exports.array(external_exports.object({ title: external_exports.string(), voice: external_exports.string() })).default([])
           })
         ])
       )

@@ -55,6 +55,12 @@ const vendorConfigSchema = z.object({
           }),
         ),
       }),
+      z.object({
+        name: z.string(),
+        modelName: z.string(),
+        type: z.literal("tts"),
+        voices: z.array(z.object({ title: z.string(), voice: z.string() })).default([]),
+      }),
     ]),
   ),
 });
