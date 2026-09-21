@@ -10,7 +10,7 @@ export default router.post(
   "/",
   validateFields({
     name: z.string(),
-    describe: z.string(),
+    describe: z.string().optional().default(""),
     type: z.string(),
     projectId: z.number(),
     remark: z.string().optional().nullable(),
@@ -20,7 +20,7 @@ export default router.post(
     const { name, describe, type, projectId, remark, prompt } = req.body;
     await u.db("o_assets").insert({
       name,
-      describe,
+      describe: describe ?? "",
       type,
       projectId,
       remark,

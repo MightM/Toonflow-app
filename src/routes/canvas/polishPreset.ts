@@ -9,7 +9,7 @@ import { getPreset } from "@/lib/canvasPresets";
 import { expandTextRefs, incomingEdges, nodeAssetType, resolveOwner } from "@/lib/canvas";
 const router = express.Router();
 
-// 项目没绑画风（无限画布可以不绑）时的通用扩写规则，可直接改
+// 项目没绑画风（无限画布可以不绑）时的通用优化规则，可直接改
 const FREE_POLISH_SKILL = "canvas_free_polish.md";
 const FREE_POLISH_FALLBACK =
   "你是资深的 AI 绘画提示词写手。把用户的简短需求写成一段完整、具体的画面描述：主体、动作、环境、光线、构图、氛围、画风质感，只写静止的一瞬间，不写运镜和台词，画面里不出现文字。保留用户提到的 @图N 引用声明，先声明每张参考图代表什么，再写画面。输出中文，不加解释。";
@@ -21,7 +21,7 @@ async function loadFreePolish(): Promise<string> {
   }
 }
 
-// 按目标模板扩写：用项目画风的视觉手册（模板的 polish 字段）把简短描述写成完整需求正文
+// 按目标模板优化：用项目画风的视觉手册（模板的 polish 字段）把简短描述写成完整需求正文
 export default router.post(
   "/",
   validateFields({
@@ -35,14 +35,14 @@ export default router.post(
     const { projectId, presetId, text, nodeKey, artStyle } = req.body;
     const preset = getPreset(presetId);
     if (!preset) return res.status(404).send(error("模板不存在"));
-    if (!preset.polish) return res.status(400).send(error("这个模板不需要扩写"));
+    if (!preset.polish) return res.status(400).send(error("这个模板不需要优化"));
     const project = await u.db("o_project").where("id", projectId).select("artStyle").first();
     if (!project) return res.status(404).send(error("项目不存在"));
     // 绑了画风就按视觉手册润色；没绑（无限画布）或手册缺失时用通用规则，不再报错
     const useStyle = artStyle || project.artStyle || "";
     const manual = (useStyle && u.getArtPrompt(useStyle, "art_skills", preset.polish)) || (await loadFreePolish());
 
-    // 资产节点带上资产本身和父资产的描述，扩写更贴角色
+    // 资产节点带上资产本身和父资产的描述，优化更贴角色
     const context: string[] = [];
     if (nodeKey) {
       try {
@@ -91,10 +91,10 @@ export default router.post(
           },
         ],
       });
-      if (!output?.trim()) return res.status(500).send(error("扩写结果为空"));
+      if (!output?.trim()) return res.status(500).send(error("优化结果为空"));
       res.status(200).send(success({ text: output.trim() }));
     } catch (e) {
-      res.status(500).send(error(`扩写失败：${u.error(e).message || "请检查「通用 AI」文本模型配置"}`));
+      res.status(500).send(error(`优化失败：${u.error(e).message || "请检查「通用 AI」文本模型配置"}`));
     }
   },
 );

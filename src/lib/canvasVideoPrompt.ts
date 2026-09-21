@@ -116,7 +116,10 @@ export async function describeVideoRefs(projectId: number, keys: string[], model
 async function refMeta(projectId: number, ref: ResolvedRef): Promise<{ name: string; type: string; detail: string }> {
   const [baseKey, suffix] = ref.key.split("#");
   const owner = await resolveOwner(projectId, baseKey);
-  if (suffix === "voice") return { name: `${owner.asset?.name ?? ""}的音色`, type: "audio", detail: `角色「${owner.asset?.name ?? ""}」的音色参考` };
+  if (suffix === "voice") {
+    const who = owner.asset?.name ?? owner.node?.name ?? "";
+    return { name: `${who}的音色`, type: "audio", detail: `角色「${who}」的音色参考` };
+  }
   if (owner.asset) {
     const parent = owner.asset.assetsId ? await u.db("o_assets").where("id", owner.asset.assetsId).select("name").first() : undefined;
     const lines = [owner.asset.describe, owner.asset.prompt].map((t) => (t ?? "").trim()).filter(Boolean);
@@ -240,7 +243,7 @@ export interface VideoPromptInput {
 export async function buildVideoPrompt(input: VideoPromptInput): Promise<{ text: string; rules: string; refs: VideoRefInfo[]; framesSent: number; frameError?: string }> {
   const { refs, mode } = await describeVideoRefs(input.projectId, input.refKeys, input.model, input.extraRefs ?? []);
   const rules = await loadVideoRules(input.model, mode, input.segment);
-  if (!rules) throw new Error("这个视频模型没有可用的提示词规则（设置 → 模型提示词），无法按模板扩写");
+  if (!rules) throw new Error("这个视频模型没有可用的提示词规则（设置 → 模型提示词），无法按模板优化");
 
   const project = await u.db("o_project").where("id", input.projectId).select("artStyle").first();
   const visualManual = u.getArtPrompt(project?.artStyle || "无", "art_skills", "art_storyboard_video");
@@ -287,7 +290,7 @@ export async function buildVideoPrompt(input: VideoPromptInput): Promise<{ text:
     framesSent = 0;
     output = await invoke(false);
   }
-  if (!output) throw new Error("扩写结果为空");
+  if (!output) throw new Error("优化结果为空");
   return { text: output, rules: rules.fileName, refs, framesSent, frameError };
 }
 

@@ -4,7 +4,7 @@ import { z } from "zod";
 import u from "@/utils";
 import { success } from "@/lib/responseFormat";
 import { validateFields } from "@/middleware/middleware";
-import { assetKey, CANVAS_ASSET_TYPES, fileUrl, nodeAssetType, nodeKey, readLayout } from "@/lib/canvas";
+import { CANVAS_ASSET_TYPES, assetKey, fileUrl, nodeAssetType, nodeKey, nodeVoice, readLayout } from "@/lib/canvas";
 import { getAssetModels } from "@/lib/assetGen";
 const router = express.Router();
 
@@ -79,6 +79,16 @@ export default router.post(
         voices: voiceRows.filter((v) => v.assetsRoleId === a.id).map((v) => ({ id: v.id, name: v.name })),
       })),
     );
+    // 自由节点绑定的音色名字（音色库资产 / 画布音频节点）
+    const voiceAssetIds = nodes.map((n) => nodeVoice(n.params)).filter((v): v is { kind: "asset"; id: number } => v?.kind === "asset").map((v) => v.id);
+    const voiceAssets = voiceAssetIds.length ? await u.db("o_assets").whereIn("id", voiceAssetIds).select("id", "name") : [];
+    const voiceOf = (params: string | null | undefined) => {
+      const v = nodeVoice(params);
+      if (!v) return null;
+      if (v.kind === "asset") return { kind: "asset" as const, name: voiceAssets.find((a) => a.id === v.id)?.name ?? "（音色已删除）" };
+      const node = nodes.find((n) => nodeKey(n.id!) === v.key);
+      return { kind: "node" as const, name: node?.name ?? "（音频节点已删除）" };
+    };
     const freeNodes = await Promise.all(
       nodes.map(async (n) => ({
         key: nodeKey(n.id!),
@@ -88,6 +98,7 @@ export default router.post(
         prompt: n.prompt,
         params: n.params ? JSON.parse(n.params) : {},
         assetType: nodeAssetType(n.params),
+        voice: voiceOf(n.params),
         current: await imageDto(n.imageId ? imageById.get(n.imageId) : undefined),
         latest: await imageDto(latestBy("canvasNodeId", n.id!)),
         pendingImageIds: pendingBy("canvasNodeId", n.id!),

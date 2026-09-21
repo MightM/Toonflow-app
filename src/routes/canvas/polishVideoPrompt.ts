@@ -8,7 +8,7 @@ import { buildVideoPrompt } from "@/lib/canvasVideoPrompt";
 import { shotBriefs, trackRefKeys, trackStoryContext, trackVoiceRefs } from "@/lib/trackVideo";
 const router = express.Router();
 
-// 视频「按官方模板扩写」：用视频模型绑定 / 匹配到的提示词规则（如 MiniMax H3 六字段模板）
+// 视频「按官方模板优化」：用视频模型绑定 / 匹配到的提示词规则（如 MiniMax H3 六字段模板）
 // 把简短描述改写成完整提示词。参考素材按实际传入顺序编号，只返回文本，由用户确认后再生成。
 // 目标可以是画布视频节点（n:）或镜头台的片段（v:）；片段会带上组内镜头的画面信息与音色。
 export default router.post(
@@ -26,7 +26,7 @@ export default router.post(
     try {
       const owner = await resolveOwner(projectId, nodeKey);
       const isTrack = owner.kind === "track";
-      if (!isTrack && owner.node?.kind !== "video") return res.status(400).send(error("只有视频节点或片段可以按视频模板扩写"));
+      if (!isTrack && owner.node?.kind !== "video") return res.status(400).send(error("只有视频节点或片段可以按视频模板优化"));
       const brief = isTrack ? await shotBriefs(owner.id) : { shots: [], images: [] };
       // 自由节点：连入的文本节点内容拼进用户描述，不占参考位
       const expanded = isTrack
@@ -47,7 +47,7 @@ export default router.post(
       });
       res.status(200).send(success({ text: result.text, rules: result.rules, framesSent: result.framesSent, frameError: result.frameError, refs: result.refs.map((r) => ({ tag: r.tag, name: r.name, type: r.type })) }));
     } catch (e) {
-      res.status(400).send(error(u.error(e).message || "扩写失败，请检查「通用 AI」文本模型配置"));
+      res.status(400).send(error(u.error(e).message || "优化失败，请检查「通用 AI」文本模型配置"));
     }
   },
 );

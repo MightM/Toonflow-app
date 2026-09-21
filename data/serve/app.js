@@ -237831,7 +237831,7 @@ var init_addAssets = __esm({
       "/",
       validateFields({
         name: external_exports.string(),
-        describe: external_exports.string(),
+        describe: external_exports.string().optional().default(""),
         type: external_exports.string(),
         projectId: external_exports.number(),
         remark: external_exports.string().optional().nullable(),
@@ -237841,7 +237841,7 @@ var init_addAssets = __esm({
         const { name: name28, describe: describe4, type, projectId, remark, prompt } = req.body;
         await utils_default.db("o_assets").insert({
           name: name28,
-          describe: describe4,
+          describe: describe4 ?? "",
           type,
           projectId,
           remark,
@@ -237869,13 +237869,13 @@ var init_addAudioAssets = __esm({
       "/",
       validateFields({
         name: external_exports.string(),
-        describe: external_exports.string(),
+        describe: external_exports.string().optional().default(""),
         projectId: external_exports.number(),
         assetsItem: external_exports.array(
           external_exports.object({
             base64: external_exports.string(),
             prompt: external_exports.string(),
-            describe: external_exports.string(),
+            describe: external_exports.string().optional().default(""),
             name: external_exports.string()
           })
         )
@@ -237904,7 +237904,7 @@ var init_addAudioAssets = __esm({
         );
         const [id] = await utils_default.db("o_assets").insert({
           name: name28,
-          describe: describe4,
+          describe: describe4 ?? "",
           type: "audio",
           projectId,
           startTime: Date.now()
@@ -237914,7 +237914,7 @@ var init_addAudioAssets = __esm({
             prompt: item.prompt,
             assetsId: id,
             type: "audio",
-            describe: item.describe,
+            describe: item.describe ?? "",
             name: item.name,
             projectId,
             startTime: Date.now()
@@ -238351,7 +238351,7 @@ var init_updateAssets = __esm({
       validateFields({
         id: external_exports.number(),
         name: external_exports.string(),
-        describe: external_exports.string(),
+        describe: external_exports.string().optional().default(""),
         remark: external_exports.string().optional().nullable(),
         prompt: external_exports.string().optional().nullable()
       }),
@@ -238359,7 +238359,7 @@ var init_updateAssets = __esm({
         const { id, name: name28, describe: describe4, remark, prompt } = req.body;
         await utils_default.db("o_assets").where({ id }).update({
           name: name28,
-          describe: describe4,
+          describe: describe4 ?? "",
           remark,
           prompt
         });
@@ -238385,7 +238385,7 @@ var init_updateAudioAssets = __esm({
       validateFields({
         id: external_exports.number(),
         name: external_exports.string(),
-        describe: external_exports.string(),
+        describe: external_exports.string().optional().default(""),
         projectId: external_exports.number(),
         assetsItem: external_exports.array(
           external_exports.object({
@@ -238393,7 +238393,7 @@ var init_updateAudioAssets = __esm({
             id: external_exports.number().optional(),
             base64: external_exports.string().optional(),
             prompt: external_exports.string(),
-            describe: external_exports.string(),
+            describe: external_exports.string().optional().default(""),
             name: external_exports.string()
           })
         )
@@ -238425,7 +238425,7 @@ var init_updateAudioAssets = __esm({
         );
         await utils_default.db("o_assets").where("id", id).update({
           name: name28,
-          describe: describe4
+          describe: describe4 ?? ""
         });
         const existingItems = await utils_default.db("o_assets").where("assetsId", id).select("id");
         const existingIds = existingItems.map((i) => i.id);
@@ -238444,7 +238444,7 @@ var init_updateAudioAssets = __esm({
           if (item.id) {
             await utils_default.db("o_assets").where("id", item.id).update({
               prompt: item.prompt,
-              describe: item.describe,
+              describe: item.describe ?? "",
               name: item.name
             });
             const itemData = await utils_default.db("o_assets").where("id", item.id).select("imageId").first();
@@ -238457,7 +238457,7 @@ var init_updateAudioAssets = __esm({
               assetsId: id,
               type: "audio",
               projectId,
-              describe: item.describe,
+              describe: item.describe ?? "",
               name: item.name,
               startTime: Date.now()
             });
@@ -239434,8 +239434,8 @@ async function resolveRefs(projectId, keys2, opts = {}) {
       }
       result.push({ key, kind: extKind(file3.filePath), base64: base644 });
     }
-    if (opts.withVoice && owner.asset?.type === "role") {
-      const voice = await roleVoiceSample(owner.id);
+    if (opts.withVoice) {
+      const voice = owner.asset?.type === "role" ? await roleVoiceSample(owner.id) : owner.node && nodeAssetType(owner.node.params) === "role" ? await nodeVoiceSample(projectId, owner.node.params) : null;
       if (voice) result.push({ key: `${key}#voice`, kind: "audio", base64: await utils_default.oss.getImageBase64(voice) });
     }
   }
@@ -239444,8 +239444,31 @@ async function resolveRefs(projectId, keys2, opts = {}) {
 async function roleVoiceSample(roleId) {
   const binding = await utils_default.db("o_assetsRole2Audio").where("assetsRoleId", roleId).select("assetsAudioId").first();
   if (!binding) return null;
-  const sample = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").where("o_assets.assetsId", binding.assetsAudioId).whereNotNull("o_image.filePath").select("o_image.filePath").first();
+  return voiceAssetSample(binding.assetsAudioId);
+}
+async function voiceAssetSample(voiceAssetId) {
+  const sample = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").where("o_assets.assetsId", voiceAssetId).whereNotNull("o_image.filePath").select("o_image.filePath").first();
   return sample?.filePath ?? null;
+}
+function nodeVoice(params) {
+  try {
+    const value = JSON.parse(params || "{}")?.voice;
+    if (value?.kind === "asset" && typeof value.id === "number") return { kind: "asset", id: value.id };
+    if (value?.kind === "node" && typeof value.key === "string") return { kind: "node", key: value.key };
+    return null;
+  } catch {
+    return null;
+  }
+}
+async function nodeVoiceSample(projectId, params) {
+  const voice = nodeVoice(params);
+  if (!voice) return null;
+  if (voice.kind === "asset") return voiceAssetSample(voice.id);
+  const owner = parseKey(voice.key);
+  if (owner.kind !== "node") return null;
+  const row = await utils_default.db("o_canvasNode").where({ id: owner.id, projectId }).select("imageId", "kind").first();
+  const file3 = await currentImage(row?.imageId, row?.kind ?? "audio");
+  return file3?.filePath ?? null;
 }
 async function getVideoModelMode(model) {
   const [vendorId, modelName] = model.split(/:(.+)/);
@@ -240132,7 +240155,17 @@ async function copyImage(imageId, projectId, owner, dir) {
 async function copyNode(id, sourceProjectId, projectId) {
   const row = await utils_default.db("o_canvasNode").where({ id, projectId: sourceProjectId }).first();
   if (!row) throw new Error(`\u8282\u70B9 n:${id} \u4E0D\u5B58\u5728`);
-  const [newId] = await utils_default.db("o_canvasNode").insert({ projectId, kind: row.kind, name: row.name, prompt: row.prompt, params: row.params, createTime: Date.now() });
+  let params = row.params;
+  if (sourceProjectId !== projectId && params) {
+    try {
+      const parsed = JSON.parse(params);
+      delete parsed.voice;
+      params = JSON.stringify(parsed);
+    } catch {
+      params = row.params;
+    }
+  }
+  const [newId] = await utils_default.db("o_canvasNode").insert({ projectId, kind: row.kind, name: row.name, prompt: row.prompt, params, createTime: Date.now() });
   const imageId = await copyImage(row.imageId, projectId, { canvasNodeId: newId }, "canvas");
   if (imageId) await utils_default.db("o_canvasNode").where("id", newId).update({ imageId });
   return nodeKey(newId);
@@ -240985,7 +241018,10 @@ async function describeVideoRefs(projectId, keys2, model, extraRefs = []) {
 async function refMeta(projectId, ref) {
   const [baseKey2, suffix] = ref.key.split("#");
   const owner = await resolveOwner(projectId, baseKey2);
-  if (suffix === "voice") return { name: `${owner.asset?.name ?? ""}\u7684\u97F3\u8272`, type: "audio", detail: `\u89D2\u8272\u300C${owner.asset?.name ?? ""}\u300D\u7684\u97F3\u8272\u53C2\u8003` };
+  if (suffix === "voice") {
+    const who = owner.asset?.name ?? owner.node?.name ?? "";
+    return { name: `${who}\u7684\u97F3\u8272`, type: "audio", detail: `\u89D2\u8272\u300C${who}\u300D\u7684\u97F3\u8272\u53C2\u8003` };
+  }
   if (owner.asset) {
     const parent = owner.asset.assetsId ? await utils_default.db("o_assets").where("id", owner.asset.assetsId).select("name").first() : void 0;
     const lines = [owner.asset.describe, owner.asset.prompt].map((t) => (t ?? "").trim()).filter(Boolean);
@@ -241045,7 +241081,7 @@ function storyLines(story) {
 async function buildVideoPrompt(input) {
   const { refs, mode } = await describeVideoRefs(input.projectId, input.refKeys, input.model, input.extraRefs ?? []);
   const rules = await loadVideoRules(input.model, mode, input.segment);
-  if (!rules) throw new Error("\u8FD9\u4E2A\u89C6\u9891\u6A21\u578B\u6CA1\u6709\u53EF\u7528\u7684\u63D0\u793A\u8BCD\u89C4\u5219\uFF08\u8BBE\u7F6E \u2192 \u6A21\u578B\u63D0\u793A\u8BCD\uFF09\uFF0C\u65E0\u6CD5\u6309\u6A21\u677F\u6269\u5199");
+  if (!rules) throw new Error("\u8FD9\u4E2A\u89C6\u9891\u6A21\u578B\u6CA1\u6709\u53EF\u7528\u7684\u63D0\u793A\u8BCD\u89C4\u5219\uFF08\u8BBE\u7F6E \u2192 \u6A21\u578B\u63D0\u793A\u8BCD\uFF09\uFF0C\u65E0\u6CD5\u6309\u6A21\u677F\u4F18\u5316");
   const project = await utils_default.db("o_project").where("id", input.projectId).select("artStyle").first();
   const visualManual = utils_default.getArtPrompt(project?.artStyle || "\u65E0", "art_skills", "art_storyboard_video");
   const canvasSkill = await loadCanvasVideoSkill();
@@ -241084,7 +241120,7 @@ ${visualManual}` }] : [];
     framesSent = 0;
     output = await invoke(false);
   }
-  if (!output) throw new Error("\u6269\u5199\u7ED3\u679C\u4E3A\u7A7A");
+  if (!output) throw new Error("\u4F18\u5316\u7ED3\u679C\u4E3A\u7A7A");
   return { text: output, rules: rules.fileName, refs, framesSent, frameError };
 }
 function toH3RefTags(prompt) {
@@ -241497,6 +241533,15 @@ var init_getCanvas = __esm({
             voices: voiceRows.filter((v) => v.assetsRoleId === a.id).map((v) => ({ id: v.id, name: v.name }))
           }))
         );
+        const voiceAssetIds = nodes.map((n) => nodeVoice(n.params)).filter((v) => v?.kind === "asset").map((v) => v.id);
+        const voiceAssets = voiceAssetIds.length ? await utils_default.db("o_assets").whereIn("id", voiceAssetIds).select("id", "name") : [];
+        const voiceOf = (params) => {
+          const v = nodeVoice(params);
+          if (!v) return null;
+          if (v.kind === "asset") return { kind: "asset", name: voiceAssets.find((a) => a.id === v.id)?.name ?? "\uFF08\u97F3\u8272\u5DF2\u5220\u9664\uFF09" };
+          const node = nodes.find((n) => nodeKey(n.id) === v.key);
+          return { kind: "node", name: node?.name ?? "\uFF08\u97F3\u9891\u8282\u70B9\u5DF2\u5220\u9664\uFF09" };
+        };
         const freeNodes = await Promise.all(
           nodes.map(async (n) => ({
             key: nodeKey(n.id),
@@ -241506,6 +241551,7 @@ var init_getCanvas = __esm({
             prompt: n.prompt,
             params: n.params ? JSON.parse(n.params) : {},
             assetType: nodeAssetType(n.params),
+            voice: voiceOf(n.params),
             current: await imageDto(n.imageId ? imageById.get(n.imageId) : void 0),
             latest: await imageDto(latestBy("canvasNodeId", n.id)),
             pendingImageIds: pendingBy("canvasNodeId", n.id)
@@ -241748,7 +241794,7 @@ var init_polishPreset = __esm({
         const { projectId, presetId, text: text2, nodeKey: nodeKey2, artStyle } = req.body;
         const preset = getPreset(presetId);
         if (!preset) return res.status(404).send(error50("\u6A21\u677F\u4E0D\u5B58\u5728"));
-        if (!preset.polish) return res.status(400).send(error50("\u8FD9\u4E2A\u6A21\u677F\u4E0D\u9700\u8981\u6269\u5199"));
+        if (!preset.polish) return res.status(400).send(error50("\u8FD9\u4E2A\u6A21\u677F\u4E0D\u9700\u8981\u4F18\u5316"));
         const project = await utils_default.db("o_project").where("id", projectId).select("artStyle").first();
         if (!project) return res.status(404).send(error50("\u9879\u76EE\u4E0D\u5B58\u5728"));
         const useStyle = artStyle || project.artStyle || "";
@@ -241795,10 +241841,10 @@ ${script.content}`);
               }
             ]
           });
-          if (!output?.trim()) return res.status(500).send(error50("\u6269\u5199\u7ED3\u679C\u4E3A\u7A7A"));
+          if (!output?.trim()) return res.status(500).send(error50("\u4F18\u5316\u7ED3\u679C\u4E3A\u7A7A"));
           res.status(200).send(success3({ text: output.trim() }));
         } catch (e) {
-          res.status(500).send(error50(`\u6269\u5199\u5931\u8D25\uFF1A${utils_default.error(e).message || "\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"}`));
+          res.status(500).send(error50(`\u4F18\u5316\u5931\u8D25\uFF1A${utils_default.error(e).message || "\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"}`));
         }
       }
     );
@@ -241835,7 +241881,7 @@ var init_polishVideoPrompt = __esm({
         try {
           const owner = await resolveOwner(projectId, nodeKey2);
           const isTrack = owner.kind === "track";
-          if (!isTrack && owner.node?.kind !== "video") return res.status(400).send(error50("\u53EA\u6709\u89C6\u9891\u8282\u70B9\u6216\u7247\u6BB5\u53EF\u4EE5\u6309\u89C6\u9891\u6A21\u677F\u6269\u5199"));
+          if (!isTrack && owner.node?.kind !== "video") return res.status(400).send(error50("\u53EA\u6709\u89C6\u9891\u8282\u70B9\u6216\u7247\u6BB5\u53EF\u4EE5\u6309\u89C6\u9891\u6A21\u677F\u4F18\u5316"));
           const brief = isTrack ? await shotBriefs(owner.id) : { shots: [], images: [] };
           const expanded = isTrack ? { prompt: text2, refKeys: await trackRefKeys(projectId, owner.id) } : await expandTextRefs(projectId, (await incomingEdges(projectId, nodeKey2)).map((e) => e.sourceKey), text2);
           const result = await buildVideoPrompt({
@@ -241853,7 +241899,7 @@ var init_polishVideoPrompt = __esm({
           });
           res.status(200).send(success3({ text: result.text, rules: result.rules, framesSent: result.framesSent, frameError: result.frameError, refs: result.refs.map((r) => ({ tag: r.tag, name: r.name, type: r.type })) }));
         } catch (e) {
-          res.status(400).send(error50(utils_default.error(e).message || "\u6269\u5199\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"));
+          res.status(400).send(error50(utils_default.error(e).message || "\u4F18\u5316\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"));
         }
       }
     );

@@ -214,8 +214,9 @@ export async function resolveRefs(projectId: number, keys: string[], opts: { wit
       }
       result.push({ key, kind: extKind(file.filePath), base64 });
     }
-    if (opts.withVoice && owner.asset?.type === "role") {
-      const voice = await roleVoiceSample(owner.id);
+    if (opts.withVoice) {
+      // 角色资产用绑定表里的音色；标为角色的自由图片节点用 params.voice（音色库资产或画布上的音频节点）
+      const voice = owner.asset?.type === "role" ? await roleVoiceSample(owner.id) : owner.node && nodeAssetType(owner.node.params) === "role" ? await nodeVoiceSample(projectId, owner.node.params) : null;
       if (voice) result.push({ key: `${key}#voice`, kind: "audio", base64: await u.oss.getImageBase64(voice) });
     }
   }
@@ -226,14 +227,43 @@ export async function resolveRefs(projectId: number, keys: string[], opts: { wit
 export async function roleVoiceSample(roleId: number): Promise<string | null> {
   const binding = await u.db("o_assetsRole2Audio").where("assetsRoleId", roleId).select("assetsAudioId").first();
   if (!binding) return null;
+  return voiceAssetSample(binding.assetsAudioId!);
+}
+
+/** 音色资产（父级）的第一条样本文件 */
+export async function voiceAssetSample(voiceAssetId: number): Promise<string | null> {
   const sample = await u
     .db("o_assets")
     .leftJoin("o_image", "o_assets.imageId", "o_image.id")
-    .where("o_assets.assetsId", binding.assetsAudioId)
+    .where("o_assets.assetsId", voiceAssetId)
     .whereNotNull("o_image.filePath")
     .select("o_image.filePath")
     .first();
   return sample?.filePath ?? null;
+}
+
+/** 自由节点（标为角色的图片）绑定的音色：音色库资产，或画布上的音频节点。存在 params.voice */
+export type NodeVoice = { kind: "asset"; id: number } | { kind: "node"; key: string };
+export function nodeVoice(params: string | null | undefined): NodeVoice | null {
+  try {
+    const value = JSON.parse(params || "{}")?.voice;
+    if (value?.kind === "asset" && typeof value.id === "number") return { kind: "asset", id: value.id };
+    if (value?.kind === "node" && typeof value.key === "string") return { kind: "node", key: value.key };
+    return null;
+  } catch {
+    return null;
+  }
+}
+/** 自由节点音色的样本文件（音色资产取第一条样本；音频节点取当前版本） */
+export async function nodeVoiceSample(projectId: number, params: string | null | undefined): Promise<string | null> {
+  const voice = nodeVoice(params);
+  if (!voice) return null;
+  if (voice.kind === "asset") return voiceAssetSample(voice.id);
+  const owner = parseKey(voice.key);
+  if (owner.kind !== "node") return null;
+  const row = await u.db("o_canvasNode").where({ id: owner.id, projectId }).select("imageId", "kind").first();
+  const file = await currentImage(row?.imageId, row?.kind ?? "audio");
+  return file?.filePath ?? null;
 }
 
 export const toReferenceList = (refs: ResolvedRef[]): ReferenceList[] => refs.map((r) => ({ type: r.kind, base64: r.base64 }) as ReferenceList);

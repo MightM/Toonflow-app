@@ -10,13 +10,13 @@ export default router.post(
   "/",
   validateFields({
     name: z.string(),
-    describe: z.string(),
+    describe: z.string().optional().default(""),
     projectId: z.number(),
     assetsItem: z.array(
       z.object({
         base64: z.string(),
         prompt: z.string(),
-        describe: z.string(),
+        describe: z.string().optional().default(""),
         name: z.string(),
       }),
     ),
@@ -46,7 +46,7 @@ export default router.post(
 
     const [id] = await u.db("o_assets").insert({
       name,
-      describe,
+      describe: describe ?? "",
       type: "audio",
       projectId,
       startTime: Date.now(),
@@ -56,7 +56,7 @@ export default router.post(
         prompt: item.prompt,
         assetsId: id,
         type: "audio",
-        describe: item.describe,
+        describe: item.describe ?? "",
         name: item.name,
         projectId,
         startTime: Date.now(),

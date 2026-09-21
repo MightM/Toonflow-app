@@ -11,7 +11,7 @@ export default router.post(
   validateFields({
     id: z.number(),
     name: z.string(),
-    describe: z.string(),
+    describe: z.string().optional().default(""),
     projectId: z.number(),
     assetsItem: z.array(
       z.object({
@@ -19,7 +19,7 @@ export default router.post(
         id: z.number().optional(),
         base64: z.string().optional(),
         prompt: z.string(),
-        describe: z.string(),
+        describe: z.string().optional().default(""),
         name: z.string(),
       }),
     ),
@@ -52,7 +52,7 @@ export default router.post(
 
     await u.db("o_assets").where("id", id).update({
       name,
-      describe,
+      describe: describe ?? "",
     });
 
     // 删除不在 assetsItem 中的子项
@@ -75,7 +75,7 @@ export default router.post(
       if (item.id) {
         await u.db("o_assets").where("id", item.id).update({
           prompt: item.prompt,
-          describe: item.describe,
+          describe: item.describe ?? "",
           name: item.name,
         });
         const itemData = await u.db("o_assets").where("id", item.id).select("imageId").first();
@@ -88,7 +88,7 @@ export default router.post(
           assetsId: id,
           type: "audio",
           projectId,
-          describe: item.describe,
+          describe: item.describe ?? "",
           name: item.name,
           startTime: Date.now(),
         });

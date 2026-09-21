@@ -77,7 +77,18 @@ async function copyImage(imageId: number | null | undefined, projectId: number, 
 async function copyNode(id: number, sourceProjectId: number, projectId: number) {
   const row = await u.db("o_canvasNode").where({ id, projectId: sourceProjectId }).first();
   if (!row) throw new Error(`节点 n:${id} 不存在`);
-  const [newId] = await u.db("o_canvasNode").insert({ projectId, kind: row.kind, name: row.name, prompt: row.prompt, params: row.params, createTime: Date.now() });
+  // 跨项目：音色引用（音色库资产 / 别的画布上的音频节点）在目标项目里都不存在，清掉
+  let params = row.params;
+  if (sourceProjectId !== projectId && params) {
+    try {
+      const parsed = JSON.parse(params);
+      delete parsed.voice;
+      params = JSON.stringify(parsed);
+    } catch {
+      params = row.params;
+    }
+  }
+  const [newId] = await u.db("o_canvasNode").insert({ projectId, kind: row.kind, name: row.name, prompt: row.prompt, params, createTime: Date.now() });
   const imageId = await copyImage(row.imageId, projectId, { canvasNodeId: newId }, "canvas");
   if (imageId) await u.db("o_canvasNode").where("id", newId).update({ imageId });
   return nodeKey(newId);

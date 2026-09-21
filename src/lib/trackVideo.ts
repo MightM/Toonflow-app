@@ -190,7 +190,7 @@ export async function shotBriefs(trackId: number): Promise<{ shots: ShotBrief[];
     try {
       images.push(await u.oss.getImageBase64(image.filePath));
     } catch {
-      // 图文件丢了就只发文字，不该因此挡住扩写
+      // 图文件丢了就只发文字，不该因此挡住优化
     }
   }
   return { shots, images };
@@ -238,7 +238,7 @@ export interface TrackPromptInput {
 
 /**
  * 给一个片段生成视频提示词并写回 o_videoTrack.prompt。
- * 镜头台的「扩写」走 canvas/polishVideoPrompt（只返回文本、用户确认后再生成），
+ * 镜头台的「优化」走 canvas/polishVideoPrompt（只返回文本、用户确认后再生成），
  * 老分镜台的「生成提示词」走这里（直接落库）。两者用的是同一个 buildVideoPrompt。
  */
 export async function generateTrackPrompt(input: TrackPromptInput): Promise<string> {

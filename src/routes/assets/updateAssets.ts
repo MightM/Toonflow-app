@@ -12,7 +12,7 @@ export default router.post(
   validateFields({
     id: z.number(),
     name: z.string(),
-    describe: z.string(),
+    describe: z.string().optional().default(""),
     remark: z.string().optional().nullable(),
     prompt: z.string().optional().nullable(),
   }),
@@ -20,7 +20,7 @@ export default router.post(
     const { id, name, describe, remark, prompt } = req.body;
     await u.db("o_assets").where({ id }).update({
       name,
-      describe,
+      describe: describe ?? "",
       remark,
       prompt,
     });
