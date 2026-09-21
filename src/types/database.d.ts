@@ -1,4 +1,4 @@
-// @db-hash f5d050145d03a52b5b502043bc559ec0
+// @db-hash add7bb9effc8beb9207d1234095de198
 //该文件由脚本自动生成，请勿手动修改
 
 export interface memories {
@@ -47,9 +47,11 @@ export interface o_assets {
   'audioBindState'?: number | null;
   'describe'?: string | null;
   'flowId'?: number | null;
+  'fourViewPrompt'?: string | null;
   'id'?: number;
   'imageId'?: number | null;
   'name'?: string | null;
+  'portraitImageId'?: number | null;
   'projectId'?: number | null;
   'prompt'?: string | null;
   'promptErrorReason'?: string | null;
@@ -67,6 +69,38 @@ export interface o_assetsRole2Audio {
   'assetsAudioId'?: number;
   'assetsRoleId'?: number;
 }
+export interface o_canvas {
+  'id'?: number;
+  'layout'?: string | null;
+  'projectId': number;
+  'updateTime'?: number | null;
+  'viewport'?: string | null;
+}
+export interface o_canvasEdge {
+  'createTime'?: number | null;
+  'id'?: number;
+  'projectId': number;
+  'sort'?: number | null;
+  'sourceKey': string;
+  'targetKey': string;
+}
+export interface o_canvasNode {
+  'createTime'?: number | null;
+  'id'?: number;
+  'imageId'?: number | null;
+  'kind': string;
+  'name'?: string | null;
+  'params'?: string | null;
+  'projectId': number;
+  'prompt'?: string | null;
+}
+export interface o_canvasTrash {
+  'createTime': number;
+  'id'?: number;
+  'key': string;
+  'projectId': number;
+  'snapshot': string;
+}
 export interface o_event {
   'createTime'?: number | null;
   'detail'?: string | null;
@@ -79,14 +113,23 @@ export interface o_eventChapter {
   'novelId'?: number | null;
 }
 export interface o_image {
+  'aspectRatio'?: string | null;
   'assetsId'?: number | null;
+  'canvasNodeId'?: number | null;
+  'createTime'?: number | null;
   'errorReason'?: string | null;
   'filePath'?: string | null;
   'id'?: number;
+  'kind'?: string | null;
   'model'?: string | null;
+  'prompt'?: string | null;
+  'refs'?: string | null;
   'resolution'?: string | null;
+  'stage'?: string | null;
   'state'?: string | null;
+  'storyboardId'?: number | null;
   'type'?: string | null;
+  'videoTrackId'?: number | null;
 }
 export interface o_imageFlow {
   'flowData': string;
@@ -97,7 +140,6 @@ export interface o_modelPrompt {
   'id'?: number;
   'model'?: string | null;
   'path'?: string | null;
-  'prompt'?: string | null;
   'vendorId'?: string | null;
 }
 export interface o_novel {
@@ -114,6 +156,7 @@ export interface o_novel {
 }
 export interface o_project {
   'artStyle'?: string | null;
+  'assetModels'?: string | null;
   'createTime'?: number | null;
   'directorManual'?: string | null;
   'id'?: number | null;
@@ -174,6 +217,7 @@ export interface o_storyboard {
   'filePath'?: string | null;
   'flowId'?: number | null;
   'id'?: number;
+  'imageId'?: number | null;
   'index'?: number | null;
   'projectId'?: number | null;
   'prompt'?: string | null;
@@ -211,6 +255,7 @@ export interface o_video {
   'errorReason'?: string | null;
   'filePath'?: string | null;
   'id'?: number;
+  'imageId'?: number | null;
   'projectId'?: number | null;
   'scriptId'?: number | null;
   'state'?: string | null;
@@ -220,9 +265,13 @@ export interface o_video {
 export interface o_videoTrack {
   'duration'?: number | null;
   'id'?: number;
+  'kind'?: string | null;
+  'model'?: string | null;
+  'params'?: string | null;
   'projectId'?: number | null;
   'prompt'?: string | null;
   'reason'?: string | null;
+  'refMode'?: string | null;
   'scriptId'?: number | null;
   'selectVideoId'?: number | null;
   'state'?: string | null;
@@ -237,6 +286,10 @@ export interface DB {
   "o_assets": o_assets;
   "o_assets2Storyboard": o_assets2Storyboard;
   "o_assetsRole2Audio": o_assetsRole2Audio;
+  "o_canvas": o_canvas;
+  "o_canvasEdge": o_canvasEdge;
+  "o_canvasNode": o_canvasNode;
+  "o_canvasTrash": o_canvasTrash;
   "o_event": o_event;
   "o_eventChapter": o_eventChapter;
   "o_image": o_image;

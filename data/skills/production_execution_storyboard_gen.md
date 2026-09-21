@@ -23,13 +23,13 @@ description: >-
 | 操作 | 调用 |
 |------|------|
 | 读取分镜面板 | `get_flowData("storyboard")` |
-| 生成图片 | `generate_storyboard_images({ ids: [分镜ID列表] })` |
+| 生成图片 | `generate_storyboard({ ids: [分镜ID列表] })` |
 
 ### 执行流程
 
 1. 获取 `storyboard`
 2. 提取真实分镜 ID 列表
-3. 调用 `generate_storyboard_images({ ids: [真实分镜ID列表] })` 生成分镜图片（异步，发起即返回）
+3. 调用 `generate_storyboard({ ids: [真实分镜ID列表] })` 生成分镜图片（异步，发起即返回）
 
 ### 约束
 

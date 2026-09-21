@@ -5,25 +5,32 @@ import { success } from "@/lib/responseFormat";
 import { validateFields } from "@/middleware/middleware";
 const router = express.Router();
 
-// 新增项目
+// 编辑项目
 export default router.post(
   "/",
   validateFields({
     id: z.number(),
-    name: z.string(),
-    intro: z.string(),
-    type: z.string(),
-    artStyle: z.string(),
-    directorManual: z.string(),
+    name: z.string().min(1),
+    intro: z.string().optional().default(""),
+    type: z.string().optional().default(""),
+    artStyle: z.string().optional().default(""),
+    directorManual: z.string().optional().default(""),
     videoRatio: z.string(),
     imageModel: z.string(),
     videoModel: z.string(),
-    projectType: z.string(),
-    imageQuality: z.string(),
-    mode: z.string(),
+    projectType: z.enum(["novel", "script", "canvas"]),
+    imageQuality: z.string().optional().default(""),
+    mode: z.string().optional().default(""),
   }),
   async (req, res) => {
-    const { id, name, intro, type, artStyle, videoRatio, directorManual, imageModel, videoModel, imageQuality, projectType, mode } = req.body;
+    // validateFields 只校验不回写，zod 的 default 不会落到 req.body，这里自己兜底
+    const { id, name, videoRatio, imageModel, videoModel, projectType } = req.body;
+    const intro = req.body.intro ?? "";
+    const type = req.body.type ?? "";
+    const artStyle = req.body.artStyle ?? "";
+    const directorManual = req.body.directorManual ?? "";
+    const imageQuality = req.body.imageQuality ?? "";
+    const mode = req.body.mode ?? "";
 
     await u.db("o_project").where("id", id).update({
       name,

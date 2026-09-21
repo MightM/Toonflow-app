@@ -321,28 +321,37 @@ class AiVideo {
     return this;
   }
 }
+/** 文本转语音：与供应商脚本 ttsRequest(config, model) 的 config 一致 */
+export interface TTSConfig {
+  text: string;
+  voice: string;
+  speechRate: number;
+  pitchRate: number;
+  volume: number;
+  referenceList?: Extract<ReferenceList, { type: "audio" }>[]; // 音色参考（克隆），模型不支持时由脚本忽略
+}
+
 class AiAudio {
   private key: `${string}:${string}`;
   private result: string = "";
   constructor(key: `${string}:${string}`) {
     this.key = key;
   }
-  async run(input: VideoConfig, taskRecord?: TaskRecord) {
+  async run(input: TTSConfig, taskRecord?: TaskRecord) {
     const modelName = await resolveModelName(this.key);
     const exec = async (mn: `${string}:${string}`) => {
-      try {
-        const fn = await getVendorTemplateFn("ttsRequest", mn);
-        await referenceList2imageBase642(mn.split(/:(.+)/)[0], input);
-        this.result = await fn(input);
-
-        if (this.result.startsWith("http")) this.result = await urlToBase64(this.result);
-        return this;
-      } catch (e) {}
+      const fn = await getVendorTemplateFn("ttsRequest", mn);
+      await referenceList2imageBase642(mn.split(/:(.+)/)[0], input);
+      this.result = await fn(input);
+      if (!this.result) throw new Error("语音模型没有返回音频，请检查供应商脚本的 ttsRequest 实现");
+      if (this.result.startsWith("http")) this.result = await urlToBase64(this.result);
     };
     if (taskRecord) {
-      return withTaskRecord(this.key, taskRecord.taskClass, taskRecord.describe, taskRecord.relatedObjects, taskRecord.projectId, exec);
+      await withTaskRecord(this.key, taskRecord.taskClass, taskRecord.describe, taskRecord.relatedObjects, taskRecord.projectId, exec);
+      return this;
     }
-    return await exec(modelName);
+    await exec(modelName);
+    return this;
   }
   async save(path: string) {
     await u.oss.writeFile(path, this.result);

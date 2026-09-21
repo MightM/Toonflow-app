@@ -9,20 +9,28 @@ const router = express.Router();
 export default router.post(
   "/",
   validateFields({
-    projectType: z.string(),
-    name: z.string(),
-    intro: z.string(),
-    type: z.string(),
-    artStyle: z.string(),
-    directorManual: z.string(),
+    // novel / script 是短剧流水线的两个子形态，canvas 是无限画布
+    projectType: z.enum(["novel", "script", "canvas"]),
+    name: z.string().min(1),
+    intro: z.string().optional().default(""),
+    type: z.string().optional().default(""),
+    artStyle: z.string().optional().default(""),
+    directorManual: z.string().optional().default(""),
     videoRatio: z.string(),
     imageModel: z.string(),
     videoModel: z.string(),
-    imageQuality: z.string(),
-    mode: z.string(),
+    imageQuality: z.string().optional().default(""),
+    mode: z.string().optional().default(""),
   }),
   async (req, res) => {
-    const { projectType, name, intro, type, directorManual, artStyle, videoRatio, imageModel, videoModel, imageQuality, mode } = req.body;
+    // validateFields 只校验不回写，zod 的 default 不会落到 req.body，这里自己兜底
+    const { projectType, name, videoRatio, imageModel, videoModel } = req.body;
+    const intro = req.body.intro ?? "";
+    const type = req.body.type ?? "";
+    const artStyle = req.body.artStyle ?? "";
+    const directorManual = req.body.directorManual ?? "";
+    const imageQuality = req.body.imageQuality ?? "";
+    const mode = req.body.mode ?? "";
 
     await u.db("o_project").insert({
       id: Date.now(),

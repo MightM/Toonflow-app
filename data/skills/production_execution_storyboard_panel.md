@@ -149,6 +149,6 @@ add_flowData_storyboard({ videoDesc: "视频描述", prompt: "提示词内容", 
 - **逐条写入**：必须调用 `add_flowData_storyboard` 写入工作区分镜面板，**每个写入单位调用一次**（不再输出 `<storyboardItem>` XML）；逐条写入，不遗漏、不重复、不合并多个写入单位
 - **数量一致性**：`add_flowData_storyboard` 调用次数（= 分镜面板 items 数）必须与该模式**写入单位**数量完全一致——纯文本多参 / 故事板辅助多参模式以「组」为单位（== 分镜表组数），首位帧模式以「数据行」为单位（== 数据行数）；均不含场标题、组标题、表头与分隔行
 - **时长一致性**：分镜面板 `duration` 必须与对应写入单位时长完全一致——纯文本多参 / 故事板辅助多参模式取「组」时长，首位帧模式取「数据行」时长
-- **阶段边界**：本阶段禁止调用 `generate_storyboard_images`
+- **阶段边界**：本阶段禁止调用 `generate_storyboard`
 
 > 取值随模式而异的约束（track 分组规则、`prompt` 取值、`shouldGenerateImage`、prompt 内容忠实性、技法激活、人物位置连贯性校验、图像资产标注）已在各自流程内正向声明，不在此重复。

@@ -3,6 +3,7 @@ import u from "@/utils";
 import * as zod from "zod";
 import { error, success } from "@/lib/responseFormat";
 import { validateFields } from "@/middleware/middleware";
+import { AssetType, getPolishManual } from "@/lib/assetGen";
 const router = express.Router();
 
 
@@ -25,16 +26,15 @@ export default router.post(
     //如果没有找到对应的项目，返回错误
     if (!project) return res.status(500).send(success({ message: "项目为空" }));
 
-    await u.db("o_assets").where("id", assetsId).update({ promptState: "生成中" });
-
     //查询资产是否是衍生资产
     const assetsData = await u.db("o_assets").where("id", assetsId).select("assetsId").first();
-    if (!assetsData) return { code: 500, message: "资产不存在" };
+    if (!assetsData) return res.status(500).send(error("资产不存在"));
+    await u.db("o_assets").where("id", assetsId).update({ promptState: "生成中" });
     const typeConfig: Record<string, { promptKey: string; itemType: ItemType; label: string; nameLabel: string; visualManual: string }> = {
       role: {
         promptKey: "role-polish",
         itemType: "characters",
-        label: "角色标准四视图",
+        label: "角色多视图人物需求",
         nameLabel: "角色",
         visualManual: assetsData.assetsId ? "art_character_derivative" : "art_character",
       },
@@ -58,7 +58,7 @@ export default router.post(
     if (!config) return res.status(500).send(error("不支持的类型"));
     if (!config.visualManual) return res.status(500).send(error("视觉手册未定义"));
     //获取到视觉手册
-    const visualManual = await u.getArtPrompt(project.artStyle as string, "art_skills", config.visualManual);
+    const visualManual = getPolishManual(project.artStyle as string, type as AssetType, !!assetsData.assetsId);
     if (!visualManual) return res.status(500).send(error("视觉手册未定义"));
     const systemPrompt = visualManual;
     try {
@@ -76,7 +76,10 @@ export default router.post(
       })) as any;
 
       if (!_output) return res.status(500).send("失败");
-      await u.db("o_assets").where("id", assetsId).update({ prompt: _output, promptState: "已完成" });
+      await u
+        .db("o_assets")
+        .where("id", assetsId)
+        .update({ prompt: _output, promptState: "已完成" });
 
       res.status(200).send(success({ prompt: _output, assetsId }));
     } catch (e: any) {

@@ -4,6 +4,7 @@ import pLimit from "p-limit";
 import * as zod from "zod";
 import { error, success } from "@/lib/responseFormat";
 import { validateFields } from "@/middleware/middleware";
+import { AssetType, getPolishManual } from "@/lib/assetGen";
 const router = express.Router();
 interface OutlineItem {
   description: string;
@@ -65,7 +66,7 @@ export default router.post(
       role: {
         promptKey: "role-polish",
         itemType: "characters",
-        label: "角色标准四视图",
+        label: "角色多视图人物需求",
         nameLabel: "角色",
         visualManual: isDerivative ? "art_character_derivative" : "art_character",
       },
@@ -95,7 +96,7 @@ export default router.post(
         const config = typeConfig[item.type];
         if (!config) return;
         //获取到视觉手册
-        const visualManual = await u.getArtPrompt(project.artStyle as string, "art_skills", config.visualManual);
+        const visualManual = getPolishManual(project.artStyle as string, item.type as AssetType, !!assetData.assetsId);
         if (!visualManual) {
           await u.db("o_assets").where("id", item.assetsId).update({ promptState: "生成失败", promptErrorReason: "视觉手册未定义" });
           return;
@@ -133,7 +134,7 @@ export default router.post(
 
     // 后台执行，不等待结果
     Promise.all(tasks).catch((err: any) => {
-      res.status(500).send(error(err));
+      console.error("[批量润色提示词]", u.error(err).message);
     });
 
     return res.status(200).send(success({ total: items.length }));

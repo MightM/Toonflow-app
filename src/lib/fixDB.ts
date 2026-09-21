@@ -66,8 +66,29 @@ export default async (knex: Knex): Promise<void> => {
   // 添加新字段
   await addColumn("o_agentDeploy", "maxOutputTokens", "integer");
   await addColumn("o_assets", "audioBindState", "integer");
+  // 资产画布 + 角色两步生成（定妆照 → 四视图）
+  await addColumn("o_image", "aspectRatio", "string");
+  await addColumn("o_image", "prompt", "text");
+  await addColumn("o_image", "kind", "string"); // image | video | audio，空 = image
+  await addColumn("o_image", "stage", "string"); // portrait | fourView，空 = 普通单图
+  await addColumn("o_image", "canvasNodeId", "integer");
+  await addColumn("o_image", "refs", "text");
+  await addColumn("o_image", "createTime", "integer");
+  await addColumn("o_assets", "portraitImageId", "integer"); // 角色选定的定妆照
+  await addColumn("o_assets", "fourViewPrompt", "text"); // 角色四视图补充说明
+  await addColumn("o_project", "assetModels", "text"); // 资产模型绑定 JSON
   await addColumn("o_modelPrompt", "fileName", "string");
   await addColumn("o_modelPrompt", "path", "string");
+  // 镜头台：分镜图与片段视频接进画布那套（节点 key s:<storyboardId> / v:<videoTrackId>）
+  await addColumn("o_storyboard", "imageId", "integer"); // 当前分镜图，指向 o_image
+  await addColumn("o_image", "storyboardId", "integer"); // 分镜图版本归属
+  await addColumn("o_image", "videoTrackId", "integer"); // 片段视频版本归属
+  await addColumn("o_videoTrack", "model", "string"); // 每片段独立模型，空则回落项目 videoModel
+  await addColumn("o_videoTrack", "params", "text"); // 每片段 mode/duration/resolution/audio JSON
+  await addColumn("o_videoTrack", "kind", "string"); // shot（一镜一段）| segment（多镜合一）
+  await addColumn("o_videoTrack", "refMode", "string"); // auto（跟随各镜素材板，默认）| manual（用户改过，以 v: 入边为准）
+  await addColumn("o_video", "imageId", "integer"); // 对应的 o_image 版本行，用于「设为当前」
+  await migrateStoryboardImages();
   const vendorDataSelect = await u.db("o_vendorConfig").whereIn("id", ["deepseek", "atlascloud"]).select("*");
   if (!vendorDataSelect.find((i) => i.id == "deepseek")) {
     await u.db("o_vendorConfig").insert({
@@ -205,4 +226,72 @@ async function tempOnsert(tsCode: string) {
     enable: vendor.id == "toonflow" ? 1 : 0,
   });
   u.vendor.writeCode(vendor.id, tsCode);
+}
+
+/**
+ * 镜头台迁移：把分镜图接进 o_image 版本链，并把「关联资产」播种成画布参考边。
+ * 幂等——只处理还没有 imageId / 还没有入边的分镜。
+ */
+async function migrateStoryboardImages(): Promise<void> {
+  const shots = await db("o_storyboard").whereNull("imageId").whereNotNull("filePath").whereNot("filePath", "").select("id", "projectId", "prompt", "filePath", "createTime");
+  for (const shot of shots) {
+    const [imageId] = await db("o_image").insert({
+      type: "storyboard",
+      state: "已完成",
+      kind: "image",
+      storyboardId: shot.id,
+      filePath: shot.filePath,
+      prompt: shot.prompt ?? null,
+      createTime: shot.createTime ?? Date.now(),
+    });
+    await db("o_storyboard").where("id", shot.id).update({ imageId });
+  }
+  if (shots.length) console.log(`[镜头台迁移] ${shots.length} 张分镜图接入版本链`);
+
+  // 参考边播种：o_assets2Storyboard 的 rowid 顺序就是原来的 @图N 顺序
+  const seeded = await db("o_canvasEdge").where("targetKey", "like", "s:%").select("targetKey");
+  const done = new Set(seeded.map((r) => r.targetKey));
+  const links = await db("o_assets2Storyboard")
+    .join("o_storyboard", "o_storyboard.id", "o_assets2Storyboard.storyboardId")
+    .orderBy("o_assets2Storyboard.rowid")
+    .select("o_assets2Storyboard.storyboardId", "o_assets2Storyboard.assetId", "o_storyboard.projectId");
+  const rows: Record<string, unknown>[] = [];
+  const sortOf = new Map<number, number>();
+  for (const link of links) {
+    if (done.has(`s:${link.storyboardId}`)) continue;
+    const sort = sortOf.get(link.storyboardId) ?? 0;
+    sortOf.set(link.storyboardId, sort + 1);
+    rows.push({ projectId: link.projectId, sourceKey: `a:${link.assetId}`, targetKey: `s:${link.storyboardId}`, sort, createTime: Date.now() });
+  }
+  for (let i = 0; i < rows.length; i += 200) await db("o_canvasEdge").insert(rows.slice(i, i + 200));
+  if (rows.length) console.log(`[镜头台迁移] ${rows.length} 条分镜参考边播种完成`);
+
+  await migrateTrackRefMode();
+}
+
+/**
+ * 片段参考从「播种」改成「推导」：老数据里每个片段都被 ensureTrackEdges 播过一遍边
+ * （全是组内各镜的分镜图），不清掉的话每个片段都会被当成「用户手动覆盖过」，
+ * 推导逻辑一条也跑不到。边的内容正好等于自动推导结果的，删边标 auto；
+ * 有用户自己加的资产边的，保留并标 manual。
+ */
+async function migrateTrackRefMode(): Promise<void> {
+  const tracks = await db("o_videoTrack").whereNull("refMode").select("id", "projectId");
+  if (!tracks.length) return;
+  let auto = 0;
+  let manual = 0;
+  for (const track of tracks) {
+    const edges = await db("o_canvasEdge").where("targetKey", `v:${track.id}`).select("id", "sourceKey");
+    // 只有分镜图（s:）= 老播种的原样，没有用户痕迹
+    const untouched = edges.every((e) => String(e.sourceKey).startsWith("s:"));
+    if (untouched) {
+      if (edges.length) await db("o_canvasEdge").where("targetKey", `v:${track.id}`).del();
+      await db("o_videoTrack").where("id", track.id).update({ refMode: "auto" });
+      auto += 1;
+    } else {
+      await db("o_videoTrack").where("id", track.id).update({ refMode: "manual" });
+      manual += 1;
+    }
+  }
+  console.log(`[镜头台迁移] 片段参考：${auto} 个改为自动跟随素材板，${manual} 个保留手动覆盖`);
 }

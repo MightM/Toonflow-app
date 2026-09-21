@@ -15627,11 +15627,11 @@ var require_mime_types = __commonJS({
       }
       return exts[0];
     }
-    function lookup(path34) {
-      if (!path34 || typeof path34 !== "string") {
+    function lookup(path38) {
+      if (!path38 || typeof path38 !== "string") {
         return false;
       }
-      var extension2 = extname("x." + path34).toLowerCase().slice(1);
+      var extension2 = extname("x." + path38).toLowerCase().slice(1);
       if (!extension2) {
         return false;
       }
@@ -19105,13 +19105,13 @@ var require_view = __commonJS({
   "node_modules/express/lib/view.js"(exports2, module2) {
     "use strict";
     var debug = require_src()("express:view");
-    var path34 = require("node:path");
-    var fs36 = require("node:fs");
-    var dirname2 = path34.dirname;
-    var basename = path34.basename;
-    var extname = path34.extname;
-    var join2 = path34.join;
-    var resolve3 = path34.resolve;
+    var path38 = require("node:path");
+    var fs40 = require("node:fs");
+    var dirname2 = path38.dirname;
+    var basename = path38.basename;
+    var extname = path38.extname;
+    var join2 = path38.join;
+    var resolve3 = path38.resolve;
     module2.exports = View;
     function View(name28, options) {
       var opts = options || {};
@@ -19140,17 +19140,17 @@ var require_view = __commonJS({
       this.path = this.lookup(fileName);
     }
     View.prototype.lookup = function lookup(name28) {
-      var path35;
+      var path39;
       var roots = [].concat(this.root);
       debug('lookup "%s"', name28);
-      for (var i = 0; i < roots.length && !path35; i++) {
+      for (var i = 0; i < roots.length && !path39; i++) {
         var root2 = roots[i];
         var loc = resolve3(root2, name28);
         var dir = dirname2(loc);
         var file3 = basename(loc);
-        path35 = this.resolve(dir, file3);
+        path39 = this.resolve(dir, file3);
       }
-      return path35;
+      return path39;
     };
     View.prototype.render = function render(options, callback) {
       var sync = true;
@@ -19172,21 +19172,21 @@ var require_view = __commonJS({
     };
     View.prototype.resolve = function resolve4(dir, file3) {
       var ext = this.ext;
-      var path35 = join2(dir, file3);
-      var stat = tryStat(path35);
+      var path39 = join2(dir, file3);
+      var stat = tryStat(path39);
       if (stat && stat.isFile()) {
-        return path35;
+        return path39;
       }
-      path35 = join2(dir, basename(file3, ext), "index" + ext);
-      stat = tryStat(path35);
+      path39 = join2(dir, basename(file3, ext), "index" + ext);
+      stat = tryStat(path39);
       if (stat && stat.isFile()) {
-        return path35;
+        return path39;
       }
     };
-    function tryStat(path35) {
-      debug('stat "%s"', path35);
+    function tryStat(path39) {
+      debug('stat "%s"', path39);
       try {
-        return fs36.statSync(path35);
+        return fs40.statSync(path39);
       } catch (e) {
         return void 0;
       }
@@ -20376,15 +20376,15 @@ var require_dist = __commonJS({
           if (token.type === endType)
             break;
           if (token.type === "char" || token.type === "escape") {
-            let path34 = token.value;
+            let path38 = token.value;
             let cur = tokens[pos];
             while (cur.type === "char" || cur.type === "escape") {
-              path34 += cur.value;
+              path38 += cur.value;
               cur = tokens[++pos];
             }
             output.push({
               type: "text",
-              value: encodePath(path34)
+              value: encodePath(path38)
             });
             continue;
           }
@@ -20408,16 +20408,16 @@ var require_dist = __commonJS({
       }
       return new TokenData(consumeUntil("end"), str);
     }
-    function compile(path34, options = {}) {
+    function compile(path38, options = {}) {
       const { encode: encode6 = encodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
-      const data = typeof path34 === "object" ? path34 : parse4(path34, options);
+      const data = typeof path38 === "object" ? path38 : parse4(path38, options);
       const fn = tokensToFunction(data.tokens, delimiter, encode6);
-      return function path35(params = {}) {
-        const [path36, ...missing] = fn(params);
+      return function path39(params = {}) {
+        const [path40, ...missing] = fn(params);
         if (missing.length) {
           throw new TypeError(`Missing parameters: ${missing.join(", ")}`);
         }
-        return path36;
+        return path40;
       };
     }
     function tokensToFunction(tokens, delimiter, encode6) {
@@ -20473,9 +20473,9 @@ var require_dist = __commonJS({
         return [encodeValue(value)];
       };
     }
-    function match(path34, options = {}) {
+    function match(path38, options = {}) {
       const { decode: decode4 = decodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
-      const { regexp, keys: keys2 } = pathToRegexp(path34, options);
+      const { regexp, keys: keys2 } = pathToRegexp(path38, options);
       const decoders = keys2.map((key) => {
         if (decode4 === false)
           return NOOP_VALUE;
@@ -20487,7 +20487,7 @@ var require_dist = __commonJS({
         const m = regexp.exec(input);
         if (!m)
           return false;
-        const path35 = m[0];
+        const path39 = m[0];
         const params = /* @__PURE__ */ Object.create(null);
         for (let i = 1; i < m.length; i++) {
           if (m[i] === void 0)
@@ -20496,22 +20496,22 @@ var require_dist = __commonJS({
           const decoder = decoders[i - 1];
           params[key.name] = decoder(m[i]);
         }
-        return { path: path35, params };
+        return { path: path39, params };
       };
     }
-    function pathToRegexp(path34, options = {}) {
+    function pathToRegexp(path38, options = {}) {
       const { delimiter = DEFAULT_DELIMITER, end = true, sensitive = false, trailing = true } = options;
       const keys2 = [];
       const sources = [];
-      const paths = [path34];
+      const paths = [path38];
       let combinations = 0;
       while (paths.length) {
-        const path35 = paths.shift();
-        if (Array.isArray(path35)) {
-          paths.push(...path35);
+        const path39 = paths.shift();
+        if (Array.isArray(path39)) {
+          paths.push(...path39);
           continue;
         }
-        const data = typeof path35 === "object" ? path35 : parse4(path35, options);
+        const data = typeof path39 === "object" ? path39 : parse4(path39, options);
         flatten(data.tokens, 0, [], (tokens) => {
           if (combinations++ >= 256) {
             throw new PathError("Too many path combinations", data.originalPath);
@@ -20656,18 +20656,18 @@ var require_layer = __commonJS({
     var TRAILING_SLASH_REGEXP = /\/+$/;
     var MATCHING_GROUP_REGEXP = /\((?:\?<(.*?)>)?(?!\?)/g;
     module2.exports = Layer;
-    function Layer(path34, options, fn) {
+    function Layer(path38, options, fn) {
       if (!(this instanceof Layer)) {
-        return new Layer(path34, options, fn);
+        return new Layer(path38, options, fn);
       }
-      debug("new %o", path34);
+      debug("new %o", path38);
       const opts = options || {};
       this.handle = fn;
       this.keys = [];
       this.name = fn.name || "<anonymous>";
       this.params = void 0;
       this.path = void 0;
-      this.slash = path34 === "/" && opts.end === false;
+      this.slash = path38 === "/" && opts.end === false;
       function matcher(_path) {
         if (_path instanceof RegExp) {
           const keys2 = [];
@@ -20706,7 +20706,7 @@ var require_layer = __commonJS({
           decode: decodeParam
         });
       }
-      this.matchers = Array.isArray(path34) ? path34.map(matcher) : [matcher(path34)];
+      this.matchers = Array.isArray(path38) ? path38.map(matcher) : [matcher(path38)];
     }
     Layer.prototype.handleError = function handleError(error73, req, res, next) {
       const fn = this.handle;
@@ -20746,9 +20746,9 @@ var require_layer = __commonJS({
         next(err);
       }
     };
-    Layer.prototype.match = function match(path34) {
+    Layer.prototype.match = function match(path38) {
       let match2;
-      if (path34 != null) {
+      if (path38 != null) {
         if (this.slash) {
           this.params = {};
           this.path = "";
@@ -20756,7 +20756,7 @@ var require_layer = __commonJS({
         }
         let i = 0;
         while (!match2 && i < this.matchers.length) {
-          match2 = this.matchers[i](path34);
+          match2 = this.matchers[i](path38);
           i++;
         }
       }
@@ -20784,13 +20784,13 @@ var require_layer = __commonJS({
         throw err;
       }
     }
-    function loosen(path34) {
-      if (path34 instanceof RegExp || path34 === "/") {
-        return path34;
+    function loosen(path38) {
+      if (path38 instanceof RegExp || path38 === "/") {
+        return path38;
       }
-      return Array.isArray(path34) ? path34.map(function(p3) {
+      return Array.isArray(path38) ? path38.map(function(p3) {
         return loosen(p3);
-      }) : String(path34).replace(TRAILING_SLASH_REGEXP, "");
+      }) : String(path38).replace(TRAILING_SLASH_REGEXP, "");
     }
   }
 });
@@ -20806,9 +20806,9 @@ var require_route = __commonJS({
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
     module2.exports = Route;
-    function Route(path34) {
-      debug("new %o", path34);
-      this.path = path34;
+    function Route(path38) {
+      debug("new %o", path38);
+      this.path = path38;
       this.stack = [];
       this.methods = /* @__PURE__ */ Object.create(null);
     }
@@ -20936,16 +20936,16 @@ var require_router = __commonJS({
         return new Router(options);
       }
       const opts = options || {};
-      function router170(req, res, next) {
-        router170.handle(req, res, next);
+      function router193(req, res, next) {
+        router193.handle(req, res, next);
       }
-      Object.setPrototypeOf(router170, this);
-      router170.caseSensitive = opts.caseSensitive;
-      router170.mergeParams = opts.mergeParams;
-      router170.params = {};
-      router170.strict = opts.strict;
-      router170.stack = [];
-      return router170;
+      Object.setPrototypeOf(router193, this);
+      router193.caseSensitive = opts.caseSensitive;
+      router193.mergeParams = opts.mergeParams;
+      router193.params = {};
+      router193.strict = opts.strict;
+      router193.stack = [];
+      return router193;
     }
     Router.prototype = function() {
     };
@@ -21016,8 +21016,8 @@ var require_router = __commonJS({
         if (++sync > 100) {
           return setImmediate(next, err);
         }
-        const path34 = getPathname(req);
-        if (path34 == null) {
+        const path38 = getPathname(req);
+        if (path38 == null) {
           return done(layerError);
         }
         let layer;
@@ -21025,7 +21025,7 @@ var require_router = __commonJS({
         let route;
         while (match !== true && idx < stack.length) {
           layer = stack[idx++];
-          match = matchLayer(layer, path34);
+          match = matchLayer(layer, path38);
           route = layer.route;
           if (typeof match !== "boolean") {
             layerError = layerError || match;
@@ -21063,18 +21063,18 @@ var require_router = __commonJS({
           } else if (route) {
             layer.handleRequest(req, res, next);
           } else {
-            trimPrefix(layer, layerError, layerPath, path34);
+            trimPrefix(layer, layerError, layerPath, path38);
           }
           sync = 0;
         });
       }
-      function trimPrefix(layer, layerError, layerPath, path34) {
+      function trimPrefix(layer, layerError, layerPath, path38) {
         if (layerPath.length !== 0) {
-          if (layerPath !== path34.substring(0, layerPath.length)) {
+          if (layerPath !== path38.substring(0, layerPath.length)) {
             next(layerError);
             return;
           }
-          const c = path34[layerPath.length];
+          const c = path38[layerPath.length];
           if (c && c !== "/") {
             next(layerError);
             return;
@@ -21098,7 +21098,7 @@ var require_router = __commonJS({
     };
     Router.prototype.use = function use(handler) {
       let offset = 0;
-      let path34 = "/";
+      let path38 = "/";
       if (typeof handler !== "function") {
         let arg = handler;
         while (Array.isArray(arg) && arg.length !== 0) {
@@ -21106,7 +21106,7 @@ var require_router = __commonJS({
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path34 = handler;
+          path38 = handler;
         }
       }
       const callbacks = flatten.call(slice.call(arguments, offset), Infinity);
@@ -21118,8 +21118,8 @@ var require_router = __commonJS({
         if (typeof fn !== "function") {
           throw new TypeError("argument handler must be a function");
         }
-        debug("use %o %s", path34, fn.name || "<anonymous>");
-        const layer = new Layer(path34, {
+        debug("use %o %s", path38, fn.name || "<anonymous>");
+        const layer = new Layer(path38, {
           sensitive: this.caseSensitive,
           strict: false,
           end: false
@@ -21129,9 +21129,9 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router.prototype.route = function route(path34) {
-      const route2 = new Route(path34);
-      const layer = new Layer(path34, {
+    Router.prototype.route = function route(path38) {
+      const route2 = new Route(path38);
+      const layer = new Layer(path38, {
         sensitive: this.caseSensitive,
         strict: this.strict,
         end: true
@@ -21144,8 +21144,8 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router.prototype[method] = function(path34) {
-        const route = this.route(path34);
+      Router.prototype[method] = function(path38) {
+        const route = this.route(path38);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
       };
@@ -21174,9 +21174,9 @@ var require_router = __commonJS({
       const fqdnIndex = url4.substring(0, pathLength).indexOf("://");
       return fqdnIndex !== -1 ? url4.substring(0, url4.indexOf("/", 3 + fqdnIndex)) : void 0;
     }
-    function matchLayer(layer, path34) {
+    function matchLayer(layer, path38) {
       try {
-        return layer.match(path34);
+        return layer.match(path38);
       } catch (err) {
         return err;
       }
@@ -21333,7 +21333,7 @@ var require_application = __commonJS({
     var app2 = exports2 = module2.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router170 = null;
+      var router193 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21342,13 +21342,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router170 === null) {
-            router170 = new Router({
+          if (router193 === null) {
+            router193 = new Router({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router170;
+          return router193;
         }
       });
     };
@@ -21404,7 +21404,7 @@ var require_application = __commonJS({
     };
     app2.use = function use(fn) {
       var offset = 0;
-      var path34 = "/";
+      var path38 = "/";
       if (typeof fn !== "function") {
         var arg = fn;
         while (Array.isArray(arg) && arg.length !== 0) {
@@ -21412,22 +21412,22 @@ var require_application = __commonJS({
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path34 = fn;
+          path38 = fn;
         }
       }
       var fns = flatten.call(slice.call(arguments, offset), Infinity);
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router170 = this.router;
+      var router193 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router170.use(path34, fn2);
+          return router193.use(path38, fn2);
         }
-        debug(".use app under %s", path34);
-        fn2.mountpath = path34;
+        debug(".use app under %s", path38);
+        fn2.mountpath = path38;
         fn2.parent = this;
-        router170.use(path34, function mounted_app(req, res, next) {
+        router193.use(path38, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -21439,8 +21439,8 @@ var require_application = __commonJS({
       }, this);
       return this;
     };
-    app2.route = function route(path34) {
-      return this.router.route(path34);
+    app2.route = function route(path38) {
+      return this.router.route(path38);
     };
     app2.engine = function engine(ext, fn) {
       if (typeof fn !== "function") {
@@ -21483,7 +21483,7 @@ var require_application = __commonJS({
       }
       return this;
     };
-    app2.path = function path34() {
+    app2.path = function path38() {
       return this.parent ? this.parent.path() + this.mountpath : "";
     };
     app2.enabled = function enabled(setting) {
@@ -21499,17 +21499,17 @@ var require_application = __commonJS({
       return this.set(setting, false);
     };
     methods.forEach(function(method) {
-      app2[method] = function(path34) {
+      app2[method] = function(path38) {
         if (method === "get" && arguments.length === 1) {
-          return this.set(path34);
+          return this.set(path38);
         }
-        var route = this.route(path34);
+        var route = this.route(path38);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
       };
     });
-    app2.all = function all3(path34) {
-      var route = this.route(path34);
+    app2.all = function all3(path38) {
+      var route = this.route(path38);
       var args = slice.call(arguments, 1);
       for (var i = 0; i < methods.length; i++) {
         route[methods[i]].apply(route, args);
@@ -21897,9 +21897,9 @@ var require_mediaType = __commonJS({
       if (match[3]) {
         var kvps = splitParameters(match[3]).map(splitKeyValuePair);
         for (var j = 0; j < kvps.length; j++) {
-          var pair = kvps[j];
-          var key = pair[0].toLowerCase();
-          var val = pair[1];
+          var pair2 = kvps[j];
+          var key = pair2[0].toLowerCase();
+          var val = pair2[1];
           var value = val && val[0] === '"' && val[val.length - 1] === '"' ? val.slice(1, -1) : val;
           if (key === "q") {
             q = parseFloat(value);
@@ -22419,7 +22419,7 @@ var require_request = __commonJS({
       var subdomains2 = !isIP(hostname4) ? hostname4.split(".").reverse() : [hostname4];
       return subdomains2.slice(offset);
     });
-    defineGetter(req, "path", function path34() {
+    defineGetter(req, "path", function path38() {
       return parse4(this).pathname;
     });
     defineGetter(req, "host", function host() {
@@ -22827,32 +22827,32 @@ var require_send = __commonJS({
     var escapeHtml = require_escape_html();
     var etag = require_etag();
     var fresh = require_fresh();
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var mime = require_mime_types();
     var ms = require_ms();
     var onFinished = require_on_finished();
     var parseRange = require_range_parser();
-    var path34 = require("path");
+    var path38 = require("path");
     var statuses = require_statuses();
     var Stream = require("stream");
     var util4 = require("util");
-    var extname = path34.extname;
-    var join2 = path34.join;
-    var normalize = path34.normalize;
-    var resolve3 = path34.resolve;
-    var sep = path34.sep;
+    var extname = path38.extname;
+    var join2 = path38.join;
+    var normalize = path38.normalize;
+    var resolve3 = path38.resolve;
+    var sep = path38.sep;
     var BYTES_RANGE_REGEXP = /^ *bytes=/;
     var MAX_MAXAGE = 60 * 60 * 24 * 365 * 1e3;
     var UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
     module2.exports = send;
-    function send(req, path35, options) {
-      return new SendStream(req, path35, options);
+    function send(req, path39, options) {
+      return new SendStream(req, path39, options);
     }
-    function SendStream(req, path35, options) {
+    function SendStream(req, path39, options) {
       Stream.call(this);
       var opts = options || {};
       this.options = opts;
-      this.path = path35;
+      this.path = path39;
       this.req = req;
       this._acceptRanges = opts.acceptRanges !== void 0 ? Boolean(opts.acceptRanges) : true;
       this._cacheControl = opts.cacheControl !== void 0 ? Boolean(opts.cacheControl) : true;
@@ -22966,10 +22966,10 @@ var require_send = __commonJS({
       var lastModified = this.res.getHeader("Last-Modified");
       return parseHttpDate(lastModified) <= parseHttpDate(ifRange);
     };
-    SendStream.prototype.redirect = function redirect(path35) {
+    SendStream.prototype.redirect = function redirect(path39) {
       var res = this.res;
       if (hasListeners(this, "directory")) {
-        this.emit("directory", res, path35);
+        this.emit("directory", res, path39);
         return;
       }
       if (this.hasTrailingSlash()) {
@@ -22989,38 +22989,38 @@ var require_send = __commonJS({
     SendStream.prototype.pipe = function pipe3(res) {
       var root2 = this._root;
       this.res = res;
-      var path35 = decode4(this.path);
-      if (path35 === -1) {
+      var path39 = decode4(this.path);
+      if (path39 === -1) {
         this.error(400);
         return res;
       }
-      if (~path35.indexOf("\0")) {
+      if (~path39.indexOf("\0")) {
         this.error(400);
         return res;
       }
       var parts;
       if (root2 !== null) {
-        if (path35) {
-          path35 = normalize("." + sep + path35);
+        if (path39) {
+          path39 = normalize("." + sep + path39);
         }
-        if (UP_PATH_REGEXP.test(path35)) {
-          debug('malicious path "%s"', path35);
+        if (UP_PATH_REGEXP.test(path39)) {
+          debug('malicious path "%s"', path39);
           this.error(403);
           return res;
         }
-        parts = path35.split(sep);
-        path35 = normalize(join2(root2, path35));
+        parts = path39.split(sep);
+        path39 = normalize(join2(root2, path39));
       } else {
-        if (UP_PATH_REGEXP.test(path35)) {
-          debug('malicious path "%s"', path35);
+        if (UP_PATH_REGEXP.test(path39)) {
+          debug('malicious path "%s"', path39);
           this.error(403);
           return res;
         }
-        parts = normalize(path35).split(sep);
-        path35 = resolve3(path35);
+        parts = normalize(path39).split(sep);
+        path39 = resolve3(path39);
       }
       if (containsDotFile(parts)) {
-        debug('%s dotfile "%s"', this._dotfiles, path35);
+        debug('%s dotfile "%s"', this._dotfiles, path39);
         switch (this._dotfiles) {
           case "allow":
             break;
@@ -23034,13 +23034,13 @@ var require_send = __commonJS({
         }
       }
       if (this._index.length && this.hasTrailingSlash()) {
-        this.sendIndex(path35);
+        this.sendIndex(path39);
         return res;
       }
-      this.sendFile(path35);
+      this.sendFile(path39);
       return res;
     };
-    SendStream.prototype.send = function send2(path35, stat) {
+    SendStream.prototype.send = function send2(path39, stat) {
       var len = stat.size;
       var options = this.options;
       var opts = {};
@@ -23052,9 +23052,9 @@ var require_send = __commonJS({
         this.headersAlreadySent();
         return;
       }
-      debug('pipe "%s"', path35);
-      this.setHeader(path35, stat);
-      this.type(path35);
+      debug('pipe "%s"', path39);
+      this.setHeader(path39, stat);
+      this.type(path39);
       if (this.isConditionalGET()) {
         if (this.isPreconditionFailure()) {
           this.error(412);
@@ -23103,30 +23103,30 @@ var require_send = __commonJS({
         res.end();
         return;
       }
-      this.stream(path35, opts);
+      this.stream(path39, opts);
     };
-    SendStream.prototype.sendFile = function sendFile(path35) {
+    SendStream.prototype.sendFile = function sendFile(path39) {
       var i = 0;
       var self2 = this;
-      debug('stat "%s"', path35);
-      fs36.stat(path35, function onstat(err, stat) {
-        var pathEndsWithSep = path35[path35.length - 1] === sep;
-        if (err && err.code === "ENOENT" && !extname(path35) && !pathEndsWithSep) {
+      debug('stat "%s"', path39);
+      fs40.stat(path39, function onstat(err, stat) {
+        var pathEndsWithSep = path39[path39.length - 1] === sep;
+        if (err && err.code === "ENOENT" && !extname(path39) && !pathEndsWithSep) {
           return next(err);
         }
         if (err) return self2.onStatError(err);
-        if (stat.isDirectory()) return self2.redirect(path35);
+        if (stat.isDirectory()) return self2.redirect(path39);
         if (pathEndsWithSep) return self2.error(404);
-        self2.emit("file", path35, stat);
-        self2.send(path35, stat);
+        self2.emit("file", path39, stat);
+        self2.send(path39, stat);
       });
       function next(err) {
         if (self2._extensions.length <= i) {
           return err ? self2.onStatError(err) : self2.error(404);
         }
-        var p3 = path35 + "." + self2._extensions[i++];
+        var p3 = path39 + "." + self2._extensions[i++];
         debug('stat "%s"', p3);
-        fs36.stat(p3, function(err2, stat) {
+        fs40.stat(p3, function(err2, stat) {
           if (err2) return next(err2);
           if (stat.isDirectory()) return next();
           self2.emit("file", p3, stat);
@@ -23134,7 +23134,7 @@ var require_send = __commonJS({
         });
       }
     };
-    SendStream.prototype.sendIndex = function sendIndex(path35) {
+    SendStream.prototype.sendIndex = function sendIndex(path39) {
       var i = -1;
       var self2 = this;
       function next(err) {
@@ -23142,9 +23142,9 @@ var require_send = __commonJS({
           if (err) return self2.onStatError(err);
           return self2.error(404);
         }
-        var p3 = join2(path35, self2._index[i]);
+        var p3 = join2(path39, self2._index[i]);
         debug('stat "%s"', p3);
-        fs36.stat(p3, function(err2, stat) {
+        fs40.stat(p3, function(err2, stat) {
           if (err2) return next(err2);
           if (stat.isDirectory()) return next();
           self2.emit("file", p3, stat);
@@ -23153,10 +23153,10 @@ var require_send = __commonJS({
       }
       next();
     };
-    SendStream.prototype.stream = function stream4(path35, options) {
+    SendStream.prototype.stream = function stream4(path39, options) {
       var self2 = this;
       var res = this.res;
-      var stream5 = fs36.createReadStream(path35, options);
+      var stream5 = fs40.createReadStream(path39, options);
       this.emit("stream", stream5);
       stream5.pipe(res);
       function cleanup() {
@@ -23171,17 +23171,17 @@ var require_send = __commonJS({
         self2.emit("end");
       });
     };
-    SendStream.prototype.type = function type(path35) {
+    SendStream.prototype.type = function type(path39) {
       var res = this.res;
       if (res.getHeader("Content-Type")) return;
-      var ext = extname(path35);
+      var ext = extname(path39);
       var type2 = mime.contentType(ext) || "application/octet-stream";
       debug("content-type %s", type2);
       res.setHeader("Content-Type", type2);
     };
-    SendStream.prototype.setHeader = function setHeader(path35, stat) {
+    SendStream.prototype.setHeader = function setHeader(path39, stat) {
       var res = this.res;
-      this.emit("headers", res, path35, stat);
+      this.emit("headers", res, path39, stat);
       if (this._acceptRanges && !res.getHeader("Accept-Ranges")) {
         debug("accept ranges");
         res.setHeader("Accept-Ranges", "bytes");
@@ -23239,9 +23239,9 @@ var require_send = __commonJS({
       }
       return err instanceof Error ? createError(status, err, { expose: false }) : createError(status, err);
     }
-    function decode4(path35) {
+    function decode4(path39) {
       try {
-        return decodeURIComponent(path35);
+        return decodeURIComponent(path39);
       } catch (err) {
         return -1;
       }
@@ -23385,7 +23385,7 @@ var require_response = __commonJS({
     var http4 = require("node:http");
     var onFinished = require_on_finished();
     var mime = require_mime_types();
-    var path34 = require("node:path");
+    var path38 = require("node:path");
     var pathIsAbsolute = require("node:path").isAbsolute;
     var statuses = require_statuses();
     var sign = require_cookie_signature().sign;
@@ -23394,8 +23394,8 @@ var require_response = __commonJS({
     var setCharset = require_utils3().setCharset;
     var cookie = require_cookie();
     var send = require_send();
-    var extname = path34.extname;
-    var resolve3 = path34.resolve;
+    var extname = path38.extname;
+    var resolve3 = path38.resolve;
     var vary = require_vary();
     var { Buffer: Buffer3 } = require("node:buffer");
     var res = Object.create(http4.ServerResponse.prototype);
@@ -23541,26 +23541,26 @@ var require_response = __commonJS({
       this.type("txt");
       return this.send(body);
     };
-    res.sendFile = function sendFile(path35, options, callback) {
+    res.sendFile = function sendFile(path39, options, callback) {
       var done = callback;
       var req = this.req;
       var res2 = this;
       var next = req.next;
       var opts = options || {};
-      if (!path35) {
+      if (!path39) {
         throw new TypeError("path argument is required to res.sendFile");
       }
-      if (typeof path35 !== "string") {
+      if (typeof path39 !== "string") {
         throw new TypeError("path must be a string to res.sendFile");
       }
       if (typeof options === "function") {
         done = options;
         opts = {};
       }
-      if (!opts.root && !pathIsAbsolute(path35)) {
+      if (!opts.root && !pathIsAbsolute(path39)) {
         throw new TypeError("path must be absolute or specify root to res.sendFile");
       }
-      var pathname = encodeURI(path35);
+      var pathname = encodeURI(path39);
       opts.etag = this.app.enabled("etag");
       var file3 = send(req, pathname, opts);
       sendfile(res2, file3, opts, function(err) {
@@ -23571,7 +23571,7 @@ var require_response = __commonJS({
         }
       });
     };
-    res.download = function download2(path35, filename, options, callback) {
+    res.download = function download2(path39, filename, options, callback) {
       var done = callback;
       var name28 = filename;
       var opts = options || null;
@@ -23588,7 +23588,7 @@ var require_response = __commonJS({
         opts = filename;
       }
       var headers = {
-        "Content-Disposition": contentDisposition(name28 || path35)
+        "Content-Disposition": contentDisposition(name28 || path39)
       };
       if (opts && opts.headers) {
         var keys2 = Object.keys(opts.headers);
@@ -23601,7 +23601,7 @@ var require_response = __commonJS({
       }
       opts = Object.create(opts);
       opts.headers = headers;
-      var fullPath = !opts.root ? resolve3(path35) : path35;
+      var fullPath = !opts.root ? resolve3(path39) : path39;
       return this.sendFile(fullPath, opts, done);
     };
     res.contentType = res.type = function contentType(type) {
@@ -23884,11 +23884,11 @@ var require_serve_static = __commonJS({
         }
         var forwardError = !fallthrough;
         var originalUrl = parseUrl2.original(req);
-        var path34 = parseUrl2(req).pathname;
-        if (path34 === "/" && originalUrl.pathname.substr(-1) !== "/") {
-          path34 = "";
+        var path38 = parseUrl2(req).pathname;
+        if (path38 === "/" && originalUrl.pathname.substr(-1) !== "/") {
+          path38 = "";
         }
-        var stream4 = send(req, path34, opts);
+        var stream4 = send(req, path38, opts);
         stream4.on("directory", onDirectory);
         if (setHeaders) {
           stream4.on("headers", setHeaders);
@@ -24303,9 +24303,9 @@ var require_mediaType2 = __commonJS({
       if (match[3]) {
         var kvps = splitParameters(match[3]).map(splitKeyValuePair);
         for (var j = 0; j < kvps.length; j++) {
-          var pair = kvps[j];
-          var key = pair[0].toLowerCase();
-          var val = pair[1];
+          var pair2 = kvps[j];
+          var key = pair2[0].toLowerCase();
+          var val = pair2[1];
           var value = val && val[0] === '"' && val[val.length - 1] === '"' ? val.substr(1, val.length - 2) : val;
           if (key === "q") {
             q = parseFloat(value);
@@ -33080,11 +33080,11 @@ var require_mime_types2 = __commonJS({
       }
       return exts[0];
     }
-    function lookup(path34) {
-      if (!path34 || typeof path34 !== "string") {
+    function lookup(path38) {
+      if (!path38 || typeof path38 !== "string") {
         return false;
       }
-      var extension2 = extname("x." + path34).toLowerCase().substr(1);
+      var extension2 = extname("x." + path38).toLowerCase().substr(1);
       if (!extension2) {
         return false;
       }
@@ -35194,12 +35194,12 @@ var require_limiter = __commonJS({
        * @param {Number} [concurrency=Infinity] The maximum number of jobs allowed
        *     to run concurrently
        */
-      constructor(concurrency) {
+      constructor(concurrency2) {
         this[kDone] = () => {
           this.pending--;
           this[kRun]();
         };
-        this.concurrency = concurrency || Infinity;
+        this.concurrency = concurrency2 || Infinity;
         this.jobs = [];
         this.pending = 0;
       }
@@ -35281,8 +35281,8 @@ var require_permessage_deflate = __commonJS({
         this._inflate = null;
         this.params = null;
         if (!zlibLimiter) {
-          const concurrency = this._options.concurrencyLimit !== void 0 ? this._options.concurrencyLimit : 10;
-          zlibLimiter = new Limiter(concurrency);
+          const concurrency2 = this._options.concurrencyLimit !== void 0 ? this._options.concurrencyLimit : 10;
+          zlibLimiter = new Limiter(concurrency2);
         }
       }
       /**
@@ -39063,11 +39063,11 @@ var require_server = __commonJS({
        * @protected
        */
       _computePath(options) {
-        let path34 = (options.path || "/engine.io").replace(/\/$/, "");
+        let path38 = (options.path || "/engine.io").replace(/\/$/, "");
         if (options.addTrailingSlash !== false) {
-          path34 += "/";
+          path38 += "/";
         }
-        return path34;
+        return path38;
       }
       /**
        * Returns a list of available transports for upgrade given a certain transport.
@@ -39566,10 +39566,10 @@ var require_server = __commonJS({
        * @param {Object} options
        */
       attach(server2, options = {}) {
-        const path34 = this._computePath(options);
+        const path38 = this._computePath(options);
         const destroyUpgradeTimeout = options.destroyUpgradeTimeout || 1e3;
         function check3(req) {
-          return path34 === req.url.slice(0, path34.length);
+          return path38 === req.url.slice(0, path38.length);
         }
         const listeners = server2.listeners("request").slice(0);
         server2.removeAllListeners("request");
@@ -39577,7 +39577,7 @@ var require_server = __commonJS({
         server2.on("listening", this.init.bind(this));
         server2.on("request", (req, res) => {
           if (check3(req)) {
-            debug('intercepting request for path "%s"', path34);
+            debug('intercepting request for path "%s"', path38);
             this.handleRequest(req, res);
           } else {
             let i = 0;
@@ -40416,8 +40416,8 @@ var require_userver = __commonJS({
        * @param options
        */
       attach(app2, options = {}) {
-        const path34 = this._computePath(options);
-        app2.any(path34, this.handleRequest.bind(this)).ws(path34, {
+        const path38 = this._computePath(options);
+        app2.any(path38, this.handleRequest.bind(this)).ws(path38, {
           compression: options.compression,
           idleTimeout: options.idleTimeout,
           maxBackpressure: options.maxBackpressure,
@@ -43689,17 +43689,17 @@ var require_in_memory_adapter = __commonJS({
         const rooms = opts.rooms;
         const except = this.computeExceptSids(opts.except);
         if (rooms.size) {
-          const ids = /* @__PURE__ */ new Set();
+          const ids2 = /* @__PURE__ */ new Set();
           for (const room of rooms) {
             if (!this.rooms.has(room))
               continue;
             for (const id of this.rooms.get(room)) {
-              if (ids.has(id) || except.has(id))
+              if (ids2.has(id) || except.has(id))
                 continue;
               const socket = this.nsp.sockets.get(id);
               if (socket) {
                 callback(socket);
-                ids.add(id);
+                ids2.add(id);
               }
             }
           }
@@ -44843,7 +44843,7 @@ var require_dist3 = __commonJS({
     var zlib_1 = require("zlib");
     var accepts = require_accepts2();
     var stream_1 = require("stream");
-    var path34 = require("path");
+    var path38 = require("path");
     var engine_io_1 = require_engine_io();
     var client_1 = require_client();
     var events_1 = require("events");
@@ -45038,7 +45038,7 @@ var require_dist3 = __commonJS({
             res.writeHeader("cache-control", "public, max-age=0");
             res.writeHeader("content-type", "application/" + (isMap ? "json" : "javascript") + "; charset=utf-8");
             res.writeHeader("etag", expectedEtag);
-            const filepath = path34.join(__dirname, "../client-dist/", filename);
+            const filepath = path38.join(__dirname, "../client-dist/", filename);
             (0, uws_1.serveFile)(res, filepath);
           });
         }
@@ -45120,7 +45120,7 @@ var require_dist3 = __commonJS({
        * @private
        */
       static sendFile(filename, req, res) {
-        const readStream2 = (0, fs_1.createReadStream)(path34.join(__dirname, "../client-dist/", filename));
+        const readStream2 = (0, fs_1.createReadStream)(path38.join(__dirname, "../client-dist/", filename));
         const encoding = accepts(req).encodings(["br", "gzip", "deflate"]);
         const onError = (err) => {
           if (err) {
@@ -45660,12 +45660,12 @@ var require_limiter2 = __commonJS({
        * @param {Number} [concurrency=Infinity] The maximum number of jobs allowed
        *     to run concurrently
        */
-      constructor(concurrency) {
+      constructor(concurrency2) {
         this[kDone] = () => {
           this.pending--;
           this[kRun]();
         };
-        this.concurrency = concurrency || Infinity;
+        this.concurrency = concurrency2 || Infinity;
         this.jobs = [];
         this.pending = 0;
       }
@@ -45746,8 +45746,8 @@ var require_permessage_deflate2 = __commonJS({
         this._inflate = null;
         this.params = null;
         if (!zlibLimiter) {
-          const concurrency = this._options.concurrencyLimit !== void 0 ? this._options.concurrencyLimit : 10;
-          zlibLimiter = new Limiter(concurrency);
+          const concurrency2 = this._options.concurrencyLimit !== void 0 ? this._options.concurrencyLimit : 10;
+          zlibLimiter = new Limiter(concurrency2);
         }
       }
       /**
@@ -48834,8 +48834,8 @@ var require_lib4 = __commonJS({
         getWss: function getWss() {
           return wsServer;
         },
-        applyTo: function applyTo(router170) {
-          (0, _addWsMethod2.default)(router170);
+        applyTo: function applyTo(router193) {
+          (0, _addWsMethod2.default)(router193);
         }
       };
     }
@@ -49337,8 +49337,8 @@ var require_node2 = __commonJS({
           }
           break;
         case "FILE":
-          var fs36 = require("fs");
-          stream5 = new fs36.SyncWriteStream(fd2, { autoClose: false });
+          var fs40 = require("fs");
+          stream5 = new fs40.SyncWriteStream(fd2, { autoClose: false });
           stream5._type = "fs";
           break;
         case "PIPE":
@@ -49865,7 +49865,7 @@ var require_path = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.convertPosixPathToPattern = exports2.convertWindowsPathToPattern = exports2.convertPathToPattern = exports2.escapePosixPath = exports2.escapeWindowsPath = exports2.escape = exports2.removeLeadingDotSegment = exports2.makeAbsolute = exports2.unixify = void 0;
     var os = require("os");
-    var path34 = require("path");
+    var path38 = require("path");
     var IS_WINDOWS_PLATFORM = os.platform() === "win32";
     var LEADING_DOT_SEGMENT_CHARACTERS_COUNT = 2;
     var POSIX_UNESCAPED_GLOB_SYMBOLS_RE = /(\\?)([()*?[\]{|}]|^!|[!+@](?=\()|\\(?![!()*+?@[\]{|}]))/g;
@@ -49877,7 +49877,7 @@ var require_path = __commonJS({
     }
     exports2.unixify = unixify;
     function makeAbsolute(cwd, filepath) {
-      return path34.resolve(cwd, filepath);
+      return path38.resolve(cwd, filepath);
     }
     exports2.makeAbsolute = makeAbsolute;
     function removeLeadingDotSegment(entry) {
@@ -51176,7 +51176,7 @@ var require_braces = __commonJS({
 var require_constants4 = __commonJS({
   "node_modules/picomatch/lib/constants.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var WIN_SLASH = "\\\\/";
     var WIN_NO_SLASH = `[^${WIN_SLASH}]`;
     var DEFAULT_MAX_EXTGLOB_RECURSION = 0;
@@ -51350,7 +51350,7 @@ var require_constants4 = __commonJS({
       /* | */
       CHAR_ZERO_WIDTH_NOBREAK_SPACE: 65279,
       /* \uFEFF */
-      SEP: path34.sep,
+      SEP: path38.sep,
       /**
        * Create EXTGLOB_CHARS
        */
@@ -51377,7 +51377,7 @@ var require_constants4 = __commonJS({
 var require_utils5 = __commonJS({
   "node_modules/picomatch/lib/utils.js"(exports2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var win32 = process.platform === "win32";
     var {
       REGEX_BACKSLASH,
@@ -51406,7 +51406,7 @@ var require_utils5 = __commonJS({
       if (options && typeof options.windows === "boolean") {
         return options.windows;
       }
-      return win32 === true || path34.sep === "\\";
+      return win32 === true || path38.sep === "\\";
     };
     exports2.escapeLast = (input, char, lastIdx) => {
       const idx = input.lastIndexOf(char, lastIdx);
@@ -52183,14 +52183,14 @@ var require_parse3 = __commonJS({
       };
       if (opts.fastpaths !== false && !/(^[*!]|[/()[\]{}"])/.test(input)) {
         let backslashes = false;
-        let output = input.replace(REGEX_SPECIAL_CHARS_BACKREF, (m, esc3, chars, first, rest, index) => {
+        let output = input.replace(REGEX_SPECIAL_CHARS_BACKREF, (m, esc4, chars, first, rest, index) => {
           if (first === "\\") {
             backslashes = true;
             return m;
           }
           if (first === "?") {
-            if (esc3) {
-              return esc3 + first + (rest ? QMARK.repeat(rest.length) : "");
+            if (esc4) {
+              return esc4 + first + (rest ? QMARK.repeat(rest.length) : "");
             }
             if (index === 0) {
               return qmarkNoDot + (rest ? QMARK.repeat(rest.length) : "");
@@ -52201,12 +52201,12 @@ var require_parse3 = __commonJS({
             return DOT_LITERAL.repeat(chars.length);
           }
           if (first === "*") {
-            if (esc3) {
-              return esc3 + first + (rest ? star : "");
+            if (esc4) {
+              return esc4 + first + (rest ? star : "");
             }
             return star;
           }
-          return esc3 ? m : `\\${m}`;
+          return esc4 ? m : `\\${m}`;
         });
         if (backslashes === true) {
           if (opts.unescape === true) {
@@ -52770,7 +52770,7 @@ var require_parse3 = __commonJS({
 var require_picomatch = __commonJS({
   "node_modules/picomatch/lib/picomatch.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var scan = require_scan();
     var parse4 = require_parse3();
     var utils = require_utils5();
@@ -52855,7 +52855,7 @@ var require_picomatch = __commonJS({
     };
     picomatch.matchBase = (input, glob, options, posix = utils.isWindows(options)) => {
       const regex = glob instanceof RegExp ? glob : picomatch.makeRe(glob, options);
-      return regex.test(path34.basename(input));
+      return regex.test(path38.basename(input));
     };
     picomatch.isMatch = (str, patterns, options) => picomatch(patterns, options)(str);
     picomatch.parse = (pattern, options) => {
@@ -53082,7 +53082,7 @@ var require_pattern = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isAbsolute = exports2.partitionAbsoluteAndRelative = exports2.removeDuplicateSlashes = exports2.matchAny = exports2.convertPatternsToRe = exports2.makeRe = exports2.getPatternParts = exports2.expandBraceExpansion = exports2.expandPatternsWithBraceExpansion = exports2.isAffectDepthOfReadingPattern = exports2.endsWithSlashGlobStar = exports2.hasGlobStar = exports2.getBaseDirectory = exports2.isPatternRelatedToParentDirectory = exports2.getPatternsOutsideCurrentDirectory = exports2.getPatternsInsideCurrentDirectory = exports2.getPositivePatterns = exports2.getNegativePatterns = exports2.isPositivePattern = exports2.isNegativePattern = exports2.convertToNegativePattern = exports2.convertToPositivePattern = exports2.isDynamicPattern = exports2.isStaticPattern = void 0;
-    var path34 = require("path");
+    var path38 = require("path");
     var globParent = require_glob_parent();
     var micromatch = require_micromatch();
     var GLOBSTAR = "**";
@@ -53177,7 +53177,7 @@ var require_pattern = __commonJS({
     }
     exports2.endsWithSlashGlobStar = endsWithSlashGlobStar;
     function isAffectDepthOfReadingPattern(pattern) {
-      const basename = path34.basename(pattern);
+      const basename = path38.basename(pattern);
       return endsWithSlashGlobStar(pattern) || isStaticPattern(basename);
     }
     exports2.isAffectDepthOfReadingPattern = isAffectDepthOfReadingPattern;
@@ -53235,7 +53235,7 @@ var require_pattern = __commonJS({
     }
     exports2.partitionAbsoluteAndRelative = partitionAbsoluteAndRelative;
     function isAbsolute(pattern) {
-      return path34.isAbsolute(pattern);
+      return path38.isAbsolute(pattern);
     }
     exports2.isAbsolute = isAbsolute;
   }
@@ -53410,10 +53410,10 @@ var require_utils6 = __commonJS({
     exports2.array = array4;
     var errno = require_errno();
     exports2.errno = errno;
-    var fs36 = require_fs();
-    exports2.fs = fs36;
-    var path34 = require_path();
-    exports2.path = path34;
+    var fs40 = require_fs();
+    exports2.fs = fs40;
+    var path38 = require_path();
+    exports2.path = path38;
     var pattern = require_pattern();
     exports2.pattern = pattern;
     var stream4 = require_stream3();
@@ -53525,8 +53525,8 @@ var require_async = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.read = void 0;
-    function read(path34, settings, callback) {
-      settings.fs.lstat(path34, (lstatError, lstat) => {
+    function read(path38, settings, callback) {
+      settings.fs.lstat(path38, (lstatError, lstat) => {
         if (lstatError !== null) {
           callFailureCallback(callback, lstatError);
           return;
@@ -53535,7 +53535,7 @@ var require_async = __commonJS({
           callSuccessCallback(callback, lstat);
           return;
         }
-        settings.fs.stat(path34, (statError, stat) => {
+        settings.fs.stat(path38, (statError, stat) => {
           if (statError !== null) {
             if (settings.throwErrorOnBrokenSymbolicLink) {
               callFailureCallback(callback, statError);
@@ -53567,13 +53567,13 @@ var require_sync = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.read = void 0;
-    function read(path34, settings) {
-      const lstat = settings.fs.lstatSync(path34);
+    function read(path38, settings) {
+      const lstat = settings.fs.lstatSync(path38);
       if (!lstat.isSymbolicLink() || !settings.followSymbolicLink) {
         return lstat;
       }
       try {
-        const stat = settings.fs.statSync(path34);
+        const stat = settings.fs.statSync(path38);
         if (settings.markSymbolicLink) {
           stat.isSymbolicLink = () => true;
         }
@@ -53595,12 +53595,12 @@ var require_fs2 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createFileSystemAdapter = exports2.FILE_SYSTEM_ADAPTER = void 0;
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     exports2.FILE_SYSTEM_ADAPTER = {
-      lstat: fs36.lstat,
-      stat: fs36.stat,
-      lstatSync: fs36.lstatSync,
-      statSync: fs36.statSync
+      lstat: fs40.lstat,
+      stat: fs40.stat,
+      lstatSync: fs40.lstatSync,
+      statSync: fs40.statSync
     };
     function createFileSystemAdapter(fsMethods) {
       if (fsMethods === void 0) {
@@ -53617,12 +53617,12 @@ var require_settings = __commonJS({
   "node_modules/@nodelib/fs.stat/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var fs36 = require_fs2();
+    var fs40 = require_fs2();
     var Settings = class {
       constructor(_options = {}) {
         this._options = _options;
         this.followSymbolicLink = this._getValue(this._options.followSymbolicLink, true);
-        this.fs = fs36.createFileSystemAdapter(this._options.fs);
+        this.fs = fs40.createFileSystemAdapter(this._options.fs);
         this.markSymbolicLink = this._getValue(this._options.markSymbolicLink, false);
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
       }
@@ -53644,17 +53644,17 @@ var require_out = __commonJS({
     var sync = require_sync();
     var settings_1 = require_settings();
     exports2.Settings = settings_1.default;
-    function stat(path34, optionsOrSettingsOrCallback, callback) {
+    function stat(path38, optionsOrSettingsOrCallback, callback) {
       if (typeof optionsOrSettingsOrCallback === "function") {
-        async.read(path34, getSettings(), optionsOrSettingsOrCallback);
+        async.read(path38, getSettings(), optionsOrSettingsOrCallback);
         return;
       }
-      async.read(path34, getSettings(optionsOrSettingsOrCallback), callback);
+      async.read(path38, getSettings(optionsOrSettingsOrCallback), callback);
     }
     exports2.stat = stat;
-    function statSync(path34, optionsOrSettings) {
+    function statSync(path38, optionsOrSettings) {
       const settings = getSettings(optionsOrSettings);
-      return sync.read(path34, settings);
+      return sync.read(path38, settings);
     }
     exports2.statSync = statSync;
     function getSettings(settingsOrOptions = {}) {
@@ -53779,8 +53779,8 @@ var require_utils7 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.fs = void 0;
-    var fs36 = require_fs3();
-    exports2.fs = fs36;
+    var fs40 = require_fs3();
+    exports2.fs = fs40;
   }
 });
 
@@ -53872,16 +53872,16 @@ var require_async2 = __commonJS({
           return;
         }
         const tasks = names.map((name28) => {
-          const path34 = common.joinPathSegments(directory, name28, settings.pathSegmentSeparator);
+          const path38 = common.joinPathSegments(directory, name28, settings.pathSegmentSeparator);
           return (done) => {
-            fsStat.stat(path34, settings.fsStatSettings, (error73, stats) => {
+            fsStat.stat(path38, settings.fsStatSettings, (error73, stats) => {
               if (error73 !== null) {
                 done(error73);
                 return;
               }
               const entry = {
                 name: name28,
-                path: path34,
+                path: path38,
                 dirent: utils.fs.createDirentFromStats(name28, stats)
               };
               if (settings.stats) {
@@ -53975,14 +53975,14 @@ var require_fs4 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createFileSystemAdapter = exports2.FILE_SYSTEM_ADAPTER = void 0;
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     exports2.FILE_SYSTEM_ADAPTER = {
-      lstat: fs36.lstat,
-      stat: fs36.stat,
-      lstatSync: fs36.lstatSync,
-      statSync: fs36.statSync,
-      readdir: fs36.readdir,
-      readdirSync: fs36.readdirSync
+      lstat: fs40.lstat,
+      stat: fs40.stat,
+      lstatSync: fs40.lstatSync,
+      statSync: fs40.statSync,
+      readdir: fs40.readdir,
+      readdirSync: fs40.readdirSync
     };
     function createFileSystemAdapter(fsMethods) {
       if (fsMethods === void 0) {
@@ -53999,15 +53999,15 @@ var require_settings2 = __commonJS({
   "node_modules/@nodelib/fs.scandir/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path34 = require("path");
+    var path38 = require("path");
     var fsStat = require_out();
-    var fs36 = require_fs4();
+    var fs40 = require_fs4();
     var Settings = class {
       constructor(_options = {}) {
         this._options = _options;
         this.followSymbolicLinks = this._getValue(this._options.followSymbolicLinks, false);
-        this.fs = fs36.createFileSystemAdapter(this._options.fs);
-        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path34.sep);
+        this.fs = fs40.createFileSystemAdapter(this._options.fs);
+        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path38.sep);
         this.stats = this._getValue(this._options.stats, false);
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
         this.fsStatSettings = new fsStat.Settings({
@@ -54034,17 +54034,17 @@ var require_out2 = __commonJS({
     var sync = require_sync2();
     var settings_1 = require_settings2();
     exports2.Settings = settings_1.default;
-    function scandir(path34, optionsOrSettingsOrCallback, callback) {
+    function scandir(path38, optionsOrSettingsOrCallback, callback) {
       if (typeof optionsOrSettingsOrCallback === "function") {
-        async.read(path34, getSettings(), optionsOrSettingsOrCallback);
+        async.read(path38, getSettings(), optionsOrSettingsOrCallback);
         return;
       }
-      async.read(path34, getSettings(optionsOrSettingsOrCallback), callback);
+      async.read(path38, getSettings(optionsOrSettingsOrCallback), callback);
     }
     exports2.scandir = scandir;
-    function scandirSync(path34, optionsOrSettings) {
+    function scandirSync(path38, optionsOrSettings) {
       const settings = getSettings(optionsOrSettings);
-      return sync.read(path34, settings);
+      return sync.read(path38, settings);
     }
     exports2.scandirSync = scandirSync;
     function getSettings(settingsOrOptions = {}) {
@@ -54126,7 +54126,7 @@ var require_queue = __commonJS({
             release();
           }
         },
-        running,
+        running: running2,
         resume,
         idle,
         length,
@@ -54139,7 +54139,7 @@ var require_queue = __commonJS({
         abort
       };
       return self2;
-      function running() {
+      function running2() {
         return _running;
       }
       function pause() {
@@ -54691,7 +54691,7 @@ var require_settings3 = __commonJS({
   "node_modules/@nodelib/fs.walk/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path34 = require("path");
+    var path38 = require("path");
     var fsScandir = require_out2();
     var Settings = class {
       constructor(_options = {}) {
@@ -54701,7 +54701,7 @@ var require_settings3 = __commonJS({
         this.deepFilter = this._getValue(this._options.deepFilter, null);
         this.entryFilter = this._getValue(this._options.entryFilter, null);
         this.errorFilter = this._getValue(this._options.errorFilter, null);
-        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path34.sep);
+        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path38.sep);
         this.fsScandirSettings = new fsScandir.Settings({
           followSymbolicLinks: this._options.followSymbolicLinks,
           fs: this._options.fs,
@@ -54763,7 +54763,7 @@ var require_reader2 = __commonJS({
   "node_modules/fast-glob/out/readers/reader.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path34 = require("path");
+    var path38 = require("path");
     var fsStat = require_out();
     var utils = require_utils6();
     var Reader = class {
@@ -54776,7 +54776,7 @@ var require_reader2 = __commonJS({
         });
       }
       _getFullEntryPath(filepath) {
-        return path34.resolve(this._settings.cwd, filepath);
+        return path38.resolve(this._settings.cwd, filepath);
       }
       _makeEntry(stats, pattern) {
         const entry = {
@@ -55192,7 +55192,7 @@ var require_provider = __commonJS({
   "node_modules/fast-glob/out/providers/provider.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path34 = require("path");
+    var path38 = require("path");
     var deep_1 = require_deep();
     var entry_1 = require_entry();
     var error_1 = require_error();
@@ -55206,7 +55206,7 @@ var require_provider = __commonJS({
         this.entryTransformer = new entry_2.default(this._settings);
       }
       _getRootDirectory(task) {
-        return path34.resolve(this._settings.cwd, task.base);
+        return path38.resolve(this._settings.cwd, task.base);
       }
       _getReaderOptions(task) {
         const basePath = task.base === "." ? "" : task.base;
@@ -55387,16 +55387,16 @@ var require_settings4 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var os = require("os");
     var CPU_COUNT = Math.max(os.cpus().length, 1);
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = {
-      lstat: fs36.lstat,
-      lstatSync: fs36.lstatSync,
-      stat: fs36.stat,
-      statSync: fs36.statSync,
-      readdir: fs36.readdir,
-      readdirSync: fs36.readdirSync
+      lstat: fs40.lstat,
+      lstatSync: fs40.lstatSync,
+      stat: fs40.stat,
+      statSync: fs40.statSync,
+      readdir: fs40.readdir,
+      readdirSync: fs40.readdirSync
     };
     var Settings = class {
       constructor(_options = {}) {
@@ -59920,11 +59920,11 @@ var require_baseGet = __commonJS({
     "use strict";
     var castPath2 = require_castPath();
     var toKey2 = require_toKey();
-    function baseGet2(object4, path34) {
-      path34 = castPath2(path34, object4);
-      var index = 0, length = path34.length;
+    function baseGet2(object4, path38) {
+      path38 = castPath2(path38, object4);
+      var index = 0, length = path38.length;
       while (object4 != null && index < length) {
-        object4 = object4[toKey2(path34[index++])];
+        object4 = object4[toKey2(path38[index++])];
       }
       return index && index == length ? object4 : void 0;
     }
@@ -59937,8 +59937,8 @@ var require_get2 = __commonJS({
   "node_modules/lodash/get.js"(exports2, module2) {
     "use strict";
     var baseGet2 = require_baseGet();
-    function get2(object4, path34, defaultValue) {
-      var result = object4 == null ? void 0 : baseGet2(object4, path34);
+    function get2(object4, path38, defaultValue) {
+      var result = object4 == null ? void 0 : baseGet2(object4, path38);
       return result === void 0 ? defaultValue : result;
     }
     module2.exports = get2;
@@ -60525,26 +60525,26 @@ var require_flatten = __commonJS({
 var require_fs5 = __commonJS({
   "node_modules/knex/lib/migrations/util/fs.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var flatten = require_flatten();
     var os = require("os");
-    var path34 = require("path");
+    var path38 = require("path");
     var { promisify } = require("util");
-    var stat = promisify(fs36.stat);
-    var readFile3 = promisify(fs36.readFile);
-    var writeFile3 = promisify(fs36.writeFile);
-    var readdir = promisify(fs36.readdir);
-    var mkdir = promisify(fs36.mkdir);
-    function existsSync4(path35) {
+    var stat = promisify(fs40.stat);
+    var readFile3 = promisify(fs40.readFile);
+    var writeFile3 = promisify(fs40.writeFile);
+    var readdir = promisify(fs40.readdir);
+    var mkdir = promisify(fs40.mkdir);
+    function existsSync4(path39) {
       try {
-        fs36.accessSync(path35);
+        fs40.accessSync(path39);
         return true;
       } catch (e) {
         return false;
       }
     }
     function createTemp() {
-      return promisify(fs36.mkdtemp)(`${os.tmpdir()}${path34.sep}`);
+      return promisify(fs40.mkdtemp)(`${os.tmpdir()}${path38.sep}`);
     }
     function ensureDirectoryExists(dir) {
       return stat(dir).catch(() => mkdir(dir, { recursive: true }));
@@ -60554,7 +60554,7 @@ var require_fs5 = __commonJS({
       return flatten(
         await Promise.all(
           pathsList.sort().map(async (currentPath) => {
-            const currentFile = path34.resolve(dir, currentPath);
+            const currentFile = path38.resolve(dir, currentPath);
             const statFile = await stat(currentFile);
             if (statFile && statFile.isDirectory()) {
               if (recursive) {
@@ -61040,11 +61040,11 @@ var require_hasPath = __commonJS({
     var isIndex2 = require_isIndex();
     var isLength2 = require_isLength();
     var toKey2 = require_toKey();
-    function hasPath2(object4, path34, hasFunc) {
-      path34 = castPath2(path34, object4);
-      var index = -1, length = path34.length, result = false;
+    function hasPath2(object4, path38, hasFunc) {
+      path38 = castPath2(path38, object4);
+      var index = -1, length = path38.length, result = false;
       while (++index < length) {
-        var key = toKey2(path34[index]);
+        var key = toKey2(path38[index]);
         if (!(result = object4 != null && hasFunc(object4, key))) {
           break;
         }
@@ -61066,8 +61066,8 @@ var require_hasIn = __commonJS({
     "use strict";
     var baseHasIn2 = require_baseHasIn();
     var hasPath2 = require_hasPath();
-    function hasIn2(object4, path34) {
-      return object4 != null && hasPath2(object4, path34, baseHasIn2);
+    function hasIn2(object4, path38) {
+      return object4 != null && hasPath2(object4, path38, baseHasIn2);
     }
     module2.exports = hasIn2;
   }
@@ -61086,13 +61086,13 @@ var require_baseMatchesProperty = __commonJS({
     var toKey2 = require_toKey();
     var COMPARE_PARTIAL_FLAG7 = 1;
     var COMPARE_UNORDERED_FLAG5 = 2;
-    function baseMatchesProperty2(path34, srcValue) {
-      if (isKey2(path34) && isStrictComparable2(srcValue)) {
-        return matchesStrictComparable2(toKey2(path34), srcValue);
+    function baseMatchesProperty2(path38, srcValue) {
+      if (isKey2(path38) && isStrictComparable2(srcValue)) {
+        return matchesStrictComparable2(toKey2(path38), srcValue);
       }
       return function(object4) {
-        var objValue = get2(object4, path34);
-        return objValue === void 0 && objValue === srcValue ? hasIn2(object4, path34) : baseIsEqual2(srcValue, objValue, COMPARE_PARTIAL_FLAG7 | COMPARE_UNORDERED_FLAG5);
+        var objValue = get2(object4, path38);
+        return objValue === void 0 && objValue === srcValue ? hasIn2(object4, path38) : baseIsEqual2(srcValue, objValue, COMPARE_PARTIAL_FLAG7 | COMPARE_UNORDERED_FLAG5);
       };
     }
     module2.exports = baseMatchesProperty2;
@@ -61117,9 +61117,9 @@ var require_basePropertyDeep = __commonJS({
   "node_modules/lodash/_basePropertyDeep.js"(exports2, module2) {
     "use strict";
     var baseGet2 = require_baseGet();
-    function basePropertyDeep2(path34) {
+    function basePropertyDeep2(path38) {
       return function(object4) {
-        return baseGet2(object4, path34);
+        return baseGet2(object4, path38);
       };
     }
     module2.exports = basePropertyDeep2;
@@ -61134,8 +61134,8 @@ var require_property = __commonJS({
     var basePropertyDeep2 = require_basePropertyDeep();
     var isKey2 = require_isKey();
     var toKey2 = require_toKey();
-    function property2(path34) {
-      return isKey2(path34) ? baseProperty2(toKey2(path34)) : basePropertyDeep2(path34);
+    function property2(path38) {
+      return isKey2(path38) ? baseProperty2(toKey2(path38)) : basePropertyDeep2(path38);
     }
     module2.exports = property2;
   }
@@ -61394,10 +61394,10 @@ var require_sortBy = __commonJS({
 var require_is_node_modules = __commonJS({
   "node_modules/get-package-type/is-node-modules.cjs"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     function isNodeModules(directory) {
-      let basename = path34.basename(directory);
-      if (path34.sep === "\\") {
+      let basename = path38.basename(directory);
+      if (path38.sep === "\\") {
         basename = basename.toLowerCase();
       }
       return basename === "node_modules";
@@ -61418,7 +61418,7 @@ var require_cache = __commonJS({
 var require_async7 = __commonJS({
   "node_modules/get-package-type/async.cjs"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var { promisify } = require("util");
     var readFile3 = promisify(require("fs").readFile);
     var isNodeModules = require_is_node_modules();
@@ -61429,10 +61429,10 @@ var require_async7 = __commonJS({
         return "commonjs";
       }
       try {
-        return JSON.parse(await readFile3(path34.resolve(directory, "package.json"))).type || "commonjs";
+        return JSON.parse(await readFile3(path38.resolve(directory, "package.json"))).type || "commonjs";
       } catch (_) {
       }
-      const parent = path34.dirname(directory);
+      const parent = path38.dirname(directory);
       if (parent === directory) {
         return "commonjs";
       }
@@ -61453,7 +61453,7 @@ var require_async7 = __commonJS({
       return result;
     }
     function getPackageType(filename) {
-      return getDirectoryType(path34.resolve(path34.dirname(filename)));
+      return getDirectoryType(path38.resolve(path38.dirname(filename)));
     }
     module2.exports = getPackageType;
   }
@@ -61463,7 +61463,7 @@ var require_async7 = __commonJS({
 var require_sync7 = __commonJS({
   "node_modules/get-package-type/sync.cjs"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var { readFileSync: readFileSync2 } = require("fs");
     var isNodeModules = require_is_node_modules();
     var resultsCache = require_cache();
@@ -61472,10 +61472,10 @@ var require_sync7 = __commonJS({
         return "commonjs";
       }
       try {
-        return JSON.parse(readFileSync2(path34.resolve(directory, "package.json"))).type || "commonjs";
+        return JSON.parse(readFileSync2(path38.resolve(directory, "package.json"))).type || "commonjs";
       } catch (_) {
       }
-      const parent = path34.dirname(directory);
+      const parent = path38.dirname(directory);
       if (parent === directory) {
         return "commonjs";
       }
@@ -61490,7 +61490,7 @@ var require_sync7 = __commonJS({
       return result;
     }
     function getPackageTypeSync(filename) {
-      return getDirectoryType(path34.resolve(path34.dirname(filename)));
+      return getDirectoryType(path38.resolve(path38.dirname(filename)));
     }
     module2.exports = getPackageTypeSync;
   }
@@ -61533,7 +61533,7 @@ var require_import_file = __commonJS({
 var require_MigrationsLoader = __commonJS({
   "node_modules/knex/lib/migrations/common/MigrationsLoader.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var DEFAULT_LOAD_EXTENSIONS = Object.freeze([
       ".co",
       ".coffee",
@@ -61555,8 +61555,8 @@ var require_MigrationsLoader = __commonJS({
         this.loadExtensions = loadExtensions || DEFAULT_LOAD_EXTENSIONS;
       }
       getFile(migrationsInfo) {
-        const absoluteDir = path34.resolve(process.cwd(), migrationsInfo.directory);
-        const _path = path34.join(absoluteDir, migrationsInfo.file);
+        const absoluteDir = path38.resolve(process.cwd(), migrationsInfo.directory);
+        const _path = path38.join(absoluteDir, migrationsInfo.file);
         const importFile = require_import_file();
         return importFile(_path);
       }
@@ -61572,7 +61572,7 @@ var require_MigrationsLoader = __commonJS({
 var require_fs_migrations = __commonJS({
   "node_modules/knex/lib/migrations/migrate/sources/fs-migrations.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var sortBy = require_sortBy();
     var { readdir } = require_fs5();
     var { AbstractMigrationsLoader } = require_MigrationsLoader();
@@ -61583,7 +61583,7 @@ var require_fs_migrations = __commonJS({
        */
       getMigrations(loadExtensions) {
         const readMigrationsPromises = this.migrationsPaths.map((configDir) => {
-          const absoluteDir = path34.resolve(process.cwd(), configDir);
+          const absoluteDir = path38.resolve(process.cwd(), configDir);
           return readdir(absoluteDir).then((files) => ({
             files,
             configDir,
@@ -61624,7 +61624,7 @@ var require_fs_migrations = __commonJS({
     function filterMigrations(migrationSource, migrations, loadExtensions) {
       return migrations.filter((migration) => {
         const migrationName = migrationSource.getMigrationName(migration);
-        const extension = path34.extname(migrationName);
+        const extension = path38.extname(migrationName);
         return loadExtensions.includes(extension);
       });
     }
@@ -61986,7 +61986,7 @@ var require_timestamp = __commonJS({
 var require_MigrationGenerator = __commonJS({
   "node_modules/knex/lib/migrations/migrate/MigrationGenerator.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var { writeJsFileUsingTemplate } = require_template2();
     var { getMergedConfig } = require_migrator_configuration_merger();
     var { ensureDirectoryExists } = require_fs5();
@@ -62015,7 +62015,7 @@ var require_MigrationGenerator = __commonJS({
         return Promise.all(promises6);
       }
       _getStubPath() {
-        return this.config.stub || path34.join(__dirname, "stub", this.config.extension + ".stub");
+        return this.config.stub || path38.join(__dirname, "stub", this.config.extension + ".stub");
       }
       _getNewMigrationName(name28) {
         if (name28[0] === "-") name28 = name28.slice(1);
@@ -62025,7 +62025,7 @@ var require_MigrationGenerator = __commonJS({
         const fileName = this._getNewMigrationName(name28);
         const dirs = this._absoluteConfigDirs();
         const dir = dirs.slice(-1)[0];
-        return path34.join(dir, fileName);
+        return path38.join(dir, fileName);
       }
       // Write a new migration to disk, using the config and generated filename,
       // passing any `variables` given in the config to the template.
@@ -62047,7 +62047,7 @@ var require_MigrationGenerator = __commonJS({
               "Failed to resolve config file, knex cannot determine where to generate migrations"
             );
           }
-          return path34.resolve(process.cwd(), directory);
+          return path38.resolve(process.cwd(), directory);
         });
       }
     };
@@ -62689,13 +62689,13 @@ var require_includes = __commonJS({
 var require_fs_seeds = __commonJS({
   "node_modules/knex/lib/migrations/seed/sources/fs-seeds.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var flatten = require_flatten();
     var includes = require_includes();
     var { AbstractMigrationsLoader } = require_MigrationsLoader();
     var { getFilepathsInFolder } = require_fs5();
     var filterByLoadExtensions = (extensions) => (value) => {
-      const extension = path34.extname(value);
+      const extension = path38.extname(value);
       return includes(extensions, extension);
     };
     var FsSeeds = class extends AbstractMigrationsLoader {
@@ -62707,7 +62707,7 @@ var require_fs_seeds = __commonJS({
               "Empty value passed as a directory for Seeder, this is not supported."
             );
           }
-          return path34.resolve(process.cwd(), directory);
+          return path38.resolve(process.cwd(), directory);
         });
       }
       async getSeeds(config3) {
@@ -62724,7 +62724,7 @@ var require_fs_seeds = __commonJS({
           files.sort();
         }
         if (specific) {
-          files = files.filter((file3) => path34.basename(file3) === specific);
+          files = files.filter((file3) => path38.basename(file3) === specific);
           if (files.length === 0) {
             throw new Error(
               `Invalid argument provided: the specific seed "${specific}" does not exist.`
@@ -62801,7 +62801,7 @@ var require_seeder_configuration_merger = __commonJS({
 var require_Seeder = __commonJS({
   "node_modules/knex/lib/migrations/seed/Seeder.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var { ensureDirectoryExists } = require_fs5();
     var { writeJsFileUsingTemplate } = require_template2();
     var { yyyymmddhhmmss } = require_timestamp();
@@ -62852,7 +62852,7 @@ var require_Seeder = __commonJS({
         return filepath;
       }
       _getStubPath() {
-        return this.config.stub || path34.join(__dirname, "stub", this.config.extension + ".stub");
+        return this.config.stub || path38.join(__dirname, "stub", this.config.extension + ".stub");
       }
       _getNewStubFileName(name28) {
         if (name28[0] === "-") name28 = name28.slice(1);
@@ -62867,7 +62867,7 @@ var require_Seeder = __commonJS({
           this.config.logger
         );
         const dir = dirs.slice(-1)[0];
-        return path34.join(dir, fileName);
+        return path38.join(dir, fileName);
       }
       // Write a new seed to disk, using the config and generated filename,
       // passing any `variables` given in the config to the template.
@@ -65008,10 +65008,10 @@ var require_querybuilder = __commonJS({
         }
         return cloned;
       }
-      timeout(ms, { cancel } = {}) {
+      timeout(ms, { cancel: cancel2 } = {}) {
         if (isNumber2(ms) && ms > 0) {
           this._timeout = ms;
-          if (cancel) {
+          if (cancel2) {
             this.client.assertCanCancelQuery();
             this._cancelOnTimeout = true;
           }
@@ -66113,11 +66113,11 @@ var require_querybuilder = __commonJS({
       }
       jsonExtract() {
         const column = arguments[0];
-        let path34;
+        let path38;
         let alias;
         let singleValue = true;
         if (arguments.length >= 2) {
-          path34 = arguments[1];
+          path38 = arguments[1];
         }
         if (arguments.length >= 3) {
           alias = arguments[2];
@@ -66130,32 +66130,32 @@ var require_querybuilder = __commonJS({
         }
         return this._json("jsonExtract", {
           column,
-          path: path34,
+          path: path38,
           alias,
           singleValue
           // boolean used only in MSSQL to use function for extract value instead of object/array.
         });
       }
-      jsonSet(column, path34, value, alias) {
+      jsonSet(column, path38, value, alias) {
         return this._json("jsonSet", {
           column,
-          path: path34,
+          path: path38,
           value,
           alias
         });
       }
-      jsonInsert(column, path34, value, alias) {
+      jsonInsert(column, path38, value, alias) {
         return this._json("jsonInsert", {
           column,
-          path: path34,
+          path: path38,
           value,
           alias
         });
       }
-      jsonRemove(column, path34, alias) {
+      jsonRemove(column, path38, alias) {
         return this._json("jsonRemove", {
           column,
-          path: path34,
+          path: path38,
           alias
         });
       }
@@ -66194,12 +66194,12 @@ var require_querybuilder = __commonJS({
       orWhereNotJsonObject(column, value) {
         return this._bool("or").whereNotJsonObject(column, value);
       }
-      whereJsonPath(column, path34, operator, value) {
-        this._whereJsonWrappedValue("whereJsonPath", column, value, operator, path34);
+      whereJsonPath(column, path38, operator, value) {
+        this._whereJsonWrappedValue("whereJsonPath", column, value, operator, path38);
         return this;
       }
-      orWhereJsonPath(column, path34, operator, value) {
-        return this._bool("or").whereJsonPath(column, path34, operator, value);
+      orWhereJsonPath(column, path38, operator, value) {
+        return this._bool("or").whereJsonPath(column, path38, operator, value);
       }
       // Json superset wheres
       whereJsonSupersetOf(column, value) {
@@ -66912,10 +66912,10 @@ var require_raw2 = __commonJS({
         this.bindings = isObject5(bindings) && !bindings.toSQL || bindings === void 0 ? bindings : [bindings];
         return this;
       }
-      timeout(ms, { cancel } = {}) {
+      timeout(ms, { cancel: cancel2 } = {}) {
         if (isNumber2(ms) && ms > 0) {
           this._timeout = ms;
-          if (cancel) {
+          if (cancel2) {
             this.client.assertCanCancelQuery();
             this._cancelOnTimeout = true;
           }
@@ -67094,8 +67094,8 @@ var require_has = __commonJS({
     "use strict";
     var baseHas = require_baseHas();
     var hasPath2 = require_hasPath();
-    function has(object4, path34) {
-      return object4 != null && hasPath2(object4, path34, baseHas);
+    function has(object4, path38) {
+      return object4 != null && hasPath2(object4, path38, baseHas);
     }
     module2.exports = has;
   }
@@ -67126,14 +67126,14 @@ var require_baseSet = __commonJS({
     var isIndex2 = require_isIndex();
     var isObject5 = require_isObject();
     var toKey2 = require_toKey();
-    function baseSet(object4, path34, value, customizer) {
+    function baseSet(object4, path38, value, customizer) {
       if (!isObject5(object4)) {
         return object4;
       }
-      path34 = castPath2(path34, object4);
-      var index = -1, length = path34.length, lastIndex = length - 1, nested = object4;
+      path38 = castPath2(path38, object4);
+      var index = -1, length = path38.length, lastIndex = length - 1, nested = object4;
       while (nested != null && ++index < length) {
-        var key = toKey2(path34[index]), newValue = value;
+        var key = toKey2(path38[index]), newValue = value;
         if (key === "__proto__" || key === "constructor" || key === "prototype") {
           return object4;
         }
@@ -67141,7 +67141,7 @@ var require_baseSet = __commonJS({
           var objValue = nested[key];
           newValue = customizer ? customizer(objValue, key, nested) : void 0;
           if (newValue === void 0) {
-            newValue = isObject5(objValue) ? objValue : isIndex2(path34[index + 1]) ? [] : {};
+            newValue = isObject5(objValue) ? objValue : isIndex2(path38[index + 1]) ? [] : {};
           }
         }
         assignValue(nested, key, newValue);
@@ -67163,9 +67163,9 @@ var require_basePickBy = __commonJS({
     function basePickBy(object4, paths, predicate) {
       var index = -1, length = paths.length, result = {};
       while (++index < length) {
-        var path34 = paths[index], value = baseGet2(object4, path34);
-        if (predicate(value, path34)) {
-          baseSet(result, castPath2(path34, object4), value);
+        var path38 = paths[index], value = baseGet2(object4, path38);
+        if (predicate(value, path38)) {
+          baseSet(result, castPath2(path38, object4), value);
         }
       }
       return result;
@@ -67190,8 +67190,8 @@ var require_pickBy = __commonJS({
         return [prop];
       });
       predicate = baseIteratee2(predicate);
-      return basePickBy(object4, props, function(value, path34) {
-        return predicate(value, path34[0]);
+      return basePickBy(object4, props, function(value, path38) {
+        return predicate(value, path38[0]);
       });
     }
     module2.exports = pickBy;
@@ -70643,15 +70643,15 @@ var require_pg_connection_string = __commonJS({
       if (config3.sslcert || config3.sslkey || config3.sslrootcert || config3.sslmode) {
         config3.ssl = {};
       }
-      const fs36 = config3.sslcert || config3.sslkey || config3.sslrootcert ? require("fs") : null;
+      const fs40 = config3.sslcert || config3.sslkey || config3.sslrootcert ? require("fs") : null;
       if (config3.sslcert) {
-        config3.ssl.cert = fs36.readFileSync(config3.sslcert).toString();
+        config3.ssl.cert = fs40.readFileSync(config3.sslcert).toString();
       }
       if (config3.sslkey) {
-        config3.ssl.key = fs36.readFileSync(config3.sslkey).toString();
+        config3.ssl.key = fs40.readFileSync(config3.sslkey).toString();
       }
       if (config3.sslrootcert) {
-        config3.ssl.ca = fs36.readFileSync(config3.sslrootcert).toString();
+        config3.ssl.ca = fs40.readFileSync(config3.sslrootcert).toString();
       }
       switch (config3.sslmode) {
         case "disable": {
@@ -74306,26 +74306,26 @@ var require_postgres = __commonJS({
         });
       }
       setSchemaSearchPath(connection, searchPath) {
-        let path34 = searchPath || this.searchPath;
-        if (!path34) return Promise.resolve(true);
-        if (!Array.isArray(path34) && !isString2(path34)) {
+        let path38 = searchPath || this.searchPath;
+        if (!path38) return Promise.resolve(true);
+        if (!Array.isArray(path38) && !isString2(path38)) {
           throw new TypeError(
-            `knex: Expected searchPath to be Array/String, got: ${typeof path34}`
+            `knex: Expected searchPath to be Array/String, got: ${typeof path38}`
           );
         }
-        if (isString2(path34)) {
-          if (path34.includes(",")) {
-            const parts = path34.split(",");
+        if (isString2(path38)) {
+          if (path38.includes(",")) {
+            const parts = path38.split(",");
             const arraySyntax = `[${parts.map((searchPath2) => `'${searchPath2}'`).join(", ")}]`;
             this.logger.warn(
-              `Detected comma in searchPath "${path34}".If you are trying to specify multiple schemas, use Array syntax: ${arraySyntax}`
+              `Detected comma in searchPath "${path38}".If you are trying to specify multiple schemas, use Array syntax: ${arraySyntax}`
             );
           }
-          path34 = [path34];
+          path38 = [path38];
         }
-        path34 = path34.map((schemaName) => `"${schemaName}"`).join(",");
+        path38 = path38.map((schemaName) => `"${schemaName}"`).join(",");
         return new Promise(function(resolver, rejecter) {
-          connection.query(`set search_path to ${path34}`, function(err) {
+          connection.query(`set search_path to ${path38}`, function(err) {
             if (err) return rejecter(err);
             resolver(true);
           });
@@ -74435,8 +74435,8 @@ var require_postgres = __commonJS({
       driverName: "pg",
       canCancelQuery: true,
       _escapeBinding: makeEscape({
-        escapeArray(val, esc3) {
-          return esc3(arrayString(val, esc3));
+        escapeArray(val, esc4) {
+          return esc4(arrayString(val, esc4));
         },
         escapeString(str) {
           let hasBackslash = false;
@@ -74473,7 +74473,7 @@ var require_postgres = __commonJS({
         }
       })
     });
-    function arrayString(arr, esc3) {
+    function arrayString(arr, esc4) {
       let result = "{";
       for (let i = 0; i < arr.length; i++) {
         if (i > 0) result += ",";
@@ -74481,11 +74481,11 @@ var require_postgres = __commonJS({
         if (val === null || typeof val === "undefined") {
           result += "NULL";
         } else if (Array.isArray(val)) {
-          result += arrayString(val, esc3);
+          result += arrayString(val, esc4);
         } else if (typeof val === "number") {
           result += val;
         } else {
-          result += JSON.stringify(typeof val === "string" ? val : esc3(val));
+          result += JSON.stringify(typeof val === "string" ? val : esc4(val));
         }
       }
       return result + "}";
@@ -82119,6 +82119,63 @@ A medium tracking shot follows the woman from behind as she ascends and approach
             table.integer("assetsAudioId").notNullable();
             table.primary(["assetsAudioId", "assetsRoleId"]);
             table.unique(["assetsAudioId", "assetsRoleId"]);
+          }
+        },
+        //资产画布（每个项目一张）
+        {
+          name: "o_canvas",
+          builder: (table) => {
+            table.integer("id").notNullable();
+            table.integer("projectId").notNullable();
+            table.text("viewport");
+            table.text("layout");
+            table.integer("updateTime");
+            table.primary(["id"]);
+            table.unique(["projectId"]);
+          }
+        },
+        //画布自由节点（图片/视频），不进 o_assets，版本记在 o_image.canvasNodeId
+        {
+          name: "o_canvasNode",
+          builder: (table) => {
+            table.integer("id").notNullable();
+            table.integer("projectId").notNullable();
+            table.text("kind").notNullable();
+            table.text("name");
+            table.text("prompt");
+            table.integer("imageId");
+            table.text("params");
+            table.integer("createTime");
+            table.primary(["id"]);
+            table.index(["projectId"]);
+          }
+        },
+        //画布参考连线，key 形如 a:<assetId> / n:<canvasNodeId>，sort 决定参考图顺序
+        {
+          name: "o_canvasEdge",
+          builder: (table) => {
+            table.integer("id").notNullable();
+            table.integer("projectId").notNullable();
+            table.text("sourceKey").notNullable();
+            table.text("targetKey").notNullable();
+            table.integer("sort").defaultTo(0);
+            table.integer("createTime");
+            table.primary(["id"]);
+            table.index(["projectId"]);
+            table.index(["targetKey"]);
+          }
+        },
+        //画布回收站：删除节点时的数据快照，供撤销恢复；文件在过期清理时才删
+        {
+          name: "o_canvasTrash",
+          builder: (table) => {
+            table.integer("id").notNullable();
+            table.integer("projectId").notNullable();
+            table.text("key").notNullable();
+            table.text("snapshot").notNullable();
+            table.integer("createTime").notNullable();
+            table.primary(["id"]);
+            table.index(["projectId"]);
           }
         }
       ];
@@ -93880,8 +93937,8 @@ var require_JSXTransformer = __commonJS({
         }
         if (this.isAutomaticRuntime) {
           if (this.importProcessor) {
-            for (const [path34, resolvedName] of Object.entries(this.cjsAutomaticModuleNameResolutions)) {
-              prefix += `var ${resolvedName} = require("${path34}");`;
+            for (const [path38, resolvedName] of Object.entries(this.cjsAutomaticModuleNameResolutions)) {
+              prefix += `var ${resolvedName} = require("${path38}");`;
             }
           } else {
             const { createElement: createElementResolution, ...otherResolutions } = this.esmAutomaticImportNameResolutions;
@@ -94074,11 +94131,11 @@ var require_JSXTransformer = __commonJS({
       }
       claimAutoImportedName(funcName, importPathSuffix) {
         if (this.importProcessor) {
-          const path34 = this.jsxImportSource + importPathSuffix;
-          if (!this.cjsAutomaticModuleNameResolutions[path34]) {
-            this.cjsAutomaticModuleNameResolutions[path34] = this.importProcessor.getFreeIdentifierForPath(path34);
+          const path38 = this.jsxImportSource + importPathSuffix;
+          if (!this.cjsAutomaticModuleNameResolutions[path38]) {
+            this.cjsAutomaticModuleNameResolutions[path38] = this.importProcessor.getFreeIdentifierForPath(path38);
           }
-          return `${this.cjsAutomaticModuleNameResolutions[path34]}.${funcName}`;
+          return `${this.cjsAutomaticModuleNameResolutions[path38]}.${funcName}`;
         } else {
           if (!this.esmAutomaticImportNameResolutions[funcName]) {
             this.esmAutomaticImportNameResolutions[funcName] = this.nameManager.claimFreeName(
@@ -94514,7 +94571,7 @@ var require_CJSImportProcessor = __commonJS({
        */
       pruneTypeOnlyImports() {
         this.nonTypeIdentifiers = _getNonTypeIdentifiers.getNonTypeIdentifiers.call(void 0, this.tokens, this.options);
-        for (const [path34, importInfo] of this.importInfoByPath.entries()) {
+        for (const [path38, importInfo] of this.importInfoByPath.entries()) {
           if (importInfo.hasBareImport || importInfo.hasStarExport || importInfo.exportStarNames.length > 0 || importInfo.namedExports.length > 0) {
             continue;
           }
@@ -94524,7 +94581,7 @@ var require_CJSImportProcessor = __commonJS({
             ...importInfo.namedImports.map(({ localName }) => localName)
           ];
           if (names.every((name28) => this.shouldAutomaticallyElideImportedName(name28))) {
-            this.importsToReplace.set(path34, "");
+            this.importsToReplace.set(path38, "");
           }
         }
       }
@@ -94532,7 +94589,7 @@ var require_CJSImportProcessor = __commonJS({
         return this.isTypeScriptTransformEnabled && !this.keepUnusedImports && !this.nonTypeIdentifiers.has(name28);
       }
       generateImportReplacements() {
-        for (const [path34, importInfo] of this.importInfoByPath.entries()) {
+        for (const [path38, importInfo] of this.importInfoByPath.entries()) {
           const {
             defaultNames,
             wildcardNames,
@@ -94542,17 +94599,17 @@ var require_CJSImportProcessor = __commonJS({
             hasStarExport
           } = importInfo;
           if (defaultNames.length === 0 && wildcardNames.length === 0 && namedImports.length === 0 && namedExports.length === 0 && exportStarNames.length === 0 && !hasStarExport) {
-            this.importsToReplace.set(path34, `require('${path34}');`);
+            this.importsToReplace.set(path38, `require('${path38}');`);
             continue;
           }
-          const primaryImportName = this.getFreeIdentifierForPath(path34);
+          const primaryImportName = this.getFreeIdentifierForPath(path38);
           let secondaryImportName;
           if (this.enableLegacyTypeScriptModuleInterop) {
             secondaryImportName = primaryImportName;
           } else {
-            secondaryImportName = wildcardNames.length > 0 ? wildcardNames[0] : this.getFreeIdentifierForPath(path34);
+            secondaryImportName = wildcardNames.length > 0 ? wildcardNames[0] : this.getFreeIdentifierForPath(path38);
           }
-          let requireCode = `var ${primaryImportName} = require('${path34}');`;
+          let requireCode = `var ${primaryImportName} = require('${path38}');`;
           if (wildcardNames.length > 0) {
             for (const wildcardName of wildcardNames) {
               const moduleExpr = this.enableLegacyTypeScriptModuleInterop ? primaryImportName : `${this.helperManager.getHelperName("interopRequireWildcard")}(${primaryImportName})`;
@@ -94580,7 +94637,7 @@ var require_CJSImportProcessor = __commonJS({
               "createStarExport"
             )}(${primaryImportName});`;
           }
-          this.importsToReplace.set(path34, requireCode);
+          this.importsToReplace.set(path38, requireCode);
           for (const defaultName of defaultNames) {
             this.identifierReplacements.set(defaultName, `${secondaryImportName}.default`);
           }
@@ -94589,8 +94646,8 @@ var require_CJSImportProcessor = __commonJS({
           }
         }
       }
-      getFreeIdentifierForPath(path34) {
-        const components = path34.split("/");
+      getFreeIdentifierForPath(path38) {
+        const components = path38.split("/");
         const lastComponent = components[components.length - 1];
         const baseName = lastComponent.replace(/\W/g, "");
         return this.nameManager.claimFreeName(`_${baseName}`);
@@ -94635,8 +94692,8 @@ var require_CJSImportProcessor = __commonJS({
         if (!this.tokens.matches1AtIndex(index, _types.TokenType.string)) {
           throw new Error("Expected string token at the end of import statement.");
         }
-        const path34 = this.tokens.stringValueAtIndex(index);
-        const importInfo = this.getImportInfo(path34);
+        const path38 = this.tokens.stringValueAtIndex(index);
+        const importInfo = this.getImportInfo(path38);
         importInfo.defaultNames.push(...defaultNames);
         importInfo.wildcardNames.push(...wildcardNames);
         importInfo.namedImports.push(...namedImports);
@@ -94703,8 +94760,8 @@ var require_CJSImportProcessor = __commonJS({
         if (!this.tokens.matches1AtIndex(index, _types.TokenType.string)) {
           throw new Error("Expected string token at the end of import statement.");
         }
-        const path34 = this.tokens.stringValueAtIndex(index);
-        const importInfo = this.getImportInfo(path34);
+        const path38 = this.tokens.stringValueAtIndex(index);
+        const importInfo = this.getImportInfo(path38);
         importInfo.namedExports.push(...namedImports);
       }
       preprocessExportStarAtIndex(index) {
@@ -94719,8 +94776,8 @@ var require_CJSImportProcessor = __commonJS({
         if (!this.tokens.matches1AtIndex(index, _types.TokenType.string)) {
           throw new Error("Expected string token at the end of star export statement.");
         }
-        const path34 = this.tokens.stringValueAtIndex(index);
-        const importInfo = this.getImportInfo(path34);
+        const path38 = this.tokens.stringValueAtIndex(index);
+        const importInfo = this.getImportInfo(path38);
         if (exportedName !== null) {
           importInfo.exportStarNames.push(exportedName);
         } else {
@@ -94760,8 +94817,8 @@ var require_CJSImportProcessor = __commonJS({
        * Get a mutable import info object for this path, creating one if it doesn't
        * exist yet.
        */
-      getImportInfo(path34) {
-        const existingInfo = this.importInfoByPath.get(path34);
+      getImportInfo(path38) {
+        const existingInfo = this.importInfoByPath.get(path38);
         if (existingInfo) {
           return existingInfo;
         }
@@ -94774,7 +94831,7 @@ var require_CJSImportProcessor = __commonJS({
           exportStarNames: [],
           hasStarExport: false
         };
-        this.importInfoByPath.set(path34, newInfo);
+        this.importInfoByPath.set(path38, newInfo);
         return newInfo;
       }
       addExportBinding(localName, exportedName) {
@@ -94964,7 +95021,7 @@ var require_sourcemap_codec_umd = __commonJS({
           return idx === -1 ? buffer.length : idx;
         }
       };
-      var EMPTY = [];
+      var EMPTY2 = [];
       function decodeOriginalScopes(input) {
         const { length } = input;
         const reader = new StringReader(input);
@@ -94984,7 +95041,7 @@ var require_sourcemap_codec_umd = __commonJS({
           const fields = decodeInteger(reader, 0);
           const hasName = fields & 1;
           const scope = hasName ? [line, column, 0, 0, kind, decodeInteger(reader, 0)] : [line, column, 0, 0, kind];
-          let vars = EMPTY;
+          let vars = EMPTY2;
           if (hasMoreVlq(reader, length)) {
             vars = [];
             do {
@@ -95060,7 +95117,7 @@ var require_sourcemap_codec_umd = __commonJS({
             const hasCallsite = fields & 2;
             const hasScope = fields & 4;
             let callsite = null;
-            let bindings = EMPTY;
+            let bindings = EMPTY2;
             let range;
             if (hasDefinition) {
               const defSourcesIndex = decodeInteger(reader, definitionSourcesIndex);
@@ -95314,16 +95371,16 @@ var require_resolve_uri_umd = __commonJS({
       }
       function parseFileUrl(input) {
         const match = fileRegex.exec(input);
-        const path34 = match[2];
-        return makeUrl("file:", "", match[1] || "", "", isAbsolutePath(path34) ? path34 : "/" + path34, match[3] || "", match[4] || "");
+        const path38 = match[2];
+        return makeUrl("file:", "", match[1] || "", "", isAbsolutePath(path38) ? path38 : "/" + path38, match[3] || "", match[4] || "");
       }
-      function makeUrl(scheme, user, host, port, path34, query, hash3) {
+      function makeUrl(scheme, user, host, port, path38, query, hash3) {
         return {
           scheme,
           user,
           host,
           port,
-          path: path34,
+          path: path38,
           query,
           hash: hash3,
           type: 7
@@ -95353,11 +95410,11 @@ var require_resolve_uri_umd = __commonJS({
         url4.type = input ? input.startsWith("?") ? 3 : input.startsWith("#") ? 2 : 4 : 1;
         return url4;
       }
-      function stripPathFilename(path34) {
-        if (path34.endsWith("/.."))
-          return path34;
-        const index = path34.lastIndexOf("/");
-        return path34.slice(0, index + 1);
+      function stripPathFilename(path38) {
+        if (path38.endsWith("/.."))
+          return path38;
+        const index = path38.lastIndexOf("/");
+        return path38.slice(0, index + 1);
       }
       function mergePaths(url4, base) {
         normalizePath(base, base.type);
@@ -95395,14 +95452,14 @@ var require_resolve_uri_umd = __commonJS({
           pieces[pointer++] = piece;
           positive++;
         }
-        let path34 = "";
+        let path38 = "";
         for (let i = 1; i < pointer; i++) {
-          path34 += "/" + pieces[i];
+          path38 += "/" + pieces[i];
         }
-        if (!path34 || addTrailingSlash && !path34.endsWith("/..")) {
-          path34 += "/";
+        if (!path38 || addTrailingSlash && !path38.endsWith("/..")) {
+          path38 += "/";
         }
-        url4.path = path34;
+        url4.path = path38;
       }
       function resolve3(input, base) {
         if (!input && !base)
@@ -95443,13 +95500,13 @@ var require_resolve_uri_umd = __commonJS({
           case 3:
             return queryHash;
           case 4: {
-            const path34 = url4.path.slice(1);
-            if (!path34)
+            const path38 = url4.path.slice(1);
+            if (!path38)
               return queryHash || ".";
-            if (isRelative(base || input) && !isRelative(path34)) {
-              return "./" + path34 + queryHash;
+            if (isRelative(base || input) && !isRelative(path38)) {
+              return "./" + path38 + queryHash;
             }
-            return path34 + queryHash;
+            return path38 + queryHash;
           }
           case 5:
             return url4.path + queryHash;
@@ -95549,10 +95606,10 @@ var require_trace_mapping_umd = __commonJS({
       module3.exports = __toCommonJS2(trace_mapping_exports);
       var import_sourcemap_codec = __toESM2(require_sourcemap_codec());
       var import_resolve_uri = __toESM2(require_resolve_uri());
-      function stripFilename(path34) {
-        if (!path34) return "";
-        const index = path34.lastIndexOf("/");
-        return path34.slice(0, index + 1);
+      function stripFilename(path38) {
+        if (!path38) return "";
+        const index = path38.lastIndexOf("/");
+        return path38.slice(0, index + 1);
       }
       function resolver(mapUrl, sourceRoot) {
         const from = stripFilename(mapUrl);
@@ -96761,9 +96818,9 @@ var require_util2 = __commonJS({
       /** @class */
       (function(_super) {
         __extends(VError2, _super);
-        function VError2(path34, message) {
+        function VError2(path38, message) {
           var _this = _super.call(this, message) || this;
-          _this.path = path34;
+          _this.path = path38;
           Object.setPrototypeOf(_this, VError2.prototype);
           return _this;
         }
@@ -96823,26 +96880,26 @@ var require_util2 = __commonJS({
             (_b27 = this._messages).push.apply(_b27, best._messages);
           }
         };
-        DetailContext2.prototype.getError = function(path34) {
+        DetailContext2.prototype.getError = function(path38) {
           var msgParts = [];
           for (var i = this._propNames.length - 1; i >= 0; i--) {
             var p3 = this._propNames[i];
-            path34 += typeof p3 === "number" ? "[" + p3 + "]" : p3 ? "." + p3 : "";
+            path38 += typeof p3 === "number" ? "[" + p3 + "]" : p3 ? "." + p3 : "";
             var m = this._messages[i];
             if (m) {
-              msgParts.push(path34 + " " + m);
+              msgParts.push(path38 + " " + m);
             }
           }
-          return new VError(path34, msgParts.join("; "));
+          return new VError(path38, msgParts.join("; "));
         };
-        DetailContext2.prototype.getErrorDetail = function(path34) {
+        DetailContext2.prototype.getErrorDetail = function(path38) {
           var details = [];
           for (var i = this._propNames.length - 1; i >= 0; i--) {
             var p3 = this._propNames[i];
-            path34 += typeof p3 === "number" ? "[" + p3 + "]" : p3 ? "." + p3 : "";
+            path38 += typeof p3 === "number" ? "[" + p3 + "]" : p3 ? "." + p3 : "";
             var message = this._messages[i];
             if (message) {
-              details.push({ path: path34, message });
+              details.push({ path: path38, message });
             }
           }
           var detail = null;
@@ -97655,8 +97712,8 @@ var require_dist4 = __commonJS({
           this.checkerPlain = this.ttype.getChecker(suite, false);
           this.checkerStrict = this.ttype.getChecker(suite, true);
         }
-        Checker2.prototype.setReportedPath = function(path34) {
-          this._path = path34;
+        Checker2.prototype.setReportedPath = function(path38) {
+          this._path = path38;
         };
         Checker2.prototype.check = function(value) {
           return this._doCheck(this.checkerPlain, value);
@@ -103089,9 +103146,9 @@ var require_CJSImportTransformer = __commonJS({
         if (shouldElideImport) {
           this.tokens.removeToken();
         } else {
-          const path34 = this.tokens.stringValue();
-          this.tokens.replaceTokenTrimmingLeftWhitespace(this.importProcessor.claimImportCode(path34));
-          this.tokens.appendCode(this.importProcessor.claimImportCode(path34));
+          const path38 = this.tokens.stringValue();
+          this.tokens.replaceTokenTrimmingLeftWhitespace(this.importProcessor.claimImportCode(path38));
+          this.tokens.appendCode(this.importProcessor.claimImportCode(path38));
         }
         _removeMaybeImportAttributes.removeMaybeImportAttributes.call(void 0, this.tokens);
         if (this.tokens.matches1(_types.TokenType.semi)) {
@@ -103671,8 +103728,8 @@ var require_CJSImportTransformer = __commonJS({
         }
         if (this.tokens.matchesContextual(_keywords.ContextualKeyword._from)) {
           this.tokens.removeToken();
-          const path34 = this.tokens.stringValue();
-          this.tokens.replaceTokenTrimmingLeftWhitespace(this.importProcessor.claimImportCode(path34));
+          const path38 = this.tokens.stringValue();
+          this.tokens.replaceTokenTrimmingLeftWhitespace(this.importProcessor.claimImportCode(path38));
           _removeMaybeImportAttributes.removeMaybeImportAttributes.call(void 0, this.tokens);
         } else {
           this.tokens.appendCode(exportStatements.join(" "));
@@ -103686,8 +103743,8 @@ var require_CJSImportTransformer = __commonJS({
         while (!this.tokens.matches1(_types.TokenType.string)) {
           this.tokens.removeToken();
         }
-        const path34 = this.tokens.stringValue();
-        this.tokens.replaceTokenTrimmingLeftWhitespace(this.importProcessor.claimImportCode(path34));
+        const path38 = this.tokens.stringValue();
+        this.tokens.replaceTokenTrimmingLeftWhitespace(this.importProcessor.claimImportCode(path38));
         _removeMaybeImportAttributes.removeMaybeImportAttributes.call(void 0, this.tokens);
         if (this.tokens.matches1(_types.TokenType.semi)) {
           this.tokens.removeToken();
@@ -105772,6 +105829,55 @@ async function tempOnsert(tsCode) {
   });
   utils_default.vendor.writeCode(vendor.id, tsCode);
 }
+async function migrateStoryboardImages() {
+  const shots = await db_default("o_storyboard").whereNull("imageId").whereNotNull("filePath").whereNot("filePath", "").select("id", "projectId", "prompt", "filePath", "createTime");
+  for (const shot of shots) {
+    const [imageId] = await db_default("o_image").insert({
+      type: "storyboard",
+      state: "\u5DF2\u5B8C\u6210",
+      kind: "image",
+      storyboardId: shot.id,
+      filePath: shot.filePath,
+      prompt: shot.prompt ?? null,
+      createTime: shot.createTime ?? Date.now()
+    });
+    await db_default("o_storyboard").where("id", shot.id).update({ imageId });
+  }
+  if (shots.length) console.log(`[\u955C\u5934\u53F0\u8FC1\u79FB] ${shots.length} \u5F20\u5206\u955C\u56FE\u63A5\u5165\u7248\u672C\u94FE`);
+  const seeded = await db_default("o_canvasEdge").where("targetKey", "like", "s:%").select("targetKey");
+  const done = new Set(seeded.map((r) => r.targetKey));
+  const links = await db_default("o_assets2Storyboard").join("o_storyboard", "o_storyboard.id", "o_assets2Storyboard.storyboardId").orderBy("o_assets2Storyboard.rowid").select("o_assets2Storyboard.storyboardId", "o_assets2Storyboard.assetId", "o_storyboard.projectId");
+  const rows = [];
+  const sortOf = /* @__PURE__ */ new Map();
+  for (const link of links) {
+    if (done.has(`s:${link.storyboardId}`)) continue;
+    const sort = sortOf.get(link.storyboardId) ?? 0;
+    sortOf.set(link.storyboardId, sort + 1);
+    rows.push({ projectId: link.projectId, sourceKey: `a:${link.assetId}`, targetKey: `s:${link.storyboardId}`, sort, createTime: Date.now() });
+  }
+  for (let i = 0; i < rows.length; i += 200) await db_default("o_canvasEdge").insert(rows.slice(i, i + 200));
+  if (rows.length) console.log(`[\u955C\u5934\u53F0\u8FC1\u79FB] ${rows.length} \u6761\u5206\u955C\u53C2\u8003\u8FB9\u64AD\u79CD\u5B8C\u6210`);
+  await migrateTrackRefMode();
+}
+async function migrateTrackRefMode() {
+  const tracks = await db_default("o_videoTrack").whereNull("refMode").select("id", "projectId");
+  if (!tracks.length) return;
+  let auto = 0;
+  let manual = 0;
+  for (const track of tracks) {
+    const edges = await db_default("o_canvasEdge").where("targetKey", `v:${track.id}`).select("id", "sourceKey");
+    const untouched = edges.every((e) => String(e.sourceKey).startsWith("s:"));
+    if (untouched) {
+      if (edges.length) await db_default("o_canvasEdge").where("targetKey", `v:${track.id}`).del();
+      await db_default("o_videoTrack").where("id", track.id).update({ refMode: "auto" });
+      auto += 1;
+    } else {
+      await db_default("o_videoTrack").where("id", track.id).update({ refMode: "manual" });
+      manual += 1;
+    }
+  }
+  console.log(`[\u955C\u5934\u53F0\u8FC1\u79FB] \u7247\u6BB5\u53C2\u8003\uFF1A${auto} \u4E2A\u6539\u4E3A\u81EA\u52A8\u8DDF\u968F\u7D20\u6750\u677F\uFF0C${manual} \u4E2A\u4FDD\u7559\u624B\u52A8\u8986\u76D6`);
+}
 var import_path4, import_fs2, import_sucrase, vendorData, fixDB_default;
 var init_fixDB = __esm({
   "src/lib/fixDB.ts"() {
@@ -105833,8 +105939,27 @@ var init_fixDB = __esm({
       await addColumn("o_agentDeploy", "temperature", "integer");
       await addColumn("o_agentDeploy", "maxOutputTokens", "integer");
       await addColumn("o_assets", "audioBindState", "integer");
+      await addColumn("o_image", "aspectRatio", "string");
+      await addColumn("o_image", "prompt", "text");
+      await addColumn("o_image", "kind", "string");
+      await addColumn("o_image", "stage", "string");
+      await addColumn("o_image", "canvasNodeId", "integer");
+      await addColumn("o_image", "refs", "text");
+      await addColumn("o_image", "createTime", "integer");
+      await addColumn("o_assets", "portraitImageId", "integer");
+      await addColumn("o_assets", "fourViewPrompt", "text");
+      await addColumn("o_project", "assetModels", "text");
       await addColumn("o_modelPrompt", "fileName", "string");
       await addColumn("o_modelPrompt", "path", "string");
+      await addColumn("o_storyboard", "imageId", "integer");
+      await addColumn("o_image", "storyboardId", "integer");
+      await addColumn("o_image", "videoTrackId", "integer");
+      await addColumn("o_videoTrack", "model", "string");
+      await addColumn("o_videoTrack", "params", "text");
+      await addColumn("o_videoTrack", "kind", "string");
+      await addColumn("o_videoTrack", "refMode", "string");
+      await addColumn("o_video", "imageId", "integer");
+      await migrateStoryboardImages();
       const vendorDataSelect = await utils_default.db("o_vendorConfig").whereIn("id", ["deepseek", "atlascloud"]).select("*");
       if (!vendorDataSelect.find((i) => i.id == "deepseek")) {
         await utils_default.db("o_vendorConfig").insert({
@@ -108282,11 +108407,11 @@ var init_toKey = __esm({
 });
 
 // node_modules/lodash-es/_baseGet.js
-function baseGet(object4, path34) {
-  path34 = castPath_default(path34, object4);
-  var index = 0, length = path34.length;
+function baseGet(object4, path38) {
+  path38 = castPath_default(path38, object4);
+  var index = 0, length = path38.length;
   while (object4 != null && index < length) {
-    object4 = object4[toKey_default(path34[index++])];
+    object4 = object4[toKey_default(path38[index++])];
   }
   return index && index == length ? object4 : void 0;
 }
@@ -108301,8 +108426,8 @@ var init_baseGet = __esm({
 });
 
 // node_modules/lodash-es/get.js
-function get(object4, path34, defaultValue) {
-  var result = object4 == null ? void 0 : baseGet_default(object4, path34);
+function get(object4, path38, defaultValue) {
+  var result = object4 == null ? void 0 : baseGet_default(object4, path38);
   return result === void 0 ? defaultValue : result;
 }
 var get_default;
@@ -109111,11 +109236,11 @@ var init_baseHasIn = __esm({
 });
 
 // node_modules/lodash-es/_hasPath.js
-function hasPath(object4, path34, hasFunc) {
-  path34 = castPath_default(path34, object4);
-  var index = -1, length = path34.length, result = false;
+function hasPath(object4, path38, hasFunc) {
+  path38 = castPath_default(path38, object4);
+  var index = -1, length = path38.length, result = false;
   while (++index < length) {
-    var key = toKey_default(path34[index]);
+    var key = toKey_default(path38[index]);
     if (!(result = object4 != null && hasFunc(object4, key))) {
       break;
     }
@@ -109142,8 +109267,8 @@ var init_hasPath = __esm({
 });
 
 // node_modules/lodash-es/hasIn.js
-function hasIn(object4, path34) {
-  return object4 != null && hasPath_default(object4, path34, baseHasIn_default);
+function hasIn(object4, path38) {
+  return object4 != null && hasPath_default(object4, path38, baseHasIn_default);
 }
 var hasIn_default;
 var init_hasIn = __esm({
@@ -109156,13 +109281,13 @@ var init_hasIn = __esm({
 });
 
 // node_modules/lodash-es/_baseMatchesProperty.js
-function baseMatchesProperty(path34, srcValue) {
-  if (isKey_default(path34) && isStrictComparable_default(srcValue)) {
-    return matchesStrictComparable_default(toKey_default(path34), srcValue);
+function baseMatchesProperty(path38, srcValue) {
+  if (isKey_default(path38) && isStrictComparable_default(srcValue)) {
+    return matchesStrictComparable_default(toKey_default(path38), srcValue);
   }
   return function(object4) {
-    var objValue = get_default(object4, path34);
-    return objValue === void 0 && objValue === srcValue ? hasIn_default(object4, path34) : baseIsEqual_default(srcValue, objValue, COMPARE_PARTIAL_FLAG6 | COMPARE_UNORDERED_FLAG4);
+    var objValue = get_default(object4, path38);
+    return objValue === void 0 && objValue === srcValue ? hasIn_default(object4, path38) : baseIsEqual_default(srcValue, objValue, COMPARE_PARTIAL_FLAG6 | COMPARE_UNORDERED_FLAG4);
   };
 }
 var COMPARE_PARTIAL_FLAG6, COMPARE_UNORDERED_FLAG4, baseMatchesProperty_default;
@@ -109197,9 +109322,9 @@ var init_baseProperty = __esm({
 });
 
 // node_modules/lodash-es/_basePropertyDeep.js
-function basePropertyDeep(path34) {
+function basePropertyDeep(path38) {
   return function(object4) {
-    return baseGet_default(object4, path34);
+    return baseGet_default(object4, path38);
   };
 }
 var basePropertyDeep_default;
@@ -109212,8 +109337,8 @@ var init_basePropertyDeep = __esm({
 });
 
 // node_modules/lodash-es/property.js
-function property(path34) {
-  return isKey_default(path34) ? baseProperty_default(toKey_default(path34)) : basePropertyDeep_default(path34);
+function property(path38) {
+  return isKey_default(path38) ? baseProperty_default(toKey_default(path38)) : basePropertyDeep_default(path38);
 }
 var property_default;
 var init_property = __esm({
@@ -110166,8 +110291,8 @@ var require_utils12 = __commonJS({
       frame._parent = object4;
       return frame;
     }
-    function blockParams(params, ids) {
-      params.path = ids;
+    function blockParams(params, ids2) {
+      params.path = ids2;
       return params;
     }
     function appendContextPath(contextPath, id) {
@@ -111234,13 +111359,13 @@ var require_ast = __commonJS({
         helperExpression: function helperExpression(node) {
           return node.type === "SubExpression" || (node.type === "MustacheStatement" || node.type === "BlockStatement") && !!(node.params && node.params.length || node.hash);
         },
-        scopedId: function scopedId(path34) {
-          return /^\.|this\b/.test(path34.original);
+        scopedId: function scopedId(path38) {
+          return /^\.|this\b/.test(path38.original);
         },
         // an ID is simple if it only has one part, and that part is not
         // `..` or `this`.
-        simpleId: function simpleId(path34) {
-          return path34.parts.length === 1 && !AST.helpers.scopedId(path34) && !path34.depth;
+        simpleId: function simpleId(path38) {
+          return path38.parts.length === 1 && !AST.helpers.scopedId(path38) && !path38.depth;
         }
       }
     };
@@ -112056,8 +112181,8 @@ var require_visitor = __commonJS({
       Hash: function Hash2(hash3) {
         this.acceptArray(hash3.pairs);
       },
-      HashPair: function HashPair(pair) {
-        this.acceptRequired(pair, "value");
+      HashPair: function HashPair(pair2) {
+        this.acceptRequired(pair2, "value");
       }
     };
     function visitSubExpression(mustache) {
@@ -112310,12 +112435,12 @@ var require_helpers4 = __commonJS({
         loc
       };
     }
-    function prepareMustache(path34, params, hash3, open, strip, locInfo) {
+    function prepareMustache(path38, params, hash3, open, strip, locInfo) {
       var escapeFlag = open.charAt(3) || open.charAt(2), escaped = escapeFlag !== "{" && escapeFlag !== "&";
       var decorator = /\*/.test(open);
       return {
         type: decorator ? "Decorator" : "MustacheStatement",
-        path: path34,
+        path: path38,
         params,
         hash: hash3,
         escaped,
@@ -112633,9 +112758,9 @@ var require_compiler3 = __commonJS({
       },
       DecoratorBlock: function DecoratorBlock(decorator) {
         var program = decorator.program && this.compileProgram(decorator.program);
-        var params = this.setupFullMustacheParams(decorator, program, void 0), path34 = decorator.path;
+        var params = this.setupFullMustacheParams(decorator, program, void 0), path38 = decorator.path;
         this.useDecorators = true;
-        this.opcode("registerDecorator", params.length, path34.original);
+        this.opcode("registerDecorator", params.length, path38.original);
       },
       PartialStatement: function PartialStatement(partial3) {
         this.usePartial = true;
@@ -112699,46 +112824,46 @@ var require_compiler3 = __commonJS({
         }
       },
       ambiguousSexpr: function ambiguousSexpr(sexpr, program, inverse) {
-        var path34 = sexpr.path, name28 = path34.parts[0], isBlock = program != null || inverse != null;
-        this.opcode("getContext", path34.depth);
+        var path38 = sexpr.path, name28 = path38.parts[0], isBlock = program != null || inverse != null;
+        this.opcode("getContext", path38.depth);
         this.opcode("pushProgram", program);
         this.opcode("pushProgram", inverse);
-        path34.strict = true;
-        this.accept(path34);
+        path38.strict = true;
+        this.accept(path38);
         this.opcode("invokeAmbiguous", name28, isBlock);
       },
       simpleSexpr: function simpleSexpr(sexpr) {
-        var path34 = sexpr.path;
-        path34.strict = true;
-        this.accept(path34);
+        var path38 = sexpr.path;
+        path38.strict = true;
+        this.accept(path38);
         this.opcode("resolvePossibleLambda");
       },
       helperSexpr: function helperSexpr(sexpr, program, inverse) {
-        var params = this.setupFullMustacheParams(sexpr, program, inverse), path34 = sexpr.path, name28 = path34.parts[0];
+        var params = this.setupFullMustacheParams(sexpr, program, inverse), path38 = sexpr.path, name28 = path38.parts[0];
         if (this.options.knownHelpers[name28]) {
           this.opcode("invokeKnownHelper", params.length, name28);
         } else if (this.options.knownHelpersOnly) {
           throw new _exception2["default"]("You specified knownHelpersOnly, but used the unknown helper " + name28, sexpr);
         } else {
-          path34.strict = true;
-          path34.falsy = true;
-          this.accept(path34);
-          this.opcode("invokeHelper", params.length, path34.original, _ast2["default"].helpers.simpleId(path34));
+          path38.strict = true;
+          path38.falsy = true;
+          this.accept(path38);
+          this.opcode("invokeHelper", params.length, path38.original, _ast2["default"].helpers.simpleId(path38));
         }
       },
-      PathExpression: function PathExpression(path34) {
-        this.addDepth(path34.depth);
-        this.opcode("getContext", path34.depth);
-        var name28 = path34.parts[0], scoped = _ast2["default"].helpers.scopedId(path34), blockParamId = !path34.depth && !scoped && this.blockParamIndex(name28);
+      PathExpression: function PathExpression(path38) {
+        this.addDepth(path38.depth);
+        this.opcode("getContext", path38.depth);
+        var name28 = path38.parts[0], scoped = _ast2["default"].helpers.scopedId(path38), blockParamId = !path38.depth && !scoped && this.blockParamIndex(name28);
         if (blockParamId) {
-          this.opcode("lookupBlockParam", blockParamId, path34.parts);
+          this.opcode("lookupBlockParam", blockParamId, path38.parts);
         } else if (!name28) {
           this.opcode("pushContext");
-        } else if (path34.data) {
+        } else if (path38.data) {
           this.options.data = true;
-          this.opcode("lookupData", path34.depth, path34.parts, path34.strict);
+          this.opcode("lookupData", path38.depth, path38.parts, path38.strict);
         } else {
-          this.opcode("lookupOnContext", path34.parts, path34.falsy, path34.strict, scoped);
+          this.opcode("lookupOnContext", path38.parts, path38.falsy, path38.strict, scoped);
         }
       },
       StringLiteral: function StringLiteral(string5) {
@@ -113091,16 +113216,16 @@ var require_util3 = __commonJS({
     }
     exports2.urlGenerate = urlGenerate;
     function normalize(aPath) {
-      var path34 = aPath;
+      var path38 = aPath;
       var url4 = urlParse(aPath);
       if (url4) {
         if (!url4.path) {
           return aPath;
         }
-        path34 = url4.path;
+        path38 = url4.path;
       }
-      var isAbsolute = exports2.isAbsolute(path34);
-      var parts = path34.split(/\/+/);
+      var isAbsolute = exports2.isAbsolute(path38);
+      var parts = path38.split(/\/+/);
       for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
         part = parts[i];
         if (part === ".") {
@@ -113117,15 +113242,15 @@ var require_util3 = __commonJS({
           }
         }
       }
-      path34 = parts.join("/");
-      if (path34 === "") {
-        path34 = isAbsolute ? "/" : ".";
+      path38 = parts.join("/");
+      if (path38 === "") {
+        path38 = isAbsolute ? "/" : ".";
       }
       if (url4) {
-        url4.path = path34;
+        url4.path = path38;
         return urlGenerate(url4);
       }
-      return path34;
+      return path38;
     }
     exports2.normalize = normalize;
     function join2(aRoot, aPath) {
@@ -115661,7 +115786,7 @@ var require_javascript_compiler = __commonJS({
         };
       },
       setupParams: function setupParams(helper, paramSize, params) {
-        var options = {}, contexts = [], types = [], ids = [], objectArgs = !params, param = void 0;
+        var options = {}, contexts = [], types = [], ids2 = [], objectArgs = !params, param = void 0;
         if (objectArgs) {
           params = [];
         }
@@ -115684,7 +115809,7 @@ var require_javascript_compiler = __commonJS({
           param = this.popStack();
           params[i] = param;
           if (this.trackIds) {
-            ids[i] = this.popStack();
+            ids2[i] = this.popStack();
           }
           if (this.stringParams) {
             types[i] = this.popStack();
@@ -115695,7 +115820,7 @@ var require_javascript_compiler = __commonJS({
           options.args = this.source.generateArray(params);
         }
         if (this.trackIds) {
-          options.ids = this.source.generateArray(ids);
+          options.ids = this.source.generateArray(ids2);
         }
         if (this.stringParams) {
           options.types = this.source.generateArray(types);
@@ -115916,8 +116041,8 @@ var require_printer = __commonJS({
       return this.accept(sexpr.path) + " " + params + hash3;
     };
     PrintVisitor.prototype.PathExpression = function(id) {
-      var path34 = id.parts.join("/");
-      return (id.data ? "@" : "") + "PATH:" + path34;
+      var path38 = id.parts.join("/");
+      return (id.data ? "@" : "") + "PATH:" + path38;
     };
     PrintVisitor.prototype.StringLiteral = function(string5) {
       return '"' + string5.value + '"';
@@ -115941,8 +116066,8 @@ var require_printer = __commonJS({
       }
       return "HASH{" + joinedPairs.join(", ") + "}";
     };
-    PrintVisitor.prototype.HashPair = function(pair) {
-      return pair.key + "=" + this.accept(pair.value);
+    PrintVisitor.prototype.HashPair = function(pair2) {
+      return pair2.key + "=" + this.accept(pair2.value);
     };
   }
 });
@@ -115957,8 +116082,8 @@ var require_lib6 = __commonJS({
     handlebars.print = printer.print;
     module2.exports = handlebars;
     function extension(module3, filename) {
-      var fs36 = require("fs");
-      var templateString = fs36.readFileSync(filename, "utf8");
+      var fs40 = require("fs");
+      var templateString = fs40.readFileSync(filename, "utf8");
       module3.exports = handlebars.compile(templateString);
     }
     if (typeof require !== "undefined" && require.extensions) {
@@ -116315,7 +116440,11 @@ var init_oss = __esm({
           ".tiff": "image/tiff",
           ".tif": "image/tiff",
           ".mp4": "video/mp4",
-          ".mp3": "audio/mpeg"
+          ".mp3": "audio/mpeg",
+          ".wav": "audio/wav",
+          ".m4a": "audio/mp4",
+          ".webm": "video/webm",
+          ".mov": "video/quicktime"
         };
         const mimeType = mimeTypes[ext];
         if (!mimeType) {
@@ -116691,8 +116820,8 @@ var init_utils = __esm({
       const _iterator = generator.call(obj);
       let result;
       while ((result = _iterator.next()) && !result.done) {
-        const pair = result.value;
-        fn.call(obj, pair[0], pair[1]);
+        const pair2 = result.value;
+        fn.call(obj, pair2[0], pair2[1]);
       }
     };
     matchAll = (regExp, str) => {
@@ -125802,11 +125931,11 @@ var require_mime_types3 = __commonJS({
       }
       return exts[0];
     }
-    function lookup(path34) {
-      if (!path34 || typeof path34 !== "string") {
+    function lookup(path38) {
+      if (!path38 || typeof path38 !== "string") {
         return false;
       }
-      var extension2 = extname("x." + path34).toLowerCase().substr(1);
+      var extension2 = extname("x." + path38).toLowerCase().substr(1);
       if (!extension2) {
         return false;
       }
@@ -126118,11 +126247,11 @@ var require_form_data = __commonJS({
     "use strict";
     var CombinedStream = require_combined_stream();
     var util4 = require("util");
-    var path34 = require("path");
+    var path38 = require("path");
     var http4 = require("http");
     var https2 = require("https");
     var parseUrl2 = require("url").parse;
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var Stream = require("stream").Stream;
     var crypto6 = require("crypto");
     var mime = require_mime_types3();
@@ -126189,7 +126318,7 @@ var require_form_data = __commonJS({
         if (value.end != void 0 && value.end != Infinity && value.start != void 0) {
           callback(null, value.end + 1 - (value.start ? value.start : 0));
         } else {
-          fs36.stat(value.path, function(err, stat) {
+          fs40.stat(value.path, function(err, stat) {
             if (err) {
               callback(err);
               return;
@@ -126246,11 +126375,11 @@ var require_form_data = __commonJS({
     FormData4.prototype._getContentDisposition = function(value, options) {
       var filename;
       if (typeof options.filepath === "string") {
-        filename = path34.normalize(options.filepath).replace(/\\/g, "/");
+        filename = path38.normalize(options.filepath).replace(/\\/g, "/");
       } else if (options.filename || value && (value.name || value.path)) {
-        filename = path34.basename(options.filename || value && (value.name || value.path));
+        filename = path38.basename(options.filename || value && (value.name || value.path));
       } else if (value && value.readable && hasOwn(value, "httpVersion")) {
-        filename = path34.basename(value.client._httpMessage.path || "");
+        filename = path38.basename(value.client._httpMessage.path || "");
       }
       if (filename) {
         return 'filename="' + filename + '"';
@@ -126448,9 +126577,9 @@ function isVisitable(thing) {
 function removeBrackets(key) {
   return utils_default2.endsWith(key, "[]") ? key.slice(0, -2) : key;
 }
-function renderKey(path34, key, dots) {
-  if (!path34) return key;
-  return path34.concat(key).map(function each(token, i) {
+function renderKey(path38, key, dots) {
+  if (!path38) return key;
+  return path38.concat(key).map(function each(token, i) {
     token = removeBrackets(token);
     return !dots && i ? "[" + token + "]" : token;
   }).join(dots ? "." : "");
@@ -126500,13 +126629,13 @@ function toFormData(obj, formData, options) {
     }
     return value;
   }
-  function defaultVisitor(value, key, path34) {
+  function defaultVisitor(value, key, path38) {
     let arr = value;
     if (utils_default2.isReactNative(formData) && utils_default2.isReactNativeBlob(value)) {
-      formData.append(renderKey(path34, key, dots), convertValue(value));
+      formData.append(renderKey(path38, key, dots), convertValue(value));
       return false;
     }
-    if (value && !path34 && typeof value === "object") {
+    if (value && !path38 && typeof value === "object") {
       if (utils_default2.endsWith(key, "{}")) {
         key = metaTokens ? key : key.slice(0, -2);
         value = JSON.stringify(value);
@@ -126525,7 +126654,7 @@ function toFormData(obj, formData, options) {
     if (isVisitable(value)) {
       return true;
     }
-    formData.append(renderKey(path34, key, dots), convertValue(value));
+    formData.append(renderKey(path38, key, dots), convertValue(value));
     return false;
   }
   const stack = [];
@@ -126534,16 +126663,16 @@ function toFormData(obj, formData, options) {
     convertValue,
     isVisitable
   });
-  function build(value, path34) {
+  function build(value, path38) {
     if (utils_default2.isUndefined(value)) return;
     if (stack.indexOf(value) !== -1) {
-      throw Error("Circular reference detected in " + path34.join("."));
+      throw Error("Circular reference detected in " + path38.join("."));
     }
     stack.push(value);
     utils_default2.forEach(value, function each(el, key) {
-      const result = !(utils_default2.isUndefined(el) || el === null) && visitor.call(formData, el, utils_default2.isString(key) ? key.trim() : key, path34, exposedHelpers);
+      const result = !(utils_default2.isUndefined(el) || el === null) && visitor.call(formData, el, utils_default2.isString(key) ? key.trim() : key, path38, exposedHelpers);
       if (result === true) {
-        build(el, path34 ? path34.concat(key) : [key]);
+        build(el, path38 ? path38.concat(key) : [key]);
       }
     });
     stack.pop();
@@ -126600,8 +126729,8 @@ var init_AxiosURLSearchParams = __esm({
       const _encode3 = encoder ? function(value) {
         return encoder.call(this, value, encode);
       } : encode;
-      return this._pairs.map(function each(pair) {
-        return _encode3(pair[0]) + "=" + _encode3(pair[1]);
+      return this._pairs.map(function each(pair2) {
+        return _encode3(pair2[0]) + "=" + _encode3(pair2[1]);
       }, "").join("&");
     };
     AxiosURLSearchParams_default = AxiosURLSearchParams;
@@ -126820,7 +126949,7 @@ var init_platform = __esm({
 // node_modules/axios/lib/helpers/toURLEncodedForm.js
 function toURLEncodedForm(data, options) {
   return toFormData_default(data, new platform_default.classes.URLSearchParams(), {
-    visitor: function(value, key, path34, helpers) {
+    visitor: function(value, key, path38, helpers) {
       if (platform_default.isNode && utils_default2.isBuffer(value)) {
         this.append(key, value.toString("base64"));
         return false;
@@ -126858,11 +126987,11 @@ function arrayToObject(arr) {
   return obj;
 }
 function formDataToJSON(formData) {
-  function buildPath(path34, value, target, index) {
-    let name28 = path34[index++];
+  function buildPath(path38, value, target, index) {
+    let name28 = path38[index++];
     if (name28 === "__proto__") return true;
     const isNumericKey = Number.isFinite(+name28);
-    const isLast = index >= path34.length;
+    const isLast = index >= path38.length;
     name28 = !name28 && utils_default2.isArray(target) ? target.length : name28;
     if (isLast) {
       if (utils_default2.hasOwnProp(target, name28)) {
@@ -126875,7 +127004,7 @@ function formDataToJSON(formData) {
     if (!target[name28] || !utils_default2.isObject(target[name28])) {
       target[name28] = [];
     }
-    const result = buildPath(path34, value, target[name28], index);
+    const result = buildPath(path38, value, target[name28], index);
     if (result && utils_default2.isArray(target[name28])) {
       target[name28] = arrayToObject(target[name28]);
     }
@@ -129023,9 +129152,9 @@ var init_http = __esm({
           auth = urlUsername + ":" + urlPassword;
         }
         auth && headers.delete("authorization");
-        let path34;
+        let path38;
         try {
-          path34 = buildURL(
+          path38 = buildURL(
             parsed.pathname + parsed.search,
             config3.params,
             config3.paramsSerializer
@@ -129043,7 +129172,7 @@ var init_http = __esm({
           false
         );
         const options = {
-          path: path34,
+          path: path38,
           method,
           headers: headers.toJSON(),
           agents: { http: config3.httpAgent, https: config3.httpsAgent },
@@ -129307,14 +129436,14 @@ var init_cookies = __esm({
     cookies_default = platform_default.hasStandardBrowserEnv ? (
       // Standard browser envs support document.cookie
       {
-        write(name28, value, expires, path34, domain3, secure, sameSite) {
+        write(name28, value, expires, path38, domain3, secure, sameSite) {
           if (typeof document === "undefined") return;
           const cookie = [`${name28}=${encodeURIComponent(value)}`];
           if (utils_default2.isNumber(expires)) {
             cookie.push(`expires=${new Date(expires).toUTCString()}`);
           }
-          if (utils_default2.isString(path34)) {
-            cookie.push(`path=${path34}`);
+          if (utils_default2.isString(path38)) {
+            cookie.push(`path=${path38}`);
           }
           if (utils_default2.isString(domain3)) {
             cookie.push(`domain=${domain3}`);
@@ -129625,11 +129754,11 @@ var init_xhr = __esm({
           request.upload.addEventListener("loadend", flushUpload);
         }
         if (_config.cancelToken || _config.signal) {
-          onCanceled = (cancel) => {
+          onCanceled = (cancel2) => {
             if (!request) {
               return;
             }
-            reject(!cancel || cancel.type ? new CanceledError_default(null, config3, request) : cancel);
+            reject(!cancel2 || cancel2.type ? new CanceledError_default(null, config3, request) : cancel2);
             request.abort();
             request = null;
           };
@@ -130450,11 +130579,11 @@ var init_CancelToken = __esm({
           resolvePromise = resolve3;
         });
         const token = this;
-        this.promise.then((cancel) => {
+        this.promise.then((cancel2) => {
           if (!token._listeners) return;
           let i = token._listeners.length;
           while (i-- > 0) {
-            token._listeners[i](cancel);
+            token._listeners[i](cancel2);
           }
           token._listeners = null;
         });
@@ -130469,7 +130598,7 @@ var init_CancelToken = __esm({
           };
           return promise3;
         };
-        executor(function cancel(message, config3, request) {
+        executor(function cancel2(message, config3, request) {
           if (token.reason) {
             return;
           }
@@ -130525,13 +130654,13 @@ var init_CancelToken = __esm({
        * cancels the `CancelToken`.
        */
       static source() {
-        let cancel;
+        let cancel2;
         const token = new _CancelToken(function executor(c) {
-          cancel = c;
+          cancel2 = c;
         });
         return {
           token,
-          cancel
+          cancel: cancel2
         };
       }
     };
@@ -130803,9 +130932,9 @@ var init_cleanNovel = __esm({
       emitter;
       /** 最大并发数 */
       concurrency;
-      constructor(concurrency = 5) {
+      constructor(concurrency2 = 5) {
         this.emitter = new import_events2.EventEmitter();
-        this.concurrency = concurrency;
+        this.concurrency = concurrency2;
       }
       async processChapter(novel) {
         try {
@@ -130836,16 +130965,16 @@ var init_cleanNovel = __esm({
       }
       async start(allChapters, projectId) {
         const totalEvent = [];
-        let running = 0;
+        let running2 = 0;
         let index = 0;
         const results = [];
         const runNext = () => {
           if (index >= allChapters.length) return Promise.resolve();
           const novel = allChapters[index++];
-          running++;
+          running2++;
           return this.processChapter(novel).then((result) => {
             if (result) totalEvent.push(result);
-            running--;
+            running2--;
             return runNext();
           });
         };
@@ -130855,6 +130984,58 @@ var init_cleanNovel = __esm({
       }
     };
     cleanNovel_default = CleanNovel;
+  }
+});
+
+// src/lib/genQueue.ts
+function enqueue(imageId, lane, run) {
+  const job = { imageId, lane, run, controller: new AbortController(), enqueuedAt: Date.now() };
+  waiting[lane].push(job);
+  pump(lane);
+}
+function pump(lane) {
+  while (running[lane].size < concurrency(lane) && waiting[lane].length) {
+    const job = waiting[lane].shift();
+    running[lane].set(job.imageId, job);
+    genContext.run({ signal: job.controller.signal, imageId: job.imageId }, () => job.run()).catch((e) => console.error(`[\u751F\u6210\u961F\u5217] ${lane} #${job.imageId}`, e?.message ?? e)).finally(() => {
+      running[lane].delete(job.imageId);
+      pump(lane);
+    });
+  }
+}
+function cancel(imageId) {
+  for (const lane of Object.keys(waiting)) {
+    const index = waiting[lane].findIndex((j) => j.imageId === imageId);
+    if (index >= 0) {
+      waiting[lane].splice(index, 1);
+      return { found: true, queued: true };
+    }
+    const job = running[lane].get(imageId);
+    if (job) {
+      job.controller.abort();
+      return { found: true, queued: false };
+    }
+  }
+  return { found: false, queued: false };
+}
+function queueInfo(imageId) {
+  for (const lane of Object.keys(waiting)) {
+    if (running[lane].has(imageId)) return { lane, ahead: 0, running: true };
+    const index = waiting[lane].findIndex((j) => j.imageId === imageId);
+    if (index >= 0) return { lane, ahead: running[lane].size + index, running: false };
+  }
+  return null;
+}
+var import_async_hooks, genContext, DEFAULT_CONCURRENCY, concurrency, waiting, running;
+var init_genQueue = __esm({
+  "src/lib/genQueue.ts"() {
+    "use strict";
+    import_async_hooks = require("async_hooks");
+    genContext = new import_async_hooks.AsyncLocalStorage();
+    DEFAULT_CONCURRENCY = 1;
+    concurrency = (lane) => Math.max(1, Number(process.env[`GEN_CONCURRENCY_${lane.toUpperCase()}`]) || DEFAULT_CONCURRENCY);
+    waiting = { image: [], video: [], audio: [] };
+    running = { image: /* @__PURE__ */ new Map(), video: /* @__PURE__ */ new Map(), audio: /* @__PURE__ */ new Map() };
   }
 });
 
@@ -131435,10 +131616,10 @@ function mergeDefs(...defs) {
 function cloneDef(schema) {
   return mergeDefs(schema._zod.def);
 }
-function getElementAtPath(obj, path34) {
-  if (!path34)
+function getElementAtPath(obj, path38) {
+  if (!path38)
     return obj;
-  return path34.reduce((acc, key) => acc?.[key], obj);
+  return path38.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
   const keys2 = Object.keys(promisesObj);
@@ -131750,11 +131931,11 @@ function aborted(x, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues(path34, issues) {
+function prefixIssues(path38, issues) {
   return issues.map((iss) => {
     var _a31;
     (_a31 = iss).path ?? (_a31.path = []);
-    iss.path.unshift(path34);
+    iss.path.unshift(path38);
     return iss;
   });
 }
@@ -131997,7 +132178,7 @@ function formatError(error73, mapper = (issue3) => issue3.message) {
 }
 function treeifyError(error73, mapper = (issue3) => issue3.message) {
   const result = { errors: [] };
-  const processError = (error74, path34 = []) => {
+  const processError = (error74, path38 = []) => {
     var _a31, _b27;
     for (const issue3 of error74.issues) {
       if (issue3.code === "invalid_union" && issue3.errors.length) {
@@ -132007,7 +132188,7 @@ function treeifyError(error73, mapper = (issue3) => issue3.message) {
       } else if (issue3.code === "invalid_element") {
         processError({ issues: issue3.issues }, issue3.path);
       } else {
-        const fullpath = [...path34, ...issue3.path];
+        const fullpath = [...path38, ...issue3.path];
         if (fullpath.length === 0) {
           result.errors.push(mapper(issue3));
           continue;
@@ -132039,8 +132220,8 @@ function treeifyError(error73, mapper = (issue3) => issue3.message) {
 }
 function toDotPath(_path) {
   const segs = [];
-  const path34 = _path.map((seg) => typeof seg === "object" ? seg.key : seg);
-  for (const seg of path34) {
+  const path38 = _path.map((seg) => typeof seg === "object" ? seg.key : seg);
+  for (const seg of path38) {
     if (typeof seg === "number")
       segs.push(`[${seg}]`);
     else if (typeof seg === "symbol")
@@ -134006,14 +134187,14 @@ var init_schemas = __esm({
           return `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`;
         };
         doc.write(`const input = payload.value;`);
-        const ids = /* @__PURE__ */ Object.create(null);
+        const ids2 = /* @__PURE__ */ Object.create(null);
         let counter = 0;
         for (const key of normalized.keys) {
-          ids[key] = `key_${counter++}`;
+          ids2[key] = `key_${counter++}`;
         }
         doc.write(`const newResult = {};`);
         for (const key of normalized.keys) {
-          const id = ids[key];
+          const id = ids2[key];
           const k = esc(key);
           const schema = shape[key];
           const isOptionalOut = schema?._zod?.optout === "optional";
@@ -144804,13 +144985,13 @@ function resolveRef(ref, ctx) {
   if (!ref.startsWith("#")) {
     throw new Error("External $ref is not supported, only local refs (#/...) are allowed");
   }
-  const path34 = ref.slice(1).split("/").filter(Boolean);
-  if (path34.length === 0) {
+  const path38 = ref.slice(1).split("/").filter(Boolean);
+  if (path38.length === 0) {
     return ctx.rootSchema;
   }
   const defsKey = ctx.version === "draft-2020-12" ? "$defs" : "definitions";
-  if (path34[0] === defsKey) {
-    const key = path34[1];
+  if (path38[0] === defsKey) {
+    const key = path38[1];
     if (!key || !ctx.defs[key]) {
       throw new Error(`Reference not found: ${ref}`);
     }
@@ -145992,8 +146173,8 @@ var init_parseUtil = __esm({
     init_errors3();
     init_en2();
     makeIssue = (params) => {
-      const { data, path: path34, errorMaps, issueData } = params;
-      const fullPath = [...path34, ...issueData.path || []];
+      const { data, path: path38, errorMaps, issueData } = params;
+      const fullPath = [...path38, ...issueData.path || []];
       const fullIssue = {
         ...issueData,
         path: fullPath
@@ -146041,9 +146222,9 @@ var init_parseUtil = __esm({
       }
       static async mergeObjectAsync(status, pairs) {
         const syncPairs = [];
-        for (const pair of pairs) {
-          const key = await pair.key;
-          const value = await pair.value;
+        for (const pair2 of pairs) {
+          const key = await pair2.key;
+          const value = await pair2.value;
           syncPairs.push({
             key,
             value
@@ -146053,8 +146234,8 @@ var init_parseUtil = __esm({
       }
       static mergeObjectSync(status, pairs) {
         const finalObject = {};
-        for (const pair of pairs) {
-          const { key, value } = pair;
+        for (const pair2 of pairs) {
+          const { key, value } = pair2;
           if (key.status === "aborted")
             return INVALID;
           if (value.status === "aborted")
@@ -146063,7 +146244,7 @@ var init_parseUtil = __esm({
             status.dirty();
           if (value.status === "dirty")
             status.dirty();
-          if (key.value !== "__proto__" && (typeof value.value !== "undefined" || pair.alwaysSet)) {
+          if (key.value !== "__proto__" && (typeof value.value !== "undefined" || pair2.alwaysSet)) {
             finalObject[key.value] = value.value;
           }
         }
@@ -146276,11 +146457,11 @@ var init_types = __esm({
     init_parseUtil();
     init_util2();
     ParseInputLazyPath = class {
-      constructor(parent, value, path34, key) {
+      constructor(parent, value, path38, key) {
         this._cachedPath = [];
         this.parent = parent;
         this.data = value;
-        this._path = path34;
+        this._path = path38;
         this._key = key;
       }
       get path() {
@@ -148013,13 +148194,13 @@ var init_types = __esm({
         if (ctx.common.async) {
           return Promise.resolve().then(async () => {
             const syncPairs = [];
-            for (const pair of pairs) {
-              const key = await pair.key;
-              const value = await pair.value;
+            for (const pair2 of pairs) {
+              const key = await pair2.key;
+              const value = await pair2.value;
               syncPairs.push({
                 key,
                 value,
-                alwaysSet: pair.alwaysSet
+                alwaysSet: pair2.alwaysSet
               });
             }
             return syncPairs;
@@ -148666,9 +148847,9 @@ var init_types = __esm({
         if (ctx.common.async) {
           const finalMap = /* @__PURE__ */ new Map();
           return Promise.resolve().then(async () => {
-            for (const pair of pairs) {
-              const key = await pair.key;
-              const value = await pair.value;
+            for (const pair2 of pairs) {
+              const key = await pair2.key;
+              const value = await pair2.value;
               if (key.status === "aborted" || value.status === "aborted") {
                 return INVALID;
               }
@@ -148681,9 +148862,9 @@ var init_types = __esm({
           });
         } else {
           const finalMap = /* @__PURE__ */ new Map();
-          for (const pair of pairs) {
-            const key = pair.key;
-            const value = pair.value;
+          for (const pair2 of pairs) {
+            const key = pair2.key;
+            const value = pair2.value;
             if (key.status === "aborted" || value.status === "aborted") {
               return INVALID;
             }
@@ -153583,37 +153764,37 @@ function createOpenAI(options = {}) {
   );
   const createChatModel = (modelId) => new OpenAIChatLanguageModel(modelId, {
     provider: `${providerName}.chat`,
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch
   });
   const createCompletionModel = (modelId) => new OpenAICompletionLanguageModel(modelId, {
     provider: `${providerName}.completion`,
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch
   });
   const createEmbeddingModel = (modelId) => new OpenAIEmbeddingModel(modelId, {
     provider: `${providerName}.embedding`,
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch
   });
   const createImageModel = (modelId) => new OpenAIImageModel(modelId, {
     provider: `${providerName}.image`,
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch
   });
   const createTranscriptionModel = (modelId) => new OpenAITranscriptionModel(modelId, {
     provider: `${providerName}.transcription`,
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch
   });
   const createSpeechModel = (modelId) => new OpenAISpeechModel(modelId, {
     provider: `${providerName}.speech`,
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch
   });
@@ -153628,7 +153809,7 @@ function createOpenAI(options = {}) {
   const createResponsesModel = (modelId) => {
     return new OpenAIResponsesLanguageModel(modelId, {
       provider: `${providerName}.responses`,
-      url: ({ path: path34 }) => `${baseURL}${path34}`,
+      url: ({ path: path38 }) => `${baseURL}${path38}`,
       headers: getHeaders,
       fetch: options.fetch,
       fileIdPrefixes: ["file-"]
@@ -158971,7 +159152,7 @@ function createDeepSeek(options = {}) {
   const createLanguageModel = (modelId) => {
     return new DeepSeekChatLanguageModel(modelId, {
       provider: `deepseek.chat`,
-      url: ({ path: path34 }) => `${baseURL}${path34}`,
+      url: ({ path: path38 }) => `${baseURL}${path38}`,
       headers: getHeaders,
       fetch: options.fetch
     });
@@ -160489,10 +160670,10 @@ function mergeDefs2(...defs) {
 function cloneDef2(schema) {
   return mergeDefs2(schema._zod.def);
 }
-function getElementAtPath2(obj, path34) {
-  if (!path34)
+function getElementAtPath2(obj, path38) {
+  if (!path38)
     return obj;
-  return path34.reduce((acc, key) => acc == null ? void 0 : acc[key], obj);
+  return path38.reduce((acc, key) => acc == null ? void 0 : acc[key], obj);
 }
 function promiseAllObject2(promisesObj) {
   const keys2 = Object.keys(promisesObj);
@@ -160805,12 +160986,12 @@ function aborted2(x, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues2(path34, issues) {
+function prefixIssues2(path38, issues) {
   return issues.map((iss) => {
     var _a47;
     var _a37;
     (_a47 = (_a37 = iss).path) != null ? _a47 : _a37.path = [];
-    iss.path.unshift(path34);
+    iss.path.unshift(path38);
     return iss;
   });
 }
@@ -160970,7 +161151,7 @@ function formatError2(error482, mapper = (issue22) => issue22.message) {
 }
 function treeifyError2(error482, mapper = (issue22) => issue22.message) {
   const result = { errors: [] };
-  const processError = (error492, path34 = []) => {
+  const processError = (error492, path38 = []) => {
     var _a47, _b27, _c, _d;
     var _a37, _b28;
     for (const issue22 of error492.issues) {
@@ -160981,7 +161162,7 @@ function treeifyError2(error482, mapper = (issue22) => issue22.message) {
       } else if (issue22.code === "invalid_element") {
         processError({ issues: issue22.issues }, issue22.path);
       } else {
-        const fullpath = [...path34, ...issue22.path];
+        const fullpath = [...path38, ...issue22.path];
         if (fullpath.length === 0) {
           result.errors.push(mapper(issue22));
           continue;
@@ -161013,8 +161194,8 @@ function treeifyError2(error482, mapper = (issue22) => issue22.message) {
 }
 function toDotPath2(_path) {
   const segs = [];
-  const path34 = _path.map((seg) => typeof seg === "object" ? seg.key : seg);
-  for (const seg of path34) {
+  const path38 = _path.map((seg) => typeof seg === "object" ? seg.key : seg);
+  for (const seg of path38) {
     if (typeof seg === "number")
       segs.push(`[${seg}]`);
     else if (typeof seg === "symbol")
@@ -163634,13 +163815,13 @@ function resolveRef2(ref, ctx) {
   if (!ref.startsWith("#")) {
     throw new Error("External $ref is not supported, only local refs (#/...) are allowed");
   }
-  const path34 = ref.slice(1).split("/").filter(Boolean);
-  if (path34.length === 0) {
+  const path38 = ref.slice(1).split("/").filter(Boolean);
+  if (path38.length === 0) {
     return ctx.rootSchema;
   }
   const defsKey = ctx.version === "draft-2020-12" ? "$defs" : "definitions";
-  if (path34[0] === defsKey) {
-    const key = path34[1];
+  if (path38[0] === defsKey) {
+    const key = path38[1];
     if (!key || !ctx.defs[key]) {
       throw new Error(`Reference not found: ${ref}`);
     }
@@ -164205,7 +164386,7 @@ function createZhipu(options = {}) {
   });
   const createImageModel = (modelId) => new ZhipuImageModel(modelId, {
     provider: "zhipu.image",
-    url: ({ path: path34 }) => `${baseURL}${path34}`,
+    url: ({ path: path38 }) => `${baseURL}${path38}`,
     headers: getHeaders,
     fetch: options.fetch,
     _internal: {
@@ -166460,14 +166641,14 @@ var init_dist11 = __esm({
           return `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`;
         };
         doc.write(`const input = payload.value;`);
-        const ids = /* @__PURE__ */ Object.create(null);
+        const ids2 = /* @__PURE__ */ Object.create(null);
         let counter = 0;
         for (const key of normalized.keys) {
-          ids[key] = `key_${counter++}`;
+          ids2[key] = `key_${counter++}`;
         }
         doc.write(`const newResult = {};`);
         for (const key of normalized.keys) {
-          const id = ids[key];
+          const id = ids2[key];
           const k = esc2(key);
           const schema = shape[key];
           const isOptionalOut = ((_a37 = schema == null ? void 0 : schema._zod) == null ? void 0 : _a37.optout) === "optional";
@@ -175601,7 +175782,7 @@ var require_util4 = __commonJS({
     exports2.getElementAtPath = getElementAtPath3;
     exports2.promiseAllObject = promiseAllObject3;
     exports2.randomString = randomString3;
-    exports2.esc = esc3;
+    exports2.esc = esc4;
     exports2.slugify = slugify3;
     exports2.isObject = isObject5;
     exports2.isPlainObject = isPlainObject4;
@@ -175742,10 +175923,10 @@ var require_util4 = __commonJS({
     function cloneDef3(schema) {
       return mergeDefs3(schema._zod.def);
     }
-    function getElementAtPath3(obj, path34) {
-      if (!path34)
+    function getElementAtPath3(obj, path38) {
+      if (!path38)
         return obj;
-      return path34.reduce((acc, key) => acc?.[key], obj);
+      return path38.reduce((acc, key) => acc?.[key], obj);
     }
     function promiseAllObject3(promisesObj) {
       const keys2 = Object.keys(promisesObj);
@@ -175766,7 +175947,7 @@ var require_util4 = __commonJS({
       }
       return str;
     }
-    function esc3(str) {
+    function esc4(str) {
       return JSON.stringify(str);
     }
     function slugify3(input) {
@@ -176129,11 +176310,11 @@ var require_util4 = __commonJS({
       }
       return false;
     }
-    function prefixIssues3(path34, issues) {
+    function prefixIssues3(path38, issues) {
       return issues.map((iss) => {
         var _a31;
         (_a31 = iss).path ?? (_a31.path = []);
-        iss.path.unshift(path34);
+        iss.path.unshift(path38);
         return iss;
       });
     }
@@ -176358,7 +176539,7 @@ var require_errors = __commonJS({
     }
     function treeifyError3(error73, mapper = (issue3) => issue3.message) {
       const result = { errors: [] };
-      const processError = (error74, path34 = []) => {
+      const processError = (error74, path38 = []) => {
         var _a31, _b27;
         for (const issue3 of error74.issues) {
           if (issue3.code === "invalid_union" && issue3.errors.length) {
@@ -176368,7 +176549,7 @@ var require_errors = __commonJS({
           } else if (issue3.code === "invalid_element") {
             processError({ issues: issue3.issues }, issue3.path);
           } else {
-            const fullpath = [...path34, ...issue3.path];
+            const fullpath = [...path38, ...issue3.path];
             if (fullpath.length === 0) {
               result.errors.push(mapper(issue3));
               continue;
@@ -176400,8 +176581,8 @@ var require_errors = __commonJS({
     }
     function toDotPath3(_path) {
       const segs = [];
-      const path34 = _path.map((seg) => typeof seg === "object" ? seg.key : seg);
-      for (const seg of path34) {
+      const path38 = _path.map((seg) => typeof seg === "object" ? seg.key : seg);
+      for (const seg of path38) {
         if (typeof seg === "number")
           segs.push(`[${seg}]`);
         else if (typeof seg === "symbol")
@@ -178178,14 +178359,14 @@ var require_schemas = __commonJS({
           return `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`;
         };
         doc.write(`const input = payload.value;`);
-        const ids = /* @__PURE__ */ Object.create(null);
+        const ids2 = /* @__PURE__ */ Object.create(null);
         let counter = 0;
         for (const key of normalized.keys) {
-          ids[key] = `key_${counter++}`;
+          ids2[key] = `key_${counter++}`;
         }
         doc.write(`const newResult = {};`);
         for (const key of normalized.keys) {
-          const id = ids[key];
+          const id = ids2[key];
           const k = util4.esc(key);
           const schema = shape[key];
           const isOptionalOut = schema?._zod?.optout === "optional";
@@ -190902,13 +191083,13 @@ var require_from_json_schema = __commonJS({
       if (!ref.startsWith("#")) {
         throw new Error("External $ref is not supported, only local refs (#/...) are allowed");
       }
-      const path34 = ref.slice(1).split("/").filter(Boolean);
-      if (path34.length === 0) {
+      const path38 = ref.slice(1).split("/").filter(Boolean);
+      if (path38.length === 0) {
         return ctx.rootSchema;
       }
       const defsKey = ctx.version === "draft-2020-12" ? "$defs" : "definitions";
-      if (path34[0] === defsKey) {
-        const key = path34[1];
+      if (path38[0] === defsKey) {
+        const key = path38[1];
         if (!key || !ctx.defs[key]) {
           throw new Error(`Reference not found: ${ref}`);
         }
@@ -191953,8 +192134,8 @@ var require_parseUtil = __commonJS({
     var errors_js_1 = require_errors3();
     var en_js_1 = __importDefault(require_en2());
     var makeIssue2 = (params) => {
-      const { data, path: path34, errorMaps, issueData } = params;
-      const fullPath = [...path34, ...issueData.path || []];
+      const { data, path: path38, errorMaps, issueData } = params;
+      const fullPath = [...path38, ...issueData.path || []];
       const fullIssue = {
         ...issueData,
         path: fullPath
@@ -192023,9 +192204,9 @@ var require_parseUtil = __commonJS({
       }
       static async mergeObjectAsync(status, pairs) {
         const syncPairs = [];
-        for (const pair of pairs) {
-          const key = await pair.key;
-          const value = await pair.value;
+        for (const pair2 of pairs) {
+          const key = await pair2.key;
+          const value = await pair2.value;
           syncPairs.push({
             key,
             value
@@ -192035,8 +192216,8 @@ var require_parseUtil = __commonJS({
       }
       static mergeObjectSync(status, pairs) {
         const finalObject = {};
-        for (const pair of pairs) {
-          const { key, value } = pair;
+        for (const pair2 of pairs) {
+          const { key, value } = pair2;
           if (key.status === "aborted")
             return exports2.INVALID;
           if (value.status === "aborted")
@@ -192045,7 +192226,7 @@ var require_parseUtil = __commonJS({
             status.dirty();
           if (value.status === "dirty")
             status.dirty();
-          if (key.value !== "__proto__" && (typeof value.value !== "undefined" || pair.alwaysSet)) {
+          if (key.value !== "__proto__" && (typeof value.value !== "undefined" || pair2.alwaysSet)) {
             finalObject[key.value] = value.value;
           }
         }
@@ -192108,11 +192289,11 @@ var require_types4 = __commonJS({
     var parseUtil_js_1 = require_parseUtil();
     var util_js_1 = require_util5();
     var ParseInputLazyPath2 = class {
-      constructor(parent, value, path34, key) {
+      constructor(parent, value, path38, key) {
         this._cachedPath = [];
         this.parent = parent;
         this.data = value;
-        this._path = path34;
+        this._path = path38;
         this._key = key;
       }
       get path() {
@@ -193981,13 +194162,13 @@ var require_types4 = __commonJS({
         if (ctx.common.async) {
           return Promise.resolve().then(async () => {
             const syncPairs = [];
-            for (const pair of pairs) {
-              const key = await pair.key;
-              const value = await pair.value;
+            for (const pair2 of pairs) {
+              const key = await pair2.key;
+              const value = await pair2.value;
               syncPairs.push({
                 key,
                 value,
-                alwaysSet: pair.alwaysSet
+                alwaysSet: pair2.alwaysSet
               });
             }
             return syncPairs;
@@ -194678,9 +194859,9 @@ var require_types4 = __commonJS({
         if (ctx.common.async) {
           const finalMap = /* @__PURE__ */ new Map();
           return Promise.resolve().then(async () => {
-            for (const pair of pairs) {
-              const key = await pair.key;
-              const value = await pair.value;
+            for (const pair2 of pairs) {
+              const key = await pair2.key;
+              const value = await pair2.value;
               if (key.status === "aborted" || value.status === "aborted") {
                 return parseUtil_js_1.INVALID;
               }
@@ -194693,9 +194874,9 @@ var require_types4 = __commonJS({
           });
         } else {
           const finalMap = /* @__PURE__ */ new Map();
-          for (const pair of pairs) {
-            const key = pair.key;
-            const value = pair.value;
+          for (const pair2 of pairs) {
+            const key = pair2.key;
+            const value = pair2.value;
             if (key.status === "aborted" || value.status === "aborted") {
               return parseUtil_js_1.INVALID;
             }
@@ -198732,13 +198913,13 @@ var require_dist9 = __commonJS({
       };
     }
     var import_provider_utils210 = require_dist8();
-    var import_zod151 = require_zod();
-    var qwenErrorDataSchema = import_zod151.z.object({
-      object: import_zod151.z.literal("error"),
-      message: import_zod151.z.string(),
-      type: import_zod151.z.string(),
-      param: import_zod151.z.string().nullable(),
-      code: import_zod151.z.string().nullable()
+    var import_zod173 = require_zod();
+    var qwenErrorDataSchema = import_zod173.z.object({
+      object: import_zod173.z.literal("error"),
+      message: import_zod173.z.string(),
+      type: import_zod173.z.string(),
+      param: import_zod173.z.string().nullable(),
+      code: import_zod173.z.string().nullable()
     });
     var qwenFailedResponseHandler = (0, import_provider_utils210.createJsonErrorResponseHandler)({
       errorSchema: qwenErrorDataSchema,
@@ -200107,8 +200288,8 @@ ${user}:`]
       });
       const getCommonModelConfig = (modelType) => ({
         provider: `qwen.${modelType}`,
-        url: ({ path: path34 }) => {
-          const url4 = new URL(`${baseURL}${path34}`);
+        url: ({ path: path38 }) => {
+          const url4 = new URL(`${baseURL}${path38}`);
           if (options.queryParams) {
             url4.search = new URLSearchParams(options.queryParams).toString();
           }
@@ -208174,8 +208355,8 @@ function createOpenAICompatible(options) {
   const getHeaders = () => withUserAgentSuffix(headers, `ai-sdk/openai-compatible/${VERSION9}`);
   const getCommonModelConfig = (modelType) => ({
     provider: `${providerName}.${modelType}`,
-    url: ({ path: path34 }) => {
-      const url4 = new URL(`${baseURL}${path34}`);
+    url: ({ path: path38 }) => {
+      const url4 = new URL(`${baseURL}${path38}`);
       if (options.queryParams) {
         url4.search = new URLSearchParams(options.queryParams).toString();
       }
@@ -220759,7 +220940,7 @@ function createMinimax(options = {}) {
   const createLanguageModel = (modelId) => {
     return new MinimaxChatLanguageModel(modelId, {
       provider: `minimax.chat`,
-      url: ({ path: path34 }) => `${baseURL}${path34}`,
+      url: ({ path: path38 }) => `${baseURL}${path38}`,
       headers: getHeaders,
       fetch: options.fetch
     });
@@ -225192,6 +225373,7 @@ async function urlToBase64(url4) {
 async function pollTask(fn, interval = 3e3, timeout = 3e6) {
   const start = Date.now();
   while (Date.now() - start < timeout) {
+    if (genContext.getStore()?.signal.aborted) return { completed: false, error: CANCELLED };
     try {
       const result = await fn();
       if (result.completed) return result;
@@ -225275,11 +225457,12 @@ async function compressToSize(imageBuffer, maxBytes, originalWidth, originalHeig
     }
   }
 }
-var import_vm2, import_sharp, import_qwen_ai_provider_v5, import_form_data2, import_jsonwebtoken, import_node_crypto3;
+var import_vm2, import_sharp, import_qwen_ai_provider_v5, import_form_data2, import_jsonwebtoken, import_node_crypto3, CANCELLED;
 var init_vm = __esm({
   "src/utils/vm.ts"() {
     "use strict";
     import_vm2 = require("vm2");
+    init_genQueue();
     import_sharp = __toESM(require("sharp"));
     init_axios2();
     init_dist6();
@@ -225295,6 +225478,7 @@ var init_vm = __esm({
     import_jsonwebtoken = __toESM(require_jsonwebtoken());
     init_utils3();
     import_node_crypto3 = __toESM(require("node:crypto"));
+    CANCELLED = "\u5DF2\u53D6\u6D88";
   }
 });
 
@@ -225469,19 +225653,19 @@ var require_token_io = __commonJS({
       getUserDataDir: () => getUserDataDir
     });
     module2.exports = __toCommonJS2(token_io_exports);
-    var import_path30 = __toESM2(require("path"));
-    var import_fs20 = __toESM2(require("fs"));
+    var import_path34 = __toESM2(require("path"));
+    var import_fs23 = __toESM2(require("fs"));
     var import_os = __toESM2(require("os"));
     var import_token_error = require_token_error();
     function findRootDir() {
       try {
         let dir = process.cwd();
-        while (dir !== import_path30.default.dirname(dir)) {
-          const pkgPath = import_path30.default.join(dir, ".vercel");
-          if (import_fs20.default.existsSync(pkgPath)) {
+        while (dir !== import_path34.default.dirname(dir)) {
+          const pkgPath = import_path34.default.join(dir, ".vercel");
+          if (import_fs23.default.existsSync(pkgPath)) {
             return dir;
           }
-          dir = import_path30.default.dirname(dir);
+          dir = import_path34.default.dirname(dir);
         }
       } catch (e) {
         throw new import_token_error.VercelOidcTokenError(
@@ -225496,9 +225680,9 @@ var require_token_io = __commonJS({
       }
       switch (import_os.default.platform()) {
         case "darwin":
-          return import_path30.default.join(import_os.default.homedir(), "Library/Application Support");
+          return import_path34.default.join(import_os.default.homedir(), "Library/Application Support");
         case "linux":
-          return import_path30.default.join(import_os.default.homedir(), ".local/share");
+          return import_path34.default.join(import_os.default.homedir(), ".local/share");
         case "win32":
           if (process.env.LOCALAPPDATA) {
             return process.env.LOCALAPPDATA;
@@ -225549,8 +225733,8 @@ var require_auth_config = __commonJS({
       writeAuthConfig: () => writeAuthConfig
     });
     module2.exports = __toCommonJS2(auth_config_exports);
-    var fs36 = __toESM2(require("fs"));
-    var path34 = __toESM2(require("path"));
+    var fs40 = __toESM2(require("fs"));
+    var path38 = __toESM2(require("path"));
     var import_token_util = require_token_util();
     function getAuthConfigPath() {
       const dataDir = (0, import_token_util.getVercelDataDir)();
@@ -225559,15 +225743,15 @@ var require_auth_config = __commonJS({
           `Unable to find Vercel CLI data directory. Your platform: ${process.platform}. Supported: darwin, linux, win32.`
         );
       }
-      return path34.join(dataDir, "auth.json");
+      return path38.join(dataDir, "auth.json");
     }
     function readAuthConfig() {
       try {
         const authPath = getAuthConfigPath();
-        if (!fs36.existsSync(authPath)) {
+        if (!fs40.existsSync(authPath)) {
           return null;
         }
-        const content = fs36.readFileSync(authPath, "utf8");
+        const content = fs40.readFileSync(authPath, "utf8");
         if (!content) {
           return null;
         }
@@ -225578,11 +225762,11 @@ var require_auth_config = __commonJS({
     }
     function writeAuthConfig(config3) {
       const authPath = getAuthConfigPath();
-      const authDir = path34.dirname(authPath);
-      if (!fs36.existsSync(authDir)) {
-        fs36.mkdirSync(authDir, { mode: 504, recursive: true });
+      const authDir = path38.dirname(authPath);
+      if (!fs40.existsSync(authDir)) {
+        fs40.mkdirSync(authDir, { mode: 504, recursive: true });
       }
-      fs36.writeFileSync(authPath, JSON.stringify(config3, null, 2), { mode: 384 });
+      fs40.writeFileSync(authPath, JSON.stringify(config3, null, 2), { mode: 384 });
     }
     function isValidAccessToken(authConfig) {
       if (!authConfig.token)
@@ -225728,8 +225912,8 @@ var require_token_util = __commonJS({
       saveToken: () => saveToken
     });
     module2.exports = __toCommonJS2(token_util_exports);
-    var path34 = __toESM2(require("path"));
-    var fs36 = __toESM2(require("fs"));
+    var path38 = __toESM2(require("path"));
+    var fs40 = __toESM2(require("fs"));
     var import_token_error = require_token_error();
     var import_token_io = require_token_io();
     var import_auth_config = require_auth_config();
@@ -225740,7 +225924,7 @@ var require_token_util = __commonJS({
       if (!dataDir) {
         return null;
       }
-      return path34.join(dataDir, vercelFolder);
+      return path38.join(dataDir, vercelFolder);
     }
     async function getVercelCliToken() {
       const authConfig = (0, import_auth_config.readAuthConfig)();
@@ -225813,13 +225997,13 @@ var require_token_util = __commonJS({
           "Unable to find project root directory. Have you linked your project with `vc link?`"
         );
       }
-      const prjPath = path34.join(dir, ".vercel", "project.json");
-      if (!fs36.existsSync(prjPath)) {
+      const prjPath = path38.join(dir, ".vercel", "project.json");
+      if (!fs40.existsSync(prjPath)) {
         throw new import_token_error.VercelOidcTokenError(
           "project.json not found, have you linked your project with `vc link?`"
         );
       }
-      const prj = JSON.parse(fs36.readFileSync(prjPath, "utf8"));
+      const prj = JSON.parse(fs40.readFileSync(prjPath, "utf8"));
       if (typeof prj.projectId !== "string" && typeof prj.orgId !== "string") {
         throw new TypeError(
           "Expected a string-valued projectId property. Try running `vc link` to re-link your project."
@@ -225834,11 +226018,11 @@ var require_token_util = __commonJS({
           "Unable to find user data directory. Please reach out to Vercel support."
         );
       }
-      const tokenPath = path34.join(dir, "com.vercel.token", `${projectId}.json`);
+      const tokenPath = path38.join(dir, "com.vercel.token", `${projectId}.json`);
       const tokenJson = JSON.stringify(token);
-      fs36.mkdirSync(path34.dirname(tokenPath), { mode: 504, recursive: true });
-      fs36.writeFileSync(tokenPath, tokenJson);
-      fs36.chmodSync(tokenPath, 432);
+      fs40.mkdirSync(path38.dirname(tokenPath), { mode: 504, recursive: true });
+      fs40.writeFileSync(tokenPath, tokenJson);
+      fs40.chmodSync(tokenPath, 432);
       return;
     }
     function loadToken(projectId) {
@@ -225848,11 +226032,11 @@ var require_token_util = __commonJS({
           "Unable to find user data directory. Please reach out to Vercel support."
         );
       }
-      const tokenPath = path34.join(dir, "com.vercel.token", `${projectId}.json`);
-      if (!fs36.existsSync(tokenPath)) {
+      const tokenPath = path38.join(dir, "com.vercel.token", `${projectId}.json`);
+      if (!fs40.existsSync(tokenPath)) {
         return null;
       }
-      const token = JSON.parse(fs36.readFileSync(tokenPath, "utf8"));
+      const token = JSON.parse(fs40.readFileSync(tokenPath, "utf8"));
       assertVercelOidcTokenResponse(token);
       return token;
     }
@@ -236890,12 +237074,12 @@ async function getVendorTemplateFn(fnName, modelName) {
   if (!selectedModel) throw new Error(`\u672A\u627E\u5230\u6A21\u578B ${name28} id=${id}`);
   const code = utils_default.vendor.getCode(id);
   const jsCode = (0, import_sucrase2.transform)(code, { transforms: ["typescript"] }).code;
-  const running = utils_default.vm(jsCode);
-  if (running.vendor) {
-    Object.assign(running.vendor.inputValues, JSON.parse(vendorConfigData.inputValues ?? "{}"));
-    running.vendor.models = modelList;
+  const running2 = utils_default.vm(jsCode);
+  if (running2.vendor) {
+    Object.assign(running2.vendor.inputValues, JSON.parse(vendorConfigData.inputValues ?? "{}"));
+    running2.vendor.models = modelList;
   }
-  const fn = running[fnName];
+  const fn = running2[fnName];
   if (!fn) throw new Error(`\u672A\u627E\u5230\u4F9B\u5E94\u5546\u914D\u7F6E\u4E2D\u7684\u51FD\u6570 ${fnName} id=${id}`);
   if (fnName == "textRequest")
     return (think, thinkLevel = 0) => {
@@ -237029,8 +237213,8 @@ var init_ai = __esm({
         await exec2(modelName);
         return this;
       }
-      async save(path34) {
-        await utils_default.oss.writeFile(path34, this.result);
+      async save(path38) {
+        await utils_default.oss.writeFile(path38, this.result);
         return this;
       }
     };
@@ -237059,8 +237243,8 @@ var init_ai = __esm({
           throw e;
         }
       }
-      async save(path34) {
-        await utils_default.oss.writeFile(path34, this.result);
+      async save(path38) {
+        await utils_default.oss.writeFile(path38, this.result);
         return this;
       }
     };
@@ -237073,22 +237257,21 @@ var init_ai = __esm({
       async run(input, taskRecord2) {
         const modelName = await resolveModelName(this.key);
         const exec2 = async (mn) => {
-          try {
-            const fn = await getVendorTemplateFn("ttsRequest", mn);
-            await referenceList2imageBase642(mn.split(/:(.+)/)[0], input);
-            this.result = await fn(input);
-            if (this.result.startsWith("http")) this.result = await urlToBase642(this.result);
-            return this;
-          } catch (e) {
-          }
+          const fn = await getVendorTemplateFn("ttsRequest", mn);
+          await referenceList2imageBase642(mn.split(/:(.+)/)[0], input);
+          this.result = await fn(input);
+          if (!this.result) throw new Error("\u8BED\u97F3\u6A21\u578B\u6CA1\u6709\u8FD4\u56DE\u97F3\u9891\uFF0C\u8BF7\u68C0\u67E5\u4F9B\u5E94\u5546\u811A\u672C\u7684 ttsRequest \u5B9E\u73B0");
+          if (this.result.startsWith("http")) this.result = await urlToBase642(this.result);
         };
         if (taskRecord2) {
-          return withTaskRecord(this.key, taskRecord2.taskClass, taskRecord2.describe, taskRecord2.relatedObjects, taskRecord2.projectId, exec2);
+          await withTaskRecord(this.key, taskRecord2.taskClass, taskRecord2.describe, taskRecord2.relatedObjects, taskRecord2.projectId, exec2);
+          return this;
         }
-        return await exec2(modelName);
+        await exec2(modelName);
+        return this;
       }
-      async save(path34) {
-        await utils_default.oss.writeFile(path34, this.result);
+      async save(path38) {
+        await utils_default.oss.writeFile(path38, this.result);
         return this;
       }
     };
@@ -237168,8 +237351,8 @@ var init_getPrompts = __esm({
 });
 
 // src/utils/getArtPrompt.ts
-function getArtPrompt(styleName, source, fileName) {
-  const baseDir = getPath_default(["skills", source, styleName]);
+function getArtPrompt(styleName2, source, fileName) {
+  const baseDir = getPath_default(["skills", source, styleName2]);
   if (!import_fs4.default.existsSync(baseDir)) {
     return "";
   }
@@ -237513,10 +237696,10 @@ var init_addArtStyle = __esm({
         prompt: external_exports.string()
       }),
       async (req, res) => {
-        const { name: name28, fileUrl, prompt } = req.body;
+        const { name: name28, fileUrl: fileUrl2, prompt } = req.body;
         const imagePath = `/artStyle/${v4_default()}.jpg`;
-        const matches = fileUrl.match(/^data:image\/\w+;base64,(.+)$/);
-        const realBase64 = matches ? matches[1] : fileUrl;
+        const matches = fileUrl2.match(/^data:image\/\w+;base64,(.+)$/);
+        const realBase64 = matches ? matches[1] : fileUrl2;
         await utils_default.oss.writeFile(imagePath, Buffer.from(realBase64, "base64"));
         await utils_default.db("o_artStyle").insert({
           name: name28,
@@ -237551,10 +237734,10 @@ var init_editArtStyle = __esm({
         prompt: external_exports.string()
       }),
       async (req, res) => {
-        const { id, name: name28, fileUrl, prompt } = req.body;
+        const { id, name: name28, fileUrl: fileUrl2, prompt } = req.body;
         const imagePath = `/artStyle/${v4_default()}.jpg`;
-        const matches = fileUrl.match(/^data:image\/\w+;base64,(.+)$/);
-        const realBase64 = matches ? matches[1] : fileUrl;
+        const matches = fileUrl2.match(/^data:image\/\w+;base64,(.+)$/);
+        const realBase64 = matches ? matches[1] : fileUrl2;
         await utils_default.oss.writeFile(imagePath, Buffer.from(realBase64, "base64"));
         await utils_default.db("o_artStyle").update({
           name: name28,
@@ -237624,8 +237807,8 @@ var init_getArtStyle = __esm({
       const list2 = await utils_default.db("o_artStyle").select("*");
       const data = await Promise.all(
         list2.map(async (item) => {
-          const fileUrl = await utils_default.oss.getSmallImageUrl(item.fileUrl);
-          return { ...item, fileUrl };
+          const fileUrl2 = await utils_default.oss.getSmallImageUrl(item.fileUrl);
+          return { ...item, fileUrl: fileUrl2 };
         })
       );
       res.status(200).send(success3(data));
@@ -238062,8 +238245,8 @@ var init_pollingImageAssets = __esm({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").whereIn("o_assets.id", ids).whereNot("o_image.state", "\u751F\u6210\u4E2D").select("o_image.state", "o_assets.id", "o_image.filePath");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").whereIn("o_assets.id", ids2).whereNot("o_image.state", "\u751F\u6210\u4E2D").select("o_image.state", "o_assets.id", "o_image.filePath");
         const result = await Promise.all(
           data.map(async (item) => ({
             ...item,
@@ -238093,8 +238276,8 @@ var init_pollingPromptAssets = __esm({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_assets").whereIn("id", ids).whereNot("promptState", "\u751F\u6210\u4E2D").select("*");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_assets").whereIn("id", ids2).whereNot("promptState", "\u751F\u6210\u4E2D").select("*");
         res.status(200).send(success3(data));
       }
     );
@@ -238431,19 +238614,19 @@ var init_yocto_queue = __esm({
 });
 
 // node_modules/p-limit/index.js
-function pLimit(concurrency) {
+function pLimit(concurrency2) {
   let rejectOnClear = false;
-  if (typeof concurrency === "object") {
-    ({ concurrency, rejectOnClear = false } = concurrency);
+  if (typeof concurrency2 === "object") {
+    ({ concurrency: concurrency2, rejectOnClear = false } = concurrency2);
   }
-  validateConcurrency(concurrency);
+  validateConcurrency(concurrency2);
   if (typeof rejectOnClear !== "boolean") {
     throw new TypeError("Expected `rejectOnClear` to be a boolean");
   }
   const queue = new Queue();
   let activeCount = 0;
   const resumeNext = () => {
-    if (activeCount < concurrency && queue.size > 0) {
+    if (activeCount < concurrency2 && queue.size > 0) {
       activeCount++;
       queue.dequeue().run();
     }
@@ -238461,18 +238644,18 @@ function pLimit(concurrency) {
     }
     next();
   };
-  const enqueue = (function_, resolve3, reject, arguments_) => {
+  const enqueue2 = (function_, resolve3, reject, arguments_) => {
     const queueItem = { reject };
     new Promise((internalResolve) => {
       queueItem.run = internalResolve;
       queue.enqueue(queueItem);
     }).then(run.bind(void 0, function_, resolve3, arguments_));
-    if (activeCount < concurrency) {
+    if (activeCount < concurrency2) {
       resumeNext();
     }
   };
   const generator = (function_, ...arguments_) => new Promise((resolve3, reject) => {
-    enqueue(function_, resolve3, reject, arguments_);
+    enqueue2(function_, resolve3, reject, arguments_);
   });
   Object.defineProperties(generator, {
     activeCount: {
@@ -238494,12 +238677,12 @@ function pLimit(concurrency) {
       }
     },
     concurrency: {
-      get: () => concurrency,
+      get: () => concurrency2,
       set(newConcurrency) {
         validateConcurrency(newConcurrency);
-        concurrency = newConcurrency;
+        concurrency2 = newConcurrency;
         queueMicrotask(() => {
-          while (activeCount < concurrency && queue.size > 0) {
+          while (activeCount < concurrency2 && queue.size > 0) {
             resumeNext();
           }
         });
@@ -238514,8 +238697,8 @@ function pLimit(concurrency) {
   });
   return generator;
 }
-function validateConcurrency(concurrency) {
-  if (!((Number.isInteger(concurrency) || concurrency === Number.POSITIVE_INFINITY) && concurrency > 0)) {
+function validateConcurrency(concurrency2) {
+  if (!((Number.isInteger(concurrency2) || concurrency2 === Number.POSITIVE_INFINITY) && concurrency2 > 0)) {
     throw new TypeError("Expected `concurrency` to be a number from 1 and up");
   }
 }
@@ -238526,10 +238709,74 @@ var init_p_limit = __esm({
   }
 });
 
-// src/routes/assetsGenerate/batchGenerateImageAssets.ts
-function buildPrompt(cfg, artStyle, name28, prompt) {
+// src/lib/assetGen.ts
+async function getGlobalAssetModels() {
+  const row = await utils_default.db("o_setting").where("key", GLOBAL_DEFAULT_SETTING_KEY).select("value").first();
+  return mergeBindings(parseJson(row?.value));
+}
+async function getAssetModels(projectId) {
+  const [globalRow, project] = await Promise.all([
+    utils_default.db("o_setting").where("key", GLOBAL_DEFAULT_SETTING_KEY).select("value").first(),
+    utils_default.db("o_project").where("id", projectId).select("assetModels").first()
+  ]);
+  return mergeBindings(parseJson(globalRow?.value), parseJson(project?.assetModels));
+}
+function bindingKeyFor(type, isDerived, hasRefs) {
+  if (type === "role") return hasRefs ? "roleSheetRef" : isDerived ? "roleDerive" : "roleSheet";
+  if (type === "scene") return isDerived ? "sceneDerive" : "scene";
+  return isDerived ? "propDerive" : "prop";
+}
+async function resolveBinding(projectId, key) {
+  const models = await getAssetModels(projectId);
+  const binding = models[key];
+  if (binding.model) return binding;
+  const project = await utils_default.db("o_project").where("id", projectId).select("imageModel").first();
+  return { model: project?.imageModel ?? "", aspectRatio: binding.aspectRatio };
+}
+function readFormatFile(name28) {
+  try {
+    const file3 = getPath_default(["skills", name28]);
+    if (import_fs8.default.existsSync(file3)) return import_fs8.default.readFileSync(file3, "utf-8").replace(/<!--[\s\S]*?-->/g, "").trim();
+  } catch (e) {
+    console.warn(`[\u683C\u5F0F\u6A21\u677F] ${name28} \u8BFB\u53D6\u5931\u8D25`, utils_default.error(e).message);
+  }
+  return null;
+}
+function fillFormat(format, aspectRatio) {
+  return format.replaceAll("{{ratio}}", aspectRatio).replaceAll("{{orientation}}", orientationOf(aspectRatio));
+}
+function orientationOf(aspectRatio) {
+  const [w, h] = aspectRatio.split(":").map(Number);
+  if (!w || !h || w === h) return "";
+  return w > h ? "\u6A2A\u5411" : "\u7AD6\u5411";
+}
+function buildCharacterSheetPrompt(content, aspectRatio) {
+  const format = fillFormat(readFormatFile(SHEET_FORMAT_FILE) ?? SHEET_FORMAT_FALLBACK, aspectRatio);
+  const body = content.trim().replace(/^【人物需求】\s*/, "");
+  return `\u6839\u636E\u4EE5\u4E0B\u9700\u6C42\u751F\u6210\u4E00\u5F20\u4E13\u4E1A\u4EBA\u7269\u591A\u89C6\u56FE\uFF1A
+
+\u3010\u4EBA\u7269\u9700\u6C42\u3011
+${body}
+
+${format}`;
+}
+function buildScenePropSheetPrompt(type, content, aspectRatio, isDerived) {
+  const sheet = SCENE_PROP_SHEET[type];
+  const format = readFormatFile(sheet.file);
+  if (!format) return null;
+  const body = content.trim().replace(new RegExp(`^\u3010${sheet.section}\u3011\\s*`), "");
+  const intro = isDerived ? `\u4EE5\u53C2\u8003\u56FE1\u4E2D\u7684${sheet.subject}\u4E3A\u57FA\u51C6\uFF08\u53C2\u8003\u56FE\u53EF\u80FD\u662F\u5355\u56FE\u6216\u4E09\u89C6\u56FE\uFF09\uFF0C\u4FDD\u6301${sheet.subject}\u672C\u4F53\u4E0D\u53D8\uFF0C\u6309\u4EE5\u4E0B\u9700\u6C42\u751F\u6210\u540C\u4E00\u4E2A${sheet.subject}\u53D8\u4F53\u7684\u4E09\u89C6\u56FE\u53C2\u8003\u56FE\uFF0C\u7528\u4E8E\u540E\u7EED\u5206\u955C\u56FE\u548C\u53C2\u8003\u751F\u89C6\u9891\uFF1A` : `\u6839\u636E\u4EE5\u4E0B\u9700\u6C42\u751F\u6210\u540C\u4E00\u4E2A${sheet.subject}\u7684\u4E09\u89C6\u56FE\u53C2\u8003\u56FE\uFF0C\u7528\u4E8E\u540E\u7EED\u5206\u955C\u56FE\u548C\u53C2\u8003\u751F\u89C6\u9891\uFF1A`;
+  return `${intro}
+
+\u3010${sheet.section}\u3011
+${body}
+
+${fillFormat(format, aspectRatio)}`;
+}
+function buildScenePropPrompt(type, artStyle, name28, prompt) {
+  const cfg = TYPE_CONFIG[type];
   return `
-    \u8BF7\u6839\u636E\u4EE5\u4E0B\u53C2\u6570\u751F\u6210${cfg.promptTitle}\uFF1A
+    \u8BF7\u6839\u636E\u4EE5\u4E0B\u53C2\u6570\u751F\u6210${cfg.title}\uFF1A
 
     **\u57FA\u7840\u53C2\u6570\uFF1A**
     - \u753B\u98CE\u98CE\u683C: ${artStyle || "\u672A\u6307\u5B9A"}
@@ -238538,10 +238785,190 @@ function buildPrompt(cfg, artStyle, name28, prompt) {
     - \u540D\u79F0:${name28},
     - \u63D0\u793A\u8BCD:${prompt},
 
-    \u8BF7\u4E25\u683C\u6309\u7167\u7CFB\u7EDF\u89C4\u8303\u751F\u6210${cfg.promptEnd}\u3002
+    \u8BF7\u4E25\u683C\u6309\u7167\u7CFB\u7EDF\u89C4\u8303\u751F\u6210${cfg.title}\u3002
   `;
 }
-var import_express22, router22, assetTypeConfig, requestSchema, batchGenerateImageAssets_default;
+function buildAssetPrompt(type, artStyle, name28, prompt, aspectRatio, isDerived = false) {
+  if (type === "role") return buildCharacterSheetPrompt(prompt, aspectRatio);
+  return buildScenePropSheetPrompt(type, prompt, aspectRatio, isDerived) ?? buildScenePropPrompt(type, artStyle, name28, prompt);
+}
+function getPolishManual(artStyle, type, isDerived) {
+  const file3 = { role: "art_character", scene: "art_scene", tool: "art_prop" }[type];
+  return utils_default.getArtPrompt(artStyle, "art_skills", isDerived ? `${file3}_derivative` : file3);
+}
+async function imagePathBase64(filePath) {
+  if (!filePath) return null;
+  try {
+    return await utils_default.oss.getImageBase64(filePath);
+  } catch {
+    return null;
+  }
+}
+async function assetReferencePath(assetId) {
+  const asset = await utils_default.db("o_assets").where("id", assetId).select("imageId").first();
+  if (!asset?.imageId) return null;
+  const image = await utils_default.db("o_image").where({ id: asset.imageId, state: "\u5DF2\u5B8C\u6210" }).select("filePath").first();
+  return image?.filePath ?? null;
+}
+async function prepareAssetStage(input) {
+  const asset = await utils_default.db("o_assets").where("id", input.assetId).select("*").first();
+  if (!asset) throw new Error("\u8D44\u4EA7\u4E0D\u5B58\u5728");
+  const type = asset.type;
+  if (!TYPE_CONFIG[type]) throw new Error(`\u4E0D\u652F\u6301\u7684\u8D44\u4EA7\u7C7B\u578B: ${asset.type}`);
+  const project = await utils_default.db("o_project").where("id", input.projectId).select("artStyle", "imageQuality").first();
+  if (!project) throw new Error("\u9879\u76EE\u4E0D\u5B58\u5728");
+  const isDerived = asset.assetsId != null;
+  const explicitRefs = (input.referenceBase64 ?? []).filter(Boolean);
+  const hasExplicitRefs = explicitRefs.length > 0 || !!input.resolveReferences;
+  const binding = await resolveBinding(input.projectId, bindingKeyFor(type, isDerived, hasExplicitRefs));
+  const model = input.model || binding.model;
+  if (!model || !model.includes(":")) throw new Error("\u672A\u914D\u7F6E\u751F\u6210\u6A21\u578B\uFF0C\u8BF7\u5728\u8D44\u4EA7\u6A21\u578B\u7ED1\u5B9A\u91CC\u8BBE\u7F6E");
+  const aspectRatio = input.aspectRatio || binding.aspectRatio;
+  const size = toSize(input.size ?? project.imageQuality);
+  const referenceList = explicitRefs.map((base644) => ({ type: "image", base64: base644 }));
+  if (!hasExplicitRefs && isDerived) {
+    const parentRef = await imagePathBase64(await assetReferencePath(asset.assetsId));
+    if (parentRef) referenceList.push({ type: "image", base64: parentRef });
+  }
+  const wrap = (text2) => input.rawPrompt ? text2 : buildAssetPrompt(type, project.artStyle ?? "", asset.name ?? "", text2, aspectRatio, isDerived);
+  let finalPrompt = wrap(input.prompt ?? asset.prompt ?? "");
+  const [imageId] = await utils_default.db("o_image").insert({
+    type,
+    state: "\u751F\u6210\u4E2D",
+    assetsId: asset.id,
+    model: model.split(/:(.+)/)[1],
+    resolution: size,
+    aspectRatio,
+    prompt: finalPrompt,
+    kind: "image",
+    stage: input.stage ?? (type === "role" ? "sheet" : null),
+    refs: input.refKeys?.length ? JSON.stringify(input.refKeys) : null,
+    createTime: Date.now()
+  });
+  const previousImageId = asset.imageId ?? null;
+  if (input.earlyRepoint) await utils_default.db("o_assets").where("id", asset.id).update({ imageId });
+  const cfg = TYPE_CONFIG[type];
+  const run = async () => {
+    const imagePath = `/${input.projectId}/${cfg.dir}/${v4_default()}.jpg`;
+    try {
+      if (input.resolveReferences) {
+        for (const base644 of await input.resolveReferences()) referenceList.push({ type: "image", base64: base644 });
+      }
+      if (input.resolvePrompt) {
+        const text2 = await input.resolvePrompt();
+        finalPrompt = wrap(text2);
+        await utils_default.db("o_assets").where("id", asset.id).update({ prompt: text2 });
+        await utils_default.db("o_image").where("id", imageId).update({ prompt: finalPrompt });
+      }
+      const aiImage = utils_default.Ai.Image(model);
+      await aiImage.run(
+        { prompt: finalPrompt, referenceList, size, aspectRatio },
+        {
+          taskClass: cfg.taskClass,
+          describe: `\u751F\u6210${cfg.label}\u56FE\uFF0C\u540D\u79F0\uFF1A${asset.name}`,
+          projectId: input.projectId,
+          relatedObjects: JSON.stringify({ id: asset.id, projectId: input.projectId, type: cfg.label })
+        }
+      );
+      const current = await utils_default.db("o_image").where("id", imageId).select("state").first();
+      if (!current) return { ok: false, error: "\u8D44\u4EA7\u5DF2\u88AB\u5220\u9664" };
+      if (current.state === "\u751F\u6210\u5931\u8D25") return { ok: false, error: "\u5DF2\u53D6\u6D88" };
+      await aiImage.save(imagePath);
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u5DF2\u5B8C\u6210", filePath: imagePath });
+      if (input.setCurrent !== false) await utils_default.db("o_assets").where("id", asset.id).update({ imageId });
+      return { ok: true, filePath: imagePath };
+    } catch (e) {
+      const message = utils_default.error(e).message || "\u56FE\u7247\u751F\u6210\u5931\u8D25";
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+      if (input.earlyRepoint) await restoreImageId(asset.id, imageId, previousImageId);
+      return { ok: false, error: message };
+    }
+  };
+  return { imageId, run };
+}
+async function restoreImageId(assetId, failedImageId, previousImageId) {
+  const asset = await utils_default.db("o_assets").where("id", assetId).select("imageId").first();
+  if (!asset || asset.imageId !== failedImageId) return;
+  if (!previousImageId) return;
+  const previous = await utils_default.db("o_image").where({ id: previousImageId, state: "\u5DF2\u5B8C\u6210" }).first();
+  if (previous) await utils_default.db("o_assets").where("id", assetId).update({ imageId: previousImageId });
+}
+var import_fs8, ASSET_MODEL_KEYS, BUILTIN_DEFAULTS, LEGACY_KEY_MAP, GLOBAL_DEFAULT_SETTING_KEY, TYPE_CONFIG, parseJson, mergeBindings, SHEET_FORMAT_FILE, SHEET_FORMAT_FALLBACK, SCENE_PROP_SHEET, toSize;
+var init_assetGen = __esm({
+  "src/lib/assetGen.ts"() {
+    "use strict";
+    import_fs8 = __toESM(require("fs"));
+    init_utils3();
+    init_getPath();
+    init_dist_node();
+    ASSET_MODEL_KEYS = ["roleSheet", "roleSheetRef", "roleDerive", "scene", "sceneDerive", "prop", "propDerive"];
+    BUILTIN_DEFAULTS = {
+      roleSheet: { model: "", aspectRatio: "16:9" },
+      roleSheetRef: { model: "", aspectRatio: "16:9" },
+      roleDerive: { model: "", aspectRatio: "16:9" },
+      scene: { model: "", aspectRatio: "16:9" },
+      sceneDerive: { model: "", aspectRatio: "16:9" },
+      prop: { model: "", aspectRatio: "16:9" },
+      propDerive: { model: "", aspectRatio: "16:9" }
+    };
+    LEGACY_KEY_MAP = { roleFourView: "roleSheetRef" };
+    GLOBAL_DEFAULT_SETTING_KEY = "assetModelsDefault";
+    TYPE_CONFIG = {
+      role: { label: "\u89D2\u8272", taskClass: "\u89D2\u8272\u56FE\u751F\u6210", dir: "role", title: "\u4EBA\u7269\u591A\u89C6\u56FE" },
+      scene: { label: "\u573A\u666F", taskClass: "\u573A\u666F\u56FE\u751F\u6210", dir: "scene", title: "\u573A\u666F\u4E09\u89C6\u56FE" },
+      tool: { label: "\u9053\u5177", taskClass: "\u9053\u5177\u56FE\u751F\u6210", dir: "props", title: "\u9053\u5177\u4E09\u89C6\u56FE" }
+    };
+    parseJson = (raw) => {
+      if (!raw) return {};
+      try {
+        const value = JSON.parse(raw);
+        if (!value || typeof value !== "object") return {};
+        const layer = { ...value };
+        for (const [legacy, key] of Object.entries(LEGACY_KEY_MAP)) {
+          if (key && layer[legacy] && !layer[key]) layer[key] = layer[legacy];
+        }
+        return layer;
+      } catch {
+        return {};
+      }
+    };
+    mergeBindings = (...layers) => {
+      const merged = {};
+      for (const key of ASSET_MODEL_KEYS) {
+        merged[key] = layers.reduce(
+          (acc, layer) => {
+            const item = layer[key];
+            if (!item) return acc;
+            return {
+              model: typeof item.model === "string" && item.model ? item.model : acc.model,
+              aspectRatio: item.aspectRatio || acc.aspectRatio
+            };
+          },
+          { ...BUILTIN_DEFAULTS[key] }
+        );
+      }
+      return merged;
+    };
+    SHEET_FORMAT_FILE = "asset_character_sheet_format.md";
+    SHEET_FORMAT_FALLBACK = `\u3010\u8F93\u51FA\u683C\u5F0F\u3011
+\u4E00\u5F20{{orientation}}{{ratio}}\u4EBA\u7269\u591A\u89C6\u56FE\uFF0C\u7EAF\u767D\u65E0\u7F1D\u5F71\u68DA\u80CC\u666F\uFF0C\u65E0\u6587\u5B57\u3001\u65E0\u6807\u7B7E\u3001\u65E0\u6C34\u5370\u3001\u65E0\u591A\u4F59\u4EBA\u7269\u3001\u65E0\u955C\u9762\u53CD\u5C04\u3002\u753B\u9762\u53EA\u5305\u542B\u56DB\u4E2A\u89C6\u56FE\uFF0C\u81EA\u5DE6\u81F3\u53F3\u6392\u5217\uFF1A\u7B2C1\u4E2A\u4E3B\u5927\u5934\u7167\u7EA6\u536031%\u5BBD\u5EA6\uFF0C\u7B2C2\u30013\u30014\u4E2A\u5168\u8EAB\u89C6\u56FE\u5404\u7EA6\u536023%\u5BBD\u5EA6\uFF0C\u5176\u4F59\u4E3A\u5747\u5300\u7559\u767D\uFF1B\u5404\u89C6\u56FE\u4E4B\u95F4\u4E0D\u91CD\u53E0\u3001\u4E0D\u8BBE\u5206\u5272\u7EBF\u3002\u753B\u9762\u4E2D\u53EA\u6709\u8FD9\u4E00\u4E2A\u5927\u5934\u7167\uFF0C\u4E0D\u8981\u751F\u6210\u989D\u5916\u7684\u5C0F\u5934\u50CF\u3001\u8868\u60C5\u56FE\u6216\u5C40\u90E8\u7279\u5199\u3002\u4E3B\u5927\u5934\u7167\u4F5C\u4E3A\u552F\u4E00\u4EBA\u8138\u8EAB\u4EFD\u6BCD\u7248\uFF0C\u4E09\u4E2A\u5168\u8EAB\u89C6\u56FE\u7684\u8138\u90E8\u5FC5\u987B\u4E25\u683C\u590D\u7528\u540C\u4E00\u9AA8\u76F8\u3001\u8138\u957F\u5BBD\u6BD4\u4F8B\u3001\u4E94\u5B98\u4F4D\u7F6E\u4E0E\u5C3A\u5BF8\u3001\u53D1\u9645\u7EBF\u3001\u53D1\u578B\u7ED3\u6784\u3001\u80A4\u8272\u548C\u5E74\u9F84\u3002
+
+1. \u4E3B\u5927\u5934\u7167\uFF1A\u4E25\u683C0\xB0\u6B63\u9762\u5E73\u89C6\uFF0C\u5934\u9876\u3001\u53CC\u8033\u548C\u53CC\u80A9\u5B8C\u6574\u5165\u753B\uFF0C\u56DB\u5468\u7559\u6709\u7A7A\u767D\uFF0C\u4E0D\u88AB\u88C1\u5207\u3001\u4E0D\u88AB\u5176\u4ED6\u89C6\u56FE\u906E\u6321\uFF1B\u9F3B\u5C16\u3001\u4E0B\u5DF4\u548C\u9762\u90E8\u4E2D\u7EBF\u6B63\u5BF9\u955C\u5934\uFF0C\u77B3\u5B54\u81EA\u7136\u5C45\u4E2D\u3002
+2. \u6B63\u9762\u5168\u8EAB\u7167\uFF1A\u4E25\u683C0\xB0\u6B63\u9762\u7AD9\u7ACB\uFF0C\u5934\u90E8\u3001\u80A9\u7EBF\u3001\u80F8\u53E3\u3001\u9ACB\u90E8\u3001\u819D\u76D6\u548C\u53CC\u811A\u5747\u6B63\u5BF9\u524D\u65B9\uFF0C\u53CC\u624B\u81EA\u7136\u4E0B\u5782\uFF0C\u53CC\u773C\u6B63\u89C6\u524D\u65B9\uFF1B\u4ECE\u5934\u9876\u5230\u978B\u5E95\u5B8C\u6574\u5165\u955C\uFF0C\u5360\u8BE5\u533A\u57DF\u9AD8\u5EA6\u7EA690%\uFF0C\u5C55\u793A\u4E0A\u88C5\u3001\u8896\u53E3\u3001\u8170\u9970\u3001\u4E0B\u88C5\u548C\u978B\u5C65\u7684\u6B63\u9762\u3002
+3. \u4FA7\u9762\u5168\u8EAB\u7167\uFF1A\u4E25\u683C\u671D\u753B\u9762\u53F3\u4FA790\xB0\u4FA7\u8EAB\u7AD9\u7ACB\uFF0C\u5934\u90E8\u3001\u9F3B\u5C16\u3001\u4E0B\u5DF4\u3001\u8EAF\u5E72\u3001\u9ACB\u90E8\u3001\u819D\u76D6\u548C\u53CC\u811A\u65B9\u5411\u5168\u90E8\u671D\u53F3\uFF0C\u89C6\u7EBF\u81EA\u7136\u671D\u53F3\u524D\u65B9\uFF0C\u7EDD\u4E0D\u56DE\u770B\u955C\u5934\uFF1B\u5B8C\u6574\u5448\u73B0\u989D\u5934\u3001\u9F3B\u6881\u3001\u9F3B\u5C16\u3001\u5634\u5507\u3001\u4E0B\u5DF4\u3001\u8033\u6735\u3001\u53D1\u578B\u540E\u90E8\u548C\u670D\u88C5\u4FA7\u9762\u8F6E\u5ED3\u3002
+4. \u80CC\u9762\u5168\u8EAB\u7167\uFF1A\u4E25\u683C180\xB0\u80CC\u5BF9\u955C\u5934\u76F4\u7ACB\uFF0C\u540E\u8111\u3001\u9888\u90E8\u3001\u80A9\u80CC\u3001\u8170\u81C0\u3001\u817F\u90E8\u548C\u811A\u540E\u8DDF\u5B8C\u5168\u6B63\u5BF9\u955C\u5934\uFF0C\u4ECE\u5934\u5230\u811A\u5B8C\u6574\u5165\u955C\uFF1B\u4E0D\u5F97\u56DE\u5934\uFF0C\u4E0D\u9732\u773C\u775B\u3001\u9F3B\u5B50\u6216\u4FA7\u8138\uFF0C\u6E05\u6670\u5C55\u793A\u53D1\u578B\u540E\u90E8\u3001\u670D\u88C5\u80CC\u9762\u3001\u8170\u9970\u3001\u4E0B\u88C5\u4E0E\u978B\u5C65\u540E\u8DDF\u3002
+
+\u5168\u8EAB\u4E09\u89C6\u56FE\u955C\u5934\u9AD8\u5EA6\u3001\u900F\u89C6\u3001\u5149\u7EBF\u3001\u767D\u5E73\u8861\u3001\u8272\u5F69\u3001\u4EBA\u7269\u6BD4\u4F8B\u548C\u670D\u88C5\u7EC6\u8282\u5B8C\u5168\u4E00\u81F4\uFF0C\u811A\u90E8\u5B8C\u6574\u53EF\u89C1\u3002\u907F\u514D\u4E3B\u5927\u5934\u7167\u4E0E\u5168\u8EAB\u89C6\u56FE\u4E0D\u662F\u540C\u4E00\u5F20\u8138\uFF0C\u907F\u514D\u4E0D\u540C\u89C6\u56FE\u5E74\u9F84\u3001\u4F53\u578B\u3001\u53D1\u578B\u3001\u670D\u88C5\u6216\u914D\u9970\u6F02\u79FB\uFF1B\u907F\u514D\u659C\u7AD9\u3001\u6597\u9E21\u773C\u3001\u9519\u8BEF\u80A2\u4F53\u3001\u91CD\u590D\u80A2\u4F53\u3001\u88C1\u5207\u548C\u53D8\u5F62\u3002`;
+    SCENE_PROP_SHEET = {
+      scene: { file: "asset_scene_sheet_format.md", subject: "\u573A\u666F", section: "\u573A\u666F\u9700\u6C42" },
+      tool: { file: "asset_prop_sheet_format.md", subject: "\u7269\u54C1", section: "\u9053\u5177\u9700\u6C42" }
+    };
+    toSize = (value) => value === "2K" || value === "4K" ? value : "1K";
+  }
+});
+
+// src/routes/assetsGenerate/batchGenerateImageAssets.ts
+var import_express22, router22, requestSchema, batchGenerateImageAssets_default;
 var init_batchGenerateImageAssets = __esm({
   "src/routes/assetsGenerate/batchGenerateImageAssets.ts"() {
     "use strict";
@@ -238549,38 +238976,16 @@ var init_batchGenerateImageAssets = __esm({
     init_p_limit();
     init_utils3();
     init_zod();
-    init_dist_node();
     init_responseFormat();
     init_middleware();
+    init_assetGen();
     router22 = import_express22.default.Router();
-    assetTypeConfig = {
-      role: {
-        label: "\u89D2\u8272",
-        taskClass: "\u89D2\u8272\u56FE\u751F\u6210",
-        dir: "role",
-        promptTitle: "\u89D2\u8272\u6807\u51C6\u56DB\u89C6\u56FE",
-        promptEnd: "\u4EBA\u7269\u89D2\u8272\u56DB\u89C6\u56FE"
-      },
-      scene: {
-        label: "\u573A\u666F",
-        taskClass: "\u573A\u666F\u56FE\u751F\u6210",
-        dir: "scene",
-        promptTitle: "\u6807\u51C6\u573A\u666F\u56FE",
-        promptEnd: "\u6807\u51C6\u573A\u666F\u56FE"
-      },
-      tool: {
-        label: "\u9053\u5177",
-        taskClass: "\u9053\u5177\u56FE\u751F\u6210",
-        dir: "props",
-        promptTitle: "\u6807\u51C6\u9053\u5177\u56FE",
-        promptEnd: "\u6807\u51C6\u9053\u5177\u56FE"
-      }
-    };
     requestSchema = {
       projectId: external_exports.number(),
       model: external_exports.string(),
       resolution: external_exports.string(),
       concurrentCount: external_exports.number().int().min(1).optional(),
+      aspectRatio: external_exports.string().regex(/^\d+:\d+$/).optional().nullable(),
       items: external_exports.array(
         external_exports.object({
           id: external_exports.number(),
@@ -238592,71 +238997,43 @@ var init_batchGenerateImageAssets = __esm({
       )
     };
     batchGenerateImageAssets_default = router22.post("/", validateFields(requestSchema), async (req, res) => {
-      const { projectId, model, resolution, concurrentCount, items } = req.body;
-      const project = await utils_default.db("o_project").where("id", projectId).select("artStyle", "type", "intro").first();
+      const { projectId, model, resolution, concurrentCount, aspectRatio, items } = req.body;
+      const project = await utils_default.db("o_project").where("id", projectId).select("id").first();
       if (!project) return res.status(500).send(error50("\u9879\u76EE\u4E3A\u7A7A"));
-      const totalNovelId = [];
+      const size = resolution;
+      const bindings = await getAssetModels(projectId);
+      const modelFor = async (assetId, type, hasRefs) => {
+        const asset = await utils_default.db("o_assets").where("id", assetId).select("assetsId").first();
+        const key = bindingKeyFor(type, asset?.assetsId != null, hasRefs);
+        return bindings[key].model || model;
+      };
+      const prepared = [];
+      const failed = [];
       for (const item of items) {
-        const [imageId] = await utils_default.db("o_image").insert({
-          type: item.type,
-          state: "\u751F\u6210\u4E2D",
-          assetsId: item.id
-        });
-        await utils_default.db("o_assets").where("id", item.id).update({ imageId });
-        totalNovelId.push(imageId);
+        if (item.type === "storyboard") continue;
+        try {
+          await utils_default.db("o_assets").where("id", item.id).update({ prompt: item.prompt });
+          const stage = await prepareAssetStage({
+            projectId,
+            assetId: item.id,
+            model: await modelFor(item.id, item.type, !!item.base64),
+            size,
+            aspectRatio: aspectRatio ?? void 0,
+            prompt: item.prompt,
+            referenceBase64: item.base64 ? [item.base64] : [],
+            earlyRepoint: true
+          });
+          prepared.push({ item, stage });
+        } catch (e) {
+          failed.push({ id: item.id, error: utils_default.error(e).message });
+        }
       }
       const limit = pLimit(concurrentCount ?? 1);
-      const tasks = items.map(
-        (item, index) => limit(async () => {
-          const imageId = totalNovelId[index];
-          const data = await utils_default.db("o_image").where("id", imageId).select("state").first();
-          if (data?.state === "\u751F\u6210\u5931\u8D25") {
-            return;
-          }
-          const cfg = assetTypeConfig[item.type];
-          if (!cfg) return;
-          await utils_default.db("o_assets").where("id", item.id).update({ imageId });
-          const imagePath = `/${projectId}/${cfg.dir}/${v4_default()}.jpg`;
-          const userPrompt = buildPrompt(cfg, project.artStyle ?? "", item.name, item.prompt);
-          const describe4 = `\u751F\u6210${cfg.label}\u56FE\uFF0C\u540D\u79F0\uFF1A${item.name}\uFF0C\u63D0\u793A\u8BCD\uFF1A${item.prompt}`;
-          const relatedObjects = { id: item.id, projectId, type: cfg.label };
-          try {
-            const aiImage = utils_default.Ai.Image(model);
-            await aiImage.run(
-              {
-                prompt: userPrompt,
-                referenceList: item.base64 ? [{ base64: item.base64, type: "image" }] : [],
-                size: resolution,
-                aspectRatio: "16:9"
-              },
-              {
-                taskClass: cfg.taskClass,
-                describe: describe4,
-                projectId,
-                relatedObjects: JSON.stringify(relatedObjects)
-              }
-            );
-            aiImage.save(imagePath);
-            const imageData = await utils_default.db("o_image").where("id", imageId).select("*").first();
-            if (!imageData) return res.status(500).send("\u8D44\u4EA7\u5DF2\u88AB\u5220\u9664");
-            if (!imageData) return;
-            if (imageData.state === "\u751F\u6210\u5931\u8D25") return;
-            await utils_default.db("o_image").where("id", imageId).update({
-              state: "\u5DF2\u5B8C\u6210",
-              filePath: imagePath,
-              type: item.type,
-              model: model.split(/:(.+)/)[1],
-              resolution
-            });
-            await utils_default.db("o_assets").where("id", item.id).update({ imageId });
-          } catch (e) {
-            await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: utils_default.error(e).message });
-          }
-        })
+      const tasks = prepared.map(
+        ({ stage }) => limit(() => stage.run())
       );
-      Promise.all(tasks).catch(() => {
-      });
-      return res.status(200).send(success3({ total: items.length }));
+      Promise.all(tasks).catch((e) => console.error("[\u6279\u91CF\u751F\u6210\u8D44\u4EA7\u56FE\u7247]", utils_default.error(e).message));
+      return res.status(200).send(success3({ total: prepared.length, failed }));
     });
   }
 });
@@ -238672,6 +239049,7 @@ var init_batchPolishAssetsPrompt = __esm({
     init_zod();
     init_responseFormat();
     init_middleware();
+    init_assetGen();
     router23 = import_express23.default.Router();
     batchPolishAssetsPrompt_default = router23.post(
       "/",
@@ -238701,7 +239079,7 @@ var init_batchPolishAssetsPrompt = __esm({
           role: {
             promptKey: "role-polish",
             itemType: "characters",
-            label: "\u89D2\u8272\u6807\u51C6\u56DB\u89C6\u56FE",
+            label: "\u89D2\u8272\u591A\u89C6\u56FE\u4EBA\u7269\u9700\u6C42",
             nameLabel: "\u89D2\u8272",
             visualManual: isDerivative ? "art_character_derivative" : "art_character"
           },
@@ -238728,7 +239106,7 @@ var init_batchPolishAssetsPrompt = __esm({
             const typeConfig = getTypeConfig(!!assetData.assetsId);
             const config3 = typeConfig[item.type];
             if (!config3) return;
-            const visualManual = await utils_default.getArtPrompt(project.artStyle, "art_skills", config3.visualManual);
+            const visualManual = getPolishManual(project.artStyle, item.type, !!assetData.assetsId);
             if (!visualManual) {
               await utils_default.db("o_assets").where("id", item.assetsId).update({ promptState: "\u751F\u6210\u5931\u8D25", promptErrorReason: "\u89C6\u89C9\u624B\u518C\u672A\u5B9A\u4E49" });
               return;
@@ -238759,7 +239137,7 @@ var init_batchPolishAssetsPrompt = __esm({
           })
         );
         Promise.all(tasks).catch((err) => {
-          res.status(500).send(error50(err));
+          console.error("[\u6279\u91CF\u6DA6\u8272\u63D0\u793A\u8BCD]", utils_default.error(err).message);
         });
         return res.status(200).send(success3({ total: items.length }));
       }
@@ -238795,54 +239173,17 @@ var init_cancelGenerate = __esm({
 });
 
 // src/routes/assetsGenerate/generateAssets.ts
-function buildPrompt2(cfg, artStyle, name28, prompt) {
-  return `
-    \u8BF7\u6839\u636E\u4EE5\u4E0B\u53C2\u6570\u751F\u6210${cfg.promptTitle}\uFF1A
-
-    **\u57FA\u7840\u53C2\u6570\uFF1A**
-    - \u753B\u98CE\u98CE\u683C: ${artStyle || "\u672A\u6307\u5B9A"}
-
-    **${cfg.label}\u8BBE\u5B9A\uFF1A**
-    - \u540D\u79F0:${name28},
-    - \u63D0\u793A\u8BCD:${prompt},
-
-    \u8BF7\u4E25\u683C\u6309\u7167\u7CFB\u7EDF\u89C4\u8303\u751F\u6210${cfg.promptEnd}\u3002
-  `;
-}
-var import_express25, router25, assetTypeConfig2, requestSchema2, generateAssets_default;
+var import_express25, router25, requestSchema2, generateAssets_default;
 var init_generateAssets = __esm({
   "src/routes/assetsGenerate/generateAssets.ts"() {
     "use strict";
     import_express25 = __toESM(require_express2());
     init_utils3();
     init_zod();
-    init_dist_node();
     init_responseFormat();
     init_middleware();
+    init_assetGen();
     router25 = import_express25.default.Router();
-    assetTypeConfig2 = {
-      role: {
-        label: "\u89D2\u8272",
-        taskClass: "\u89D2\u8272\u56FE\u751F\u6210",
-        dir: "role",
-        promptTitle: "\u89D2\u8272\u6807\u51C6\u56DB\u89C6\u56FE",
-        promptEnd: "\u4EBA\u7269\u89D2\u8272\u56DB\u89C6\u56FE"
-      },
-      scene: {
-        label: "\u573A\u666F",
-        taskClass: "\u573A\u666F\u56FE\u751F\u6210",
-        dir: "scene",
-        promptTitle: "\u6807\u51C6\u573A\u666F\u56FE",
-        promptEnd: "\u6807\u51C6\u573A\u666F\u56FE"
-      },
-      tool: {
-        label: "\u9053\u5177",
-        taskClass: "\u9053\u5177\u56FE\u751F\u6210",
-        dir: "props",
-        promptTitle: "\u6807\u51C6\u9053\u5177\u56FE",
-        promptEnd: "\u6807\u51C6\u9053\u5177\u56FE"
-      }
-    };
     requestSchema2 = {
       projectId: external_exports.number(),
       model: external_exports.string(),
@@ -238851,58 +239192,32 @@ var init_generateAssets = __esm({
       type: external_exports.enum(["role", "scene", "tool", "storyboard"]),
       name: external_exports.string(),
       prompt: external_exports.string(),
-      base64: external_exports.string().optional().nullable()
+      base64: external_exports.string().optional().nullable(),
+      stage: external_exports.string().optional().nullable(),
+      aspectRatio: external_exports.string().regex(/^\d+:\d+$/).optional().nullable()
     };
     generateAssets_default = router25.post("/", validateFields(requestSchema2), async (req, res) => {
-      const { projectId, model, resolution, id, type, name: name28, prompt, base64: base644 } = req.body;
-      const project = await utils_default.db("o_project").where("id", projectId).select("artStyle", "type", "intro").first();
-      if (!project) return res.status(500).send(success3({ message: "\u9879\u76EE\u4E3A\u7A7A" }));
-      const cfg = assetTypeConfig2[type];
-      if (!cfg) return res.status(400).send(error50("\u4E0D\u652F\u6301\u7684\u7C7B\u578B"));
-      const [imageId] = await utils_default.db("o_image").insert({
-        type,
-        state: "\u751F\u6210\u4E2D",
-        assetsId: id,
-        model: model.split(/:(.+)/)[1],
-        resolution
-      });
-      await utils_default.db("o_assets").where("id", id).update({ imageId });
-      const imagePath = `/${projectId}/${cfg.dir}/${v4_default()}.jpg`;
-      const userPrompt = buildPrompt2(cfg, project.artStyle, name28, prompt);
-      const describe4 = `\u751F\u6210${cfg.label}\u56FE\uFF0C\u540D\u79F0\uFF1A${name28}\uFF0C\u63D0\u793A\u8BCD\uFF1A${prompt}`;
-      const relatedObjects = { id, projectId, type: cfg.label };
+      const { projectId, model, resolution, id, type, prompt, base64: base644, aspectRatio } = req.body;
+      if (type === "storyboard") return res.status(400).send(error50("\u4E0D\u652F\u6301\u7684\u7C7B\u578B"));
+      const project = await utils_default.db("o_project").where("id", projectId).select("id").first();
+      if (!project) return res.status(500).send(error50("\u9879\u76EE\u4E3A\u7A7A"));
+      await utils_default.db("o_assets").where("id", id).update({ prompt });
       try {
-        const aiImage = utils_default.Ai.Image(model);
-        await aiImage.run(
-          {
-            prompt: userPrompt,
-            referenceList: base644 ? [{ type: "image", base64: base644 }] : [],
-            size: resolution,
-            aspectRatio: "16:9"
-          },
-          {
-            taskClass: cfg.taskClass,
-            describe: describe4,
-            projectId,
-            relatedObjects: JSON.stringify(relatedObjects)
-          }
-        );
-        aiImage.save(imagePath);
-        const imageData = await utils_default.db("o_image").where("id", imageId).select("*").first();
-        if (!imageData) return res.status(500).send("\u8D44\u4EA7\u5DF2\u88AB\u5220\u9664");
-        if (imageData.state === "\u751F\u6210\u5931\u8D25") return;
-        await utils_default.db("o_image").where("id", imageId).update({
-          state: "\u5DF2\u5B8C\u6210",
-          filePath: imagePath,
-          type,
-          model: model.split(/:(.+)/)[1],
-          resolution
+        const prepared = await prepareAssetStage({
+          projectId,
+          assetId: id,
+          model,
+          size: resolution,
+          aspectRatio: aspectRatio ?? void 0,
+          prompt,
+          referenceBase64: base644 ? [base644] : [],
+          earlyRepoint: true
         });
-        const path34 = await utils_default.oss.getSmallImageUrl(imagePath);
-        await utils_default.db("o_assets").where("id", id).update({ imageId });
-        return res.status(200).send(success3({ path: path34, assetsId: id }));
+        const result = await prepared.run();
+        if (!result.ok) return res.status(400).send(error50(result.error || "\u56FE\u7247\u751F\u6210\u5931\u8D25"));
+        const path38 = await utils_default.oss.getSmallImageUrl(result.filePath);
+        return res.status(200).send(success3({ path: path38, assetsId: id, imageId: prepared.imageId }));
       } catch (e) {
-        await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: utils_default.error(e).message });
         return res.status(400).send(error50(utils_default.error(e).message || "\u56FE\u7247\u751F\u6210\u5931\u8D25"));
       }
     });
@@ -238919,6 +239234,7 @@ var init_polishAssetsPrompt = __esm({
     init_zod();
     init_responseFormat();
     init_middleware();
+    init_assetGen();
     router26 = import_express26.default.Router();
     polishAssetsPrompt_default = router26.post(
       "/",
@@ -238933,14 +239249,14 @@ var init_polishAssetsPrompt = __esm({
         const { assetsId, projectId, type, name: name28, describe: describe4 } = req.body;
         const project = await utils_default.db("o_project").where("id", projectId).select("artStyle", "type", "intro").first();
         if (!project) return res.status(500).send(success3({ message: "\u9879\u76EE\u4E3A\u7A7A" }));
-        await utils_default.db("o_assets").where("id", assetsId).update({ promptState: "\u751F\u6210\u4E2D" });
         const assetsData = await utils_default.db("o_assets").where("id", assetsId).select("assetsId").first();
-        if (!assetsData) return { code: 500, message: "\u8D44\u4EA7\u4E0D\u5B58\u5728" };
+        if (!assetsData) return res.status(500).send(error50("\u8D44\u4EA7\u4E0D\u5B58\u5728"));
+        await utils_default.db("o_assets").where("id", assetsId).update({ promptState: "\u751F\u6210\u4E2D" });
         const typeConfig = {
           role: {
             promptKey: "role-polish",
             itemType: "characters",
-            label: "\u89D2\u8272\u6807\u51C6\u56DB\u89C6\u56FE",
+            label: "\u89D2\u8272\u591A\u89C6\u56FE\u4EBA\u7269\u9700\u6C42",
             nameLabel: "\u89D2\u8272",
             visualManual: assetsData.assetsId ? "art_character_derivative" : "art_character"
           },
@@ -238962,7 +239278,7 @@ var init_polishAssetsPrompt = __esm({
         const config3 = typeConfig[type];
         if (!config3) return res.status(500).send(error50("\u4E0D\u652F\u6301\u7684\u7C7B\u578B"));
         if (!config3.visualManual) return res.status(500).send(error50("\u89C6\u89C9\u624B\u518C\u672A\u5B9A\u4E49"));
-        const visualManual = await utils_default.getArtPrompt(project.artStyle, "art_skills", config3.visualManual);
+        const visualManual = getPolishManual(project.artStyle, type, !!assetsData.assetsId);
         if (!visualManual) return res.status(500).send(error50("\u89C6\u89C9\u624B\u518C\u672A\u5B9A\u4E49"));
         const systemPrompt = visualManual;
         try {
@@ -238990,18 +239306,2994 @@ var init_polishAssetsPrompt = __esm({
   }
 });
 
+// src/lib/canvas.ts
+function nodeAssetType(params) {
+  try {
+    const value = params ? JSON.parse(params).assetType : null;
+    return CANVAS_ASSET_TYPES.includes(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+async function refAssetType(projectId, key) {
+  const owner = await resolveOwner(projectId, key);
+  if (owner.asset) return CANVAS_ASSET_TYPES.includes(owner.asset.type ?? "") ? owner.asset.type : null;
+  if (!owner.node) return null;
+  return nodeAssetType(owner.node.params);
+}
+async function sceneFirst(projectId, keys2) {
+  const isScene = /* @__PURE__ */ new Map();
+  for (const key of keys2) isScene.set(key, await refAssetType(projectId, key) === "scene");
+  return [...keys2.filter((k) => isScene.get(k)), ...keys2.filter((k) => !isScene.get(k))];
+}
+function parseKey(key) {
+  const match = /^([ansv]):(\d+)$/.exec(String(key));
+  if (!match) throw new Error(`\u65E0\u6548\u7684\u8282\u70B9 key: ${key}`);
+  const id = Number(match[2]);
+  return { kind: KIND_BY_PREFIX[match[1]], id, key: `${match[1]}:${id}` };
+}
+async function resolveOwner(projectId, key) {
+  const owner = parseKey(key);
+  const empty = { asset: void 0, node: void 0, storyboard: void 0, track: void 0 };
+  if (owner.kind === "asset") {
+    const row2 = await utils_default.db("o_assets").where({ id: owner.id, projectId }).first();
+    if (!row2) throw new Error("\u8D44\u4EA7\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u8BE5\u9879\u76EE");
+    return { ...owner, ...empty, asset: row2 };
+  }
+  if (owner.kind === "storyboard") {
+    const row2 = await utils_default.db("o_storyboard").where({ id: owner.id, projectId }).first();
+    if (!row2) throw new Error("\u955C\u5934\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u8BE5\u9879\u76EE");
+    return { ...owner, ...empty, storyboard: row2 };
+  }
+  if (owner.kind === "track") {
+    const row2 = await utils_default.db("o_videoTrack").where({ id: owner.id, projectId }).first();
+    if (!row2) throw new Error("\u7247\u6BB5\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u8BE5\u9879\u76EE");
+    return { ...owner, ...empty, track: row2 };
+  }
+  const row = await utils_default.db("o_canvasNode").where({ id: owner.id, projectId }).first();
+  if (!row) throw new Error("\u753B\u5E03\u8282\u70B9\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u8BE5\u9879\u76EE");
+  return { ...owner, ...empty, node: row };
+}
+function imageOwnerKey(row) {
+  if (row.assetsId) return assetKey(row.assetsId);
+  if (row.canvasNodeId) return nodeKey(row.canvasNodeId);
+  if (row.storyboardId) return storyboardKey(row.storyboardId);
+  if (row.videoTrackId) return trackKey(row.videoTrackId);
+  return null;
+}
+async function currentImage(imageId, fallbackKind = "image") {
+  if (!imageId) return null;
+  const image = await utils_default.db("o_image").where({ id: imageId, state: "\u5DF2\u5B8C\u6210" }).select("filePath", "kind").first();
+  return image?.filePath ? { filePath: image.filePath, kind: image.kind ?? fallbackKind } : null;
+}
+async function ownerFilePath(owner) {
+  if (owner.kind === "asset") {
+    const asset = await utils_default.db("o_assets").where("id", owner.id).select("imageId", "type").first();
+    return currentImage(asset?.imageId, asset?.type === "audio" ? "audio" : "image");
+  }
+  if (owner.kind === "storyboard") {
+    const shot = await utils_default.db("o_storyboard").where("id", owner.id).select("imageId").first();
+    return currentImage(shot?.imageId);
+  }
+  if (owner.kind === "track") {
+    const track = await utils_default.db("o_videoTrack").where("id", owner.id).select("videoId").first();
+    if (!track?.videoId) return null;
+    const video = await utils_default.db("o_video").where({ id: track.videoId, state: "\u751F\u6210\u6210\u529F" }).select("filePath").first();
+    return video?.filePath ? { filePath: video.filePath, kind: "video" } : null;
+  }
+  const node = await utils_default.db("o_canvasNode").where("id", owner.id).select("imageId", "kind").first();
+  return currentImage(node?.imageId, node?.kind ?? "image");
+}
+function nodeArtStyle(params) {
+  try {
+    const value = JSON.parse(params || "{}")?.artStyle;
+    return typeof value === "string" && value ? value : null;
+  } catch {
+    return null;
+  }
+}
+async function expandTextRefs(projectId, keys2, prompt) {
+  const texts = [];
+  const refKeys = [];
+  for (const key of keys2) {
+    const owner = parseKey(key);
+    const row = owner.kind === "node" ? await utils_default.db("o_canvasNode").where({ id: owner.id, projectId }).select("kind", "name", "prompt").first() : null;
+    if (row?.kind === "text") texts.push({ key, name: row.name ?? "\u6587\u672C", content: (row.prompt ?? "").trim() });
+    else refKeys.push(key);
+  }
+  if (!texts.length) return { prompt, refKeys, texts };
+  const used = /* @__PURE__ */ new Set();
+  let out = prompt.replace(/@文本(\d+)/g, (token, n) => {
+    const index = Number(n) - 1;
+    const text2 = texts[index];
+    if (!text2) return token;
+    used.add(index);
+    return text2.content;
+  });
+  const extra = texts.filter((t, i) => !used.has(i) && t.content).map((t) => `\u3010\u53C2\u8003\u6587\u672C\uFF1A${t.name}\u3011
+${t.content}`);
+  if (extra.length) out = [out.trim(), ...extra].filter(Boolean).join("\n\n");
+  return { prompt: out, refKeys, texts };
+}
+async function incomingEdges(projectId, targetKey) {
+  return utils_default.db("o_canvasEdge").where({ projectId, targetKey }).orderBy([{ column: "sort" }, { column: "id" }]);
+}
+async function resolveRefs(projectId, keys2, opts = {}) {
+  const result = [];
+  for (const key of keys2) {
+    const owner = await resolveOwner(projectId, key);
+    const file3 = await ownerFilePath(owner);
+    if (file3) {
+      let base644;
+      try {
+        base644 = await utils_default.oss.getImageBase64(file3.filePath);
+      } catch (e) {
+        console.warn("[\u753B\u5E03] \u53C2\u8003\u6587\u4EF6\u8BFB\u53D6\u5931\u8D25", key, file3.filePath, utils_default.error(e).message);
+        const name28 = owner.asset?.name ?? owner.node?.name ?? (owner.storyboard ? `\u955C\u5934 ${owner.storyboard.index ?? owner.id}` : owner.track ? `\u7247\u6BB5 ${owner.id}` : key);
+        throw new Error(`\u53C2\u8003\u300C${name28}\u300D\u7684\u5F53\u524D\u56FE\u6587\u4EF6\u4E22\u5931\u6216\u65E0\u6CD5\u8BFB\u53D6\uFF0C\u8BF7\u5728\u5386\u53F2\u91CC\u6362\u4E00\u4E2A\u7248\u672C\u3001\u91CD\u65B0\u751F\u6210\u6216\u65AD\u5F00\u8FD9\u6761\u8FDE\u7EBF`);
+      }
+      result.push({ key, kind: extKind(file3.filePath), base64: base644 });
+    }
+    if (opts.withVoice && owner.asset?.type === "role") {
+      const voice = await roleVoiceSample(owner.id);
+      if (voice) result.push({ key: `${key}#voice`, kind: "audio", base64: await utils_default.oss.getImageBase64(voice) });
+    }
+  }
+  return result;
+}
+async function roleVoiceSample(roleId) {
+  const binding = await utils_default.db("o_assetsRole2Audio").where("assetsRoleId", roleId).select("assetsAudioId").first();
+  if (!binding) return null;
+  const sample = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").where("o_assets.assetsId", binding.assetsAudioId).whereNotNull("o_image.filePath").select("o_image.filePath").first();
+  return sample?.filePath ?? null;
+}
+async function getVideoModelMode(model) {
+  const [vendorId, modelName] = model.split(/:(.+)/);
+  const models = await utils_default.vendor.getModelList(vendorId);
+  const found = models.find((m) => m.modelName === modelName);
+  if (!found) throw new Error(`\u672A\u627E\u5230\u89C6\u9891\u6A21\u578B ${model}`);
+  return Array.isArray(found.mode) ? found.mode : [found.mode];
+}
+function fitRefsToMode(refs, mode) {
+  const images = refs.filter((r) => r.kind === "image");
+  const audios = refs.filter((r) => r.kind === "audio");
+  const videos = refs.filter((r) => r.kind === "video");
+  const multi = mode.find((m) => Array.isArray(m));
+  if (multi) {
+    const limit = (name28) => Number(multi.find((m) => m.startsWith(`${name28}:`))?.split(":")[1] ?? 0);
+    return {
+      refs: [...images.slice(0, limit("imageReference")), ...audios.slice(0, limit("audioReference")), ...videos.slice(0, limit("videoReference"))],
+      mode: [multi]
+    };
+  }
+  const flat = mode;
+  if (images.length >= 2 && flat.some((m) => ["startEndRequired", "endFrameOptional", "startFrameOptional"].includes(m))) {
+    const picked = flat.find((m) => ["startEndRequired", "endFrameOptional", "startFrameOptional"].includes(m));
+    return { refs: [...images.slice(0, 2), ...audios.slice(0, 1)], mode: [picked] };
+  }
+  if (images.length >= 1 && flat.some((m) => ["singleImage", "startFrameOptional", "endFrameOptional"].includes(m))) {
+    const picked = flat.includes("singleImage") ? "singleImage" : flat.find((m) => m !== "text");
+    return { refs: [...images.slice(0, 1), ...audios.slice(0, 1)], mode: [picked] };
+  }
+  if (flat.includes("text")) return { refs: [], mode: ["text"] };
+  if (flat.includes("startEndRequired")) throw new Error("\u8BE5\u89C6\u9891\u6A21\u578B\u9700\u8981\u9996\u5C3E\u4E24\u5F20\u53C2\u8003\u56FE");
+  throw new Error("\u53C2\u8003\u7D20\u6750\u4E0D\u6EE1\u8DB3\u8BE5\u89C6\u9891\u6A21\u578B\u7684\u8F93\u5165\u8981\u6C42");
+}
+async function fileUrl(filePath) {
+  if (!filePath) return null;
+  return extKind(filePath) === "image" ? utils_default.oss.getSmallImageUrl(filePath) : utils_default.oss.getFileUrl(filePath);
+}
+async function touchCanvas(projectId) {
+  const exists = await utils_default.db("o_canvas").where("projectId", projectId).first();
+  if (!exists) await utils_default.db("o_canvas").insert({ projectId, viewport: null, layout: "{}", updateTime: Date.now() });
+}
+async function readLayout(projectId) {
+  const row = await utils_default.db("o_canvas").where("projectId", projectId).select("layout").first();
+  try {
+    return { ...EMPTY_LAYOUT, ...row?.layout ? JSON.parse(row.layout) : {} };
+  } catch {
+    return { ...EMPTY_LAYOUT };
+  }
+}
+async function writeLayout(projectId, layout, viewport) {
+  await touchCanvas(projectId);
+  await utils_default.db("o_canvas").where("projectId", projectId).update({
+    layout: JSON.stringify(layout),
+    updateTime: Date.now(),
+    ...viewport !== void 0 ? { viewport: JSON.stringify(viewport) } : {}
+  });
+}
+async function renameKey(projectId, from, to) {
+  await utils_default.db("o_canvasEdge").where({ projectId, sourceKey: from }).update({ sourceKey: to });
+  await utils_default.db("o_canvasEdge").where({ projectId, targetKey: from }).update({ targetKey: to });
+  const layout = await readLayout(projectId);
+  const rename = (record3) => {
+    if (!(from in record3)) return record3;
+    const { [from]: value, ...rest } = record3;
+    return { ...rest, [to]: value };
+  };
+  await writeLayout(projectId, {
+    positions: rename(layout.positions),
+    nodeMeta: rename(layout.nodeMeta),
+    pinned: layout.pinned.map((k) => k === from ? to : k),
+    hidden: layout.hidden.map((k) => k === from ? to : k)
+  });
+}
+function remapRefTokens(text2, fromKeys, toKeys) {
+  if (!text2) return text2;
+  const map3 = /* @__PURE__ */ new Map();
+  fromKeys.forEach((key, i) => {
+    const to = toKeys.indexOf(key);
+    if (to >= 0) map3.set(i + 1, to + 1);
+  });
+  let changed = false;
+  for (const [from, to] of map3) if (from !== to) changed = true;
+  if (!changed) return text2;
+  return text2.replace(/@\s*(图片|图)\s*(\d+)/g, (whole, word, n) => {
+    const next = map3.get(Number(n));
+    return next ? `@${word}${next}` : whole;
+  });
+}
+var CANVAS_ASSET_TYPES, SCENE_FIRST_MODELS, isSceneFirstModel, KIND_BY_PREFIX, assetKey, nodeKey, storyboardKey, trackKey, OWNER_IMAGE_COLUMN, extKind, toReferenceList, EMPTY_LAYOUT;
+var init_canvas = __esm({
+  "src/lib/canvas.ts"() {
+    "use strict";
+    init_utils3();
+    CANVAS_ASSET_TYPES = ["role", "scene", "tool"];
+    SCENE_FIRST_MODELS = ["krea2_dual", "krea2_multi"];
+    isSceneFirstModel = (model) => !!model && SCENE_FIRST_MODELS.includes(model.split(/:(.+)/)[1] ?? model);
+    KIND_BY_PREFIX = { a: "asset", n: "node", s: "storyboard", v: "track" };
+    assetKey = (id) => `a:${id}`;
+    nodeKey = (id) => `n:${id}`;
+    storyboardKey = (id) => `s:${id}`;
+    trackKey = (id) => `v:${id}`;
+    OWNER_IMAGE_COLUMN = {
+      asset: "assetsId",
+      node: "canvasNodeId",
+      storyboard: "storyboardId",
+      track: "videoTrackId"
+    };
+    extKind = (filePath) => {
+      const ext = filePath.toLowerCase().split(".").pop() ?? "";
+      if (["mp4", "webm", "mov"].includes(ext)) return "video";
+      if (["mp3", "wav", "m4a"].includes(ext)) return "audio";
+      return "image";
+    };
+    toReferenceList = (refs) => refs.map((r) => ({ type: r.kind, base64: r.base64 }));
+    EMPTY_LAYOUT = { positions: {}, nodeMeta: {}, pinned: [], hidden: [] };
+  }
+});
+
+// src/lib/storyboardImage.ts
+async function prepareStoryboardImage(input) {
+  const [imageId] = await utils_default.db("o_image").insert({
+    type: "storyboard",
+    state: "\u751F\u6210\u4E2D",
+    storyboardId: input.storyboardId,
+    model: input.model.split(/:(.+)/)[1],
+    resolution: input.size,
+    aspectRatio: input.aspectRatio,
+    prompt: input.prompt,
+    kind: "image",
+    refs: input.refKeys?.length ? JSON.stringify(input.refKeys) : null,
+    createTime: Date.now()
+  });
+  const setCurrent = input.setCurrent !== false;
+  if (setCurrent) await utils_default.db("o_storyboard").where("id", input.storyboardId).update({ state: "\u751F\u6210\u4E2D", reason: null });
+  const run = async () => {
+    const filePath = `/${input.projectId}/assets/${input.scriptId}/${utils_default.uuid()}.jpg`;
+    try {
+      const referenceList = [...input.referenceBase64 ?? [], ...input.resolveReferences ? await input.resolveReferences() : []].filter(Boolean).map((base644) => ({ type: "image", base64: base644 }));
+      const ai = utils_default.Ai.Image(input.model);
+      await ai.run(
+        { prompt: input.prompt, referenceList, size: input.size, aspectRatio: input.aspectRatio },
+        {
+          taskClass: "\u751F\u6210\u5206\u955C\u56FE\u7247",
+          describe: `\u5206\u955C\u56FE\uFF1A${input.storyboardId}`,
+          projectId: input.projectId,
+          relatedObjects: JSON.stringify({ projectId: input.projectId, scriptId: input.scriptId, storyboardId: input.storyboardId })
+        }
+      );
+      const current = await utils_default.db("o_image").where("id", imageId).select("state").first();
+      if (!current) return { ok: false, error: "\u955C\u5934\u5DF2\u88AB\u5220\u9664" };
+      if (current.state === "\u751F\u6210\u5931\u8D25") return { ok: false, error: "\u5DF2\u53D6\u6D88" };
+      await ai.save(filePath);
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u5DF2\u5B8C\u6210", filePath });
+      if (setCurrent) await utils_default.db("o_storyboard").where("id", input.storyboardId).update({ imageId, filePath, state: "\u5DF2\u5B8C\u6210", reason: null });
+      return { ok: true, filePath };
+    } catch (e) {
+      const message = utils_default.error(e).message || "\u5206\u955C\u56FE\u751F\u6210\u5931\u8D25";
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+      if (setCurrent) await utils_default.db("o_storyboard").where("id", input.storyboardId).update({ state: "\u751F\u6210\u5931\u8D25", reason: message });
+      return { ok: false, error: message };
+    }
+  };
+  return { imageId, run };
+}
+async function ensureStoryboardEdges(projectId, storyboardIds) {
+  if (!storyboardIds.length) return;
+  const keys2 = storyboardIds.map((id) => `s:${id}`);
+  const existing = new Set((await utils_default.db("o_canvasEdge").where("projectId", projectId).whereIn("targetKey", keys2).select("targetKey")).map((r) => r.targetKey));
+  const missing = storyboardIds.filter((id) => !existing.has(`s:${id}`));
+  if (!missing.length) return;
+  await seedStoryboardEdges(projectId, missing);
+}
+async function seedStoryboardEdges(projectId, storyboardIds) {
+  if (!storyboardIds.length) return;
+  const links = await utils_default.db("o_assets2Storyboard").whereIn("storyboardId", storyboardIds).orderBy("rowid").select("storyboardId", "assetId");
+  if (!links.length) return;
+  await utils_default.db("o_canvasEdge").where("projectId", projectId).whereIn(
+    "targetKey",
+    storyboardIds.map((id) => `s:${id}`)
+  ).del();
+  const sortOf = /* @__PURE__ */ new Map();
+  const rows = links.map((link) => {
+    const sort = sortOf.get(link.storyboardId) ?? 0;
+    sortOf.set(link.storyboardId, sort + 1);
+    return { projectId, sourceKey: `a:${link.assetId}`, targetKey: `s:${link.storyboardId}`, sort, createTime: Date.now() };
+  });
+  for (let i = 0; i < rows.length; i += 200) await utils_default.db("o_canvasEdge").insert(rows.slice(i, i + 200));
+}
+async function cleanupStoryboards(storyboardIds) {
+  if (!storyboardIds.length) return;
+  const keys2 = storyboardIds.map((id) => `s:${id}`);
+  await utils_default.db("o_image").whereIn("storyboardId", storyboardIds).del();
+  await utils_default.db("o_canvasEdge").where((qb) => qb.whereIn("targetKey", keys2).orWhereIn("sourceKey", keys2)).del();
+}
+async function syncStoryboardAssetLink(sourceKey, targetKey, action) {
+  const shot = /^s:(\d+)$/.exec(String(targetKey));
+  const asset = /^a:(\d+)$/.exec(String(sourceKey));
+  if (!shot || !asset) return;
+  const storyboardId = Number(shot[1]);
+  const assetId = Number(asset[1]);
+  if (action === "remove") {
+    await utils_default.db("o_assets2Storyboard").where({ storyboardId, assetId }).del();
+    return;
+  }
+  const exists = await utils_default.db("o_assets2Storyboard").where({ storyboardId, assetId }).first();
+  if (!exists) await utils_default.db("o_assets2Storyboard").insert({ storyboardId, assetId });
+}
+var init_storyboardImage = __esm({
+  "src/lib/storyboardImage.ts"() {
+    "use strict";
+    init_utils3();
+  }
+});
+
+// src/routes/canvas/addEdge.ts
+var import_express27, router27, addEdge_default;
+var init_addEdge = __esm({
+  "src/routes/canvas/addEdge.ts"() {
+    "use strict";
+    import_express27 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_storyboardImage();
+    router27 = import_express27.default.Router();
+    addEdge_default = router27.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        sourceKey: external_exports.string(),
+        targetKey: external_exports.string()
+      }),
+      async (req, res) => {
+        const { projectId, sourceKey, targetKey } = req.body;
+        if (sourceKey === targetKey) return res.status(400).send(error50("\u4E0D\u80FD\u8FDE\u63A5\u5230\u81EA\u8EAB"));
+        try {
+          const [source, target] = await Promise.all([resolveOwner(projectId, sourceKey), resolveOwner(projectId, targetKey)]);
+          if (target.asset && target.asset.assetsId === source.id && source.kind === "asset") {
+            return res.status(400).send(error50("\u7236\u8D44\u4EA7\u5DF2\u81EA\u52A8\u4F5C\u4E3A\u53C2\u8003\uFF0C\u65E0\u9700\u8FDE\u7EBF"));
+          }
+        } catch (e) {
+          return res.status(400).send(error50(utils_default.error(e).message));
+        }
+        const exists = await utils_default.db("o_canvasEdge").where({ projectId, sourceKey, targetKey }).first();
+        if (exists) return res.status(400).send(error50("\u8FDE\u7EBF\u5DF2\u5B58\u5728"));
+        const last = await utils_default.db("o_canvasEdge").where({ projectId, targetKey }).max("sort as sort").first();
+        const sort = Number(last?.sort ?? -1) + 1;
+        const [id] = await utils_default.db("o_canvasEdge").insert({ projectId, sourceKey, targetKey, sort, createTime: Date.now() });
+        await syncStoryboardAssetLink(sourceKey, targetKey, "add");
+        res.status(200).send(success3({ id, sourceKey, targetKey, sort }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/cancelGeneration.ts
+var import_express28, router28, cancelGeneration_default;
+var init_cancelGeneration = __esm({
+  "src/routes/canvas/cancelGeneration.ts"() {
+    "use strict";
+    import_express28 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_genQueue();
+    router28 = import_express28.default.Router();
+    cancelGeneration_default = router28.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        imageId: external_exports.number()
+      }),
+      async (req, res) => {
+        const { projectId, imageId } = req.body;
+        try {
+          const row = await utils_default.db("o_image").where("id", imageId).select("id", "state", "assetsId", "canvasNodeId", "storyboardId", "videoTrackId").first();
+          if (!row) return res.status(404).send(error50("\u7248\u672C\u4E0D\u5B58\u5728"));
+          const key = imageOwnerKey(row);
+          if (!key) return res.status(400).send(error50("\u8FD9\u4E2A\u7248\u672C\u4E0D\u5C5E\u4E8E\u753B\u5E03\u8282\u70B9"));
+          await resolveOwner(projectId, key);
+          if (row.state !== "\u751F\u6210\u4E2D") return res.status(200).send(success3({ cancelled: false, state: row.state }));
+          const result = cancel(imageId);
+          await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: "\u5DF2\u53D6\u6D88" });
+          await utils_default.db("o_video").where("imageId", imageId).where("state", "\u751F\u6210\u4E2D").update({ state: "\u751F\u6210\u5931\u8D25", errorReason: "\u5DF2\u53D6\u6D88" });
+          if (row.storyboardId) await utils_default.db("o_storyboard").where("id", row.storyboardId).where("state", "\u751F\u6210\u4E2D").update({ state: "\u751F\u6210\u5931\u8D25", reason: "\u5DF2\u53D6\u6D88" });
+          res.status(200).send(success3({ cancelled: true, queued: result.queued, tracked: result.found }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/createAsset.ts
+var import_express29, router29, createAsset_default;
+var init_createAsset = __esm({
+  "src/routes/canvas/createAsset.ts"() {
+    "use strict";
+    import_express29 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router29 = import_express29.default.Router();
+    createAsset_default = router29.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        type: external_exports.enum(CANVAS_ASSET_TYPES),
+        name: external_exports.string().min(1),
+        describe: external_exports.string().optional(),
+        scriptId: external_exports.number().optional().nullable(),
+        position: external_exports.object({ x: external_exports.number(), y: external_exports.number() }).optional()
+      }),
+      async (req, res) => {
+        const { projectId, type, name: name28, describe: describe4, scriptId, position } = req.body;
+        const [id] = await utils_default.db("o_assets").insert({
+          name: name28,
+          describe: describe4 ?? "",
+          prompt: "",
+          type,
+          projectId,
+          scriptId: scriptId ?? null,
+          startTime: Date.now()
+        });
+        if (scriptId) await utils_default.db("o_scriptAssets").insert({ scriptId, assetId: id });
+        if (position) {
+          const layout = await readLayout(projectId);
+          await writeLayout(projectId, { ...layout, positions: { ...layout.positions, [assetKey(id)]: position } });
+        }
+        res.status(200).send(success3({ key: assetKey(id), id }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/createNode.ts
+var import_express30, router30, DEFAULT_NAME, createNode_default;
+var init_createNode = __esm({
+  "src/routes/canvas/createNode.ts"() {
+    "use strict";
+    import_express30 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router30 = import_express30.default.Router();
+    DEFAULT_NAME = { image: "\u56FE\u7247", video: "\u89C6\u9891", text: "\u6587\u672C", audio: "\u97F3\u9891" };
+    createNode_default = router30.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        kind: external_exports.enum(["image", "video", "text", "audio"]),
+        name: external_exports.string().optional(),
+        prompt: external_exports.string().optional(),
+        position: external_exports.object({ x: external_exports.number(), y: external_exports.number() }).optional(),
+        params: external_exports.record(external_exports.string(), external_exports.unknown()).optional()
+        // 如 { artStyle } 给图片节点带默认风格
+      }),
+      async (req, res) => {
+        const { projectId, kind, name: name28, prompt, position, params } = req.body;
+        const [id] = await utils_default.db("o_canvasNode").insert({
+          projectId,
+          kind,
+          name: name28 ?? DEFAULT_NAME[kind],
+          prompt: prompt ?? "",
+          params: params && Object.keys(params).length ? JSON.stringify(params) : null,
+          createTime: Date.now()
+        });
+        if (position) {
+          const layout = await readLayout(projectId);
+          await writeLayout(projectId, { ...layout, positions: { ...layout.positions, [nodeKey(id)]: position } });
+        }
+        res.status(200).send(success3({ key: nodeKey(id), id }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/createStateAsset.ts
+var import_express31, router31, createStateAsset_default;
+var init_createStateAsset = __esm({
+  "src/routes/canvas/createStateAsset.ts"() {
+    "use strict";
+    import_express31 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_db();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router31 = import_express31.default.Router();
+    createStateAsset_default = router31.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        parentKey: external_exports.string(),
+        name: external_exports.string().min(1),
+        describe: external_exports.string().optional(),
+        prompt: external_exports.string().optional(),
+        position: external_exports.object({ x: external_exports.number(), y: external_exports.number() }).optional()
+      }),
+      async (req, res) => {
+        const { projectId, parentKey, name: name28, describe: describe4, prompt, position } = req.body;
+        let parent;
+        try {
+          parent = await resolveOwner(projectId, parentKey);
+        } catch (e) {
+          return res.status(400).send(error50(utils_default.error(e).message));
+        }
+        if (!parent.asset) return res.status(400).send(error50("\u53EA\u80FD\u4ECE\u8D44\u4EA7\u8282\u70B9\u6D3E\u751F\u72B6\u6001"));
+        const rootId = parent.asset.assetsId ?? parent.asset.id;
+        const root2 = await utils_default.db("o_assets").where("id", rootId).first();
+        if (!root2) return res.status(400).send(error50("\u6839\u8D44\u4EA7\u4E0D\u5B58\u5728"));
+        const id = await db.transaction(async (trx) => {
+          const [newId] = await trx("o_assets").insert({
+            name: name28,
+            describe: describe4 ?? "",
+            prompt: prompt ?? "",
+            type: root2.type,
+            projectId,
+            assetsId: rootId,
+            scriptId: root2.scriptId,
+            startTime: Date.now()
+          });
+          const links = await trx("o_scriptAssets").where("assetId", rootId).select("scriptId");
+          if (links.length) await trx("o_scriptAssets").insert(links.map((l) => ({ scriptId: l.scriptId, assetId: newId })));
+          if (parent.asset.id !== rootId) {
+            await trx("o_canvasEdge").insert({ projectId, sourceKey: parentKey, targetKey: assetKey(newId), sort: 0, createTime: Date.now() });
+          }
+          return newId;
+        });
+        if (position) {
+          const layout = await readLayout(projectId);
+          await writeLayout(projectId, { ...layout, positions: { ...layout.positions, [assetKey(id)]: position } });
+        }
+        res.status(200).send(success3({ key: assetKey(id), id, rootKey: assetKey(rootId) }));
+      }
+    );
+  }
+});
+
+// src/lib/canvasTrash.ts
+function sliceLayout(layout, keys2) {
+  const hit = (k) => keys2.includes(baseKey(k));
+  const split2 = (record3) => [
+    Object.fromEntries(Object.entries(record3).filter(([k]) => hit(k))),
+    Object.fromEntries(Object.entries(record3).filter(([k]) => !hit(k)))
+  ];
+  const [positions, restPositions] = split2(layout.positions);
+  const [nodeMeta, restMeta] = split2(layout.nodeMeta);
+  return {
+    taken: { positions, nodeMeta, pinned: layout.pinned.filter(hit), hidden: layout.hidden.filter(hit) },
+    rest: { positions: restPositions, nodeMeta: restMeta, pinned: layout.pinned.filter((k) => !hit(k)), hidden: layout.hidden.filter((k) => !hit(k)) }
+  };
+}
+async function assetFamilyIds(owner, q = db) {
+  if (owner.kind !== "asset") return [];
+  const self2 = await q("o_assets").where("id", owner.id).select("assetsId").first();
+  const children = self2 && self2.assetsId == null ? await q("o_assets").where("assetsId", owner.id).select("id") : [];
+  return [owner.id, ...children.map((c) => c.id)];
+}
+async function readLayoutTx(trx, projectId) {
+  const row = await trx("o_canvas").where("projectId", projectId).select("layout").first();
+  try {
+    return { ...EMPTY_LAYOUT, ...row?.layout ? JSON.parse(row.layout) : {} };
+  } catch {
+    return { ...EMPTY_LAYOUT };
+  }
+}
+async function writeLayoutTx(trx, projectId, layout) {
+  const exists = await trx("o_canvas").where("projectId", projectId).first();
+  const data = { layout: JSON.stringify(layout), updateTime: Date.now() };
+  if (exists) await trx("o_canvas").where("projectId", projectId).update(data);
+  else await trx("o_canvas").insert({ projectId, viewport: null, ...data });
+}
+async function moveToTrash(projectId, key, owner) {
+  const isNode = owner.kind === "node";
+  return db.transaction(async (trx) => {
+    const assetIds = await assetFamilyIds(owner, trx);
+    const keys2 = isNode ? [key] : assetIds.map(assetKey);
+    const layout = await readLayoutTx(trx, projectId);
+    const { taken, rest } = sliceLayout(layout, keys2);
+    const snapshot = {
+      keys: keys2,
+      assets: isNode ? [] : await trx("o_assets").whereIn("id", assetIds).select("*"),
+      nodes: isNode ? await trx("o_canvasNode").where("id", owner.id).select("*") : [],
+      images: isNode ? await trx("o_image").where("canvasNodeId", owner.id).select("*") : await trx("o_image").whereIn("assetsId", assetIds).select("*"),
+      storyboardLinks: isNode ? [] : await trx("o_assets2Storyboard").whereIn("assetId", assetIds).select("*"),
+      scriptLinks: isNode ? [] : await trx("o_scriptAssets").whereIn("assetId", assetIds).select("*"),
+      voiceLinks: isNode ? [] : await trx("o_assetsRole2Audio").whereIn("assetsRoleId", assetIds).select("*"),
+      edges: await trx("o_canvasEdge").where("projectId", projectId).where((qb) => qb.whereIn("sourceKey", keys2).orWhereIn("targetKey", keys2)).select("*"),
+      layout: taken
+    };
+    await trx("o_canvasEdge").whereIn("id", ids(snapshot.edges)).delete();
+    if (isNode) await trx("o_canvasNode").where("id", owner.id).delete();
+    else {
+      await trx("o_assets2Storyboard").whereIn("assetId", assetIds).delete();
+      await trx("o_scriptAssets").whereIn("assetId", assetIds).delete();
+      await trx("o_assetsRole2Audio").whereIn("assetsRoleId", assetIds).delete();
+      await trx("o_assets").whereIn("id", assetIds).delete();
+    }
+    await trx("o_image").whereIn("id", ids(snapshot.images)).delete();
+    await writeLayoutTx(trx, projectId, rest);
+    const [trashId] = await trx("o_canvasTrash").insert({ projectId, key, snapshot: JSON.stringify(snapshot), createTime: Date.now() });
+    return { trashId, keys: keys2 };
+  });
+}
+async function liveOtherEnds(trx, snap) {
+  const others = [...new Set(snap.edges.flatMap((e) => [e.sourceKey, e.targetKey]).filter((k) => !snap.keys.includes(k)))];
+  const idOf = (k) => Number(k.slice(2));
+  const assets = await liveIds(trx, "o_assets", others.filter((k) => k.startsWith("a:")).map(idOf));
+  const nodes = await liveIds(trx, "o_canvasNode", others.filter((k) => k.startsWith("n:")).map(idOf));
+  return new Set(others.filter((k) => (k.startsWith("a:") ? assets : nodes).has(idOf(k))));
+}
+async function restoreFromTrash(projectId, trashId) {
+  return db.transaction(async (trx) => {
+    const row = await trx("o_canvasTrash").where({ id: trashId, projectId }).first();
+    if (!row) throw new Error("\u56DE\u6536\u7AD9\u91CC\u6CA1\u6709\u8FD9\u6761\u8BB0\u5F55\uFF08\u53EF\u80FD\u5DF2\u8FC7\u671F\u6E05\u7406\uFF09");
+    const snap = JSON.parse(row.snapshot);
+    const takenAssets = await liveIds(trx, "o_assets", ids(snap.assets));
+    const takenNodes = await liveIds(trx, "o_canvasNode", ids(snap.nodes));
+    const takenImages = await liveIds(trx, "o_image", ids(snap.images));
+    const otherEnds = await liveOtherEnds(trx, snap);
+    const assetMap = /* @__PURE__ */ new Map();
+    const nodeMap = /* @__PURE__ */ new Map();
+    const imageMap = /* @__PURE__ */ new Map();
+    const mapId = (map3, id) => id == null ? id : map3.get(id) ?? id;
+    const insertKeepingId = async (table, rowData, taken, map3) => {
+      if (!taken.has(rowData.id)) return void await trx(table).insert(rowData);
+      const { id, ...rest } = rowData;
+      const [newId] = await trx(table).insert(rest);
+      map3.set(id, newId);
+    };
+    const ordered = [...snap.assets].sort((a, b) => Number(a.assetsId != null) - Number(b.assetsId != null));
+    for (const asset of ordered) {
+      await insertKeepingId("o_assets", { ...asset, assetsId: mapId(assetMap, asset.assetsId), imageId: null }, takenAssets, assetMap);
+    }
+    for (const node of snap.nodes) await insertKeepingId("o_canvasNode", node, takenNodes, nodeMap);
+    for (const image of snap.images) {
+      const rowData = { ...image, assetsId: mapId(assetMap, image.assetsId), canvasNodeId: mapId(nodeMap, image.canvasNodeId) };
+      await insertKeepingId("o_image", rowData, takenImages, imageMap);
+    }
+    for (const asset of snap.assets) {
+      if (asset.imageId == null) continue;
+      const imageId = mapId(imageMap, asset.imageId);
+      const exists = await trx("o_image").where("id", imageId).first();
+      await trx("o_assets").where("id", mapId(assetMap, asset.id)).update({ imageId: exists ? imageId : null });
+    }
+    for (const node of snap.nodes) {
+      if (node.imageId != null && imageMap.has(node.imageId)) {
+        await trx("o_canvasNode").where("id", mapId(nodeMap, node.id)).update({ imageId: imageMap.get(node.imageId) });
+      }
+    }
+    const storyboardLinks = snap.storyboardLinks.map((r) => ({ ...r, assetId: mapId(assetMap, r.assetId) }));
+    const scriptLinks = snap.scriptLinks.map((r) => ({ ...r, assetId: mapId(assetMap, r.assetId) }));
+    const voiceLinks = snap.voiceLinks.map((r) => ({ ...r, assetsRoleId: mapId(assetMap, r.assetsRoleId) }));
+    if (storyboardLinks.length) await trx("o_assets2Storyboard").insert(storyboardLinks);
+    if (scriptLinks.length) await trx("o_scriptAssets").insert(scriptLinks);
+    if (voiceLinks.length) await trx("o_assetsRole2Audio").insert(voiceLinks);
+    const keyMap = Object.fromEntries([
+      ...[...assetMap].map(([from, to]) => [assetKey(from), assetKey(to)]),
+      ...[...nodeMap].map(([from, to]) => [`n:${from}`, `n:${to}`])
+    ]);
+    const renameKey2 = (k) => {
+      const base = baseKey(k);
+      return keyMap[base] ? keyMap[base] + k.slice(base.length) : k;
+    };
+    const renameRecord = (record3) => Object.fromEntries(Object.entries(record3).map(([k, v]) => [renameKey2(k), v]));
+    const edges = snap.edges.filter((e) => [e.sourceKey, e.targetKey].every((k) => snap.keys.includes(k) || otherEnds.has(k))).map(({ id, ...rest }) => ({ ...rest, sourceKey: renameKey2(rest.sourceKey), targetKey: renameKey2(rest.targetKey) }));
+    if (edges.length) await trx("o_canvasEdge").insert(edges);
+    const layout = await readLayoutTx(trx, projectId);
+    await writeLayoutTx(trx, projectId, {
+      positions: { ...layout.positions, ...renameRecord(snap.layout.positions) },
+      nodeMeta: { ...layout.nodeMeta, ...renameRecord(snap.layout.nodeMeta) },
+      pinned: [.../* @__PURE__ */ new Set([...layout.pinned, ...snap.layout.pinned.map(renameKey2)])],
+      hidden: [.../* @__PURE__ */ new Set([...layout.hidden, ...snap.layout.hidden.map(renameKey2)])]
+    });
+    await trx("o_canvasTrash").where("id", trashId).delete();
+    return { restored: snap.keys.map(renameKey2), keyMap };
+  });
+}
+async function purgeTrash(projectId) {
+  const expired = await utils_default.db("o_canvasTrash").where("projectId", projectId).where("createTime", "<", Date.now() - TRASH_TTL).select("id", "snapshot");
+  for (const row of expired) {
+    const snap = JSON.parse(row.snapshot);
+    const paths = [...new Set(snap.images.map((i) => i.filePath).filter((p3) => !!p3))];
+    const stillUsed = new Set(paths.length ? (await utils_default.db("o_image").whereIn("filePath", paths).select("filePath")).map((r) => r.filePath) : []);
+    for (const path38 of paths.filter((p3) => !stillUsed.has(p3))) {
+      await utils_default.oss.deleteFile(path38).catch((e) => {
+        if (e?.code !== "ENOENT") throw e;
+      });
+    }
+    await utils_default.db("o_canvasTrash").where("id", row.id).delete();
+  }
+}
+var TRASH_TTL, baseKey, ids, liveIds;
+var init_canvasTrash = __esm({
+  "src/lib/canvasTrash.ts"() {
+    "use strict";
+    init_utils3();
+    init_db();
+    init_canvas();
+    TRASH_TTL = 24 * 60 * 60 * 1e3;
+    baseKey = (key) => key.replace(/@\w+$/, "");
+    ids = (rows) => rows.map((r) => r.id);
+    liveIds = async (trx, table, list2) => new Set(list2.length ? ids(await trx(table).whereIn("id", list2).select("id")) : []);
+  }
+});
+
+// src/routes/canvas/deleteNode.ts
+var import_express32, router32, deleteNode_default;
+var init_deleteNode = __esm({
+  "src/routes/canvas/deleteNode.ts"() {
+    "use strict";
+    import_express32 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_canvasTrash();
+    router32 = import_express32.default.Router();
+    deleteNode_default = router32.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        key: external_exports.string(),
+        force: external_exports.boolean().optional()
+      }),
+      async (req, res) => {
+        const { projectId, key, force } = req.body;
+        try {
+          const owner = await resolveOwner(projectId, key);
+          const assetIds = await assetFamilyIds(owner);
+          if (assetIds.length && !force) {
+            const used = await utils_default.db("o_assets2Storyboard").whereIn("assetId", assetIds).count("assetId as n").first();
+            if (Number(used?.n ?? 0) > 0) {
+              return res.status(409).send(error50("\u8BE5\u8D44\u4EA7\uFF08\u6216\u5176\u72B6\u6001\uFF09\u5DF2\u88AB\u5206\u955C\u5F15\u7528\uFF0C\u786E\u8BA4\u5220\u9664\u8BF7\u4F20 force"));
+            }
+          }
+          const { trashId, keys: keys2 } = await moveToTrash(projectId, key, owner);
+          await purgeTrash(projectId);
+          res.status(200).send(success3({ removed: keys2, trashId }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/duplicateNodes.ts
+async function copyImage(imageId, projectId, owner, dir) {
+  if (!imageId) return null;
+  const row = await utils_default.db("o_image").where({ id: imageId, state: "\u5DF2\u5B8C\u6210" }).first();
+  if (!row?.filePath) return null;
+  const ext = import_path12.default.extname(row.filePath) || ".jpg";
+  const filePath = `/${projectId}/${dir}/${v4_default()}${ext}`;
+  await utils_default.oss.writeFile(filePath, await utils_default.oss.getFile(row.filePath));
+  const [newId] = await utils_default.db("o_image").insert({
+    type: row.type,
+    state: "\u5DF2\u5B8C\u6210",
+    filePath,
+    model: row.model,
+    resolution: row.resolution,
+    aspectRatio: row.aspectRatio,
+    prompt: row.prompt,
+    kind: row.kind,
+    stage: row.stage,
+    refs: null,
+    createTime: Date.now(),
+    ...owner
+  });
+  return newId;
+}
+async function copyNode(id, sourceProjectId, projectId) {
+  const row = await utils_default.db("o_canvasNode").where({ id, projectId: sourceProjectId }).first();
+  if (!row) throw new Error(`\u8282\u70B9 n:${id} \u4E0D\u5B58\u5728`);
+  const [newId] = await utils_default.db("o_canvasNode").insert({ projectId, kind: row.kind, name: row.name, prompt: row.prompt, params: row.params, createTime: Date.now() });
+  const imageId = await copyImage(row.imageId, projectId, { canvasNodeId: newId }, "canvas");
+  if (imageId) await utils_default.db("o_canvasNode").where("id", newId).update({ imageId });
+  return nodeKey(newId);
+}
+async function copyAsset(id, projectId) {
+  const row = await utils_default.db("o_assets").where({ id, projectId }).first();
+  if (!row) throw new Error(`\u8D44\u4EA7 a:${id} \u4E0D\u5B58\u5728`);
+  const [newId] = await utils_default.db("o_assets").insert({
+    name: `${row.name ?? "\u8D44\u4EA7"} \u526F\u672C`,
+    describe: row.describe ?? "",
+    prompt: row.prompt ?? "",
+    type: row.type,
+    projectId,
+    assetsId: row.assetsId ?? null,
+    scriptId: row.scriptId ?? null,
+    startTime: Date.now()
+  });
+  const links = await utils_default.db("o_scriptAssets").where("assetId", id).select("scriptId");
+  if (links.length) await utils_default.db("o_scriptAssets").insert(links.map((l) => ({ scriptId: l.scriptId, assetId: newId })));
+  const imageId = await copyImage(row.imageId, projectId, { assetsId: newId }, ASSET_DIR[row.type ?? ""] ?? "canvas");
+  if (imageId) await utils_default.db("o_assets").where("id", newId).update({ imageId });
+  return assetKey(newId);
+}
+async function assetToNode(id, sourceProjectId, projectId) {
+  const row = await utils_default.db("o_assets").where({ id, projectId: sourceProjectId }).first();
+  if (!row) throw new Error(`\u8D44\u4EA7 a:${id} \u4E0D\u5B58\u5728`);
+  const [newId] = await utils_default.db("o_canvasNode").insert({
+    projectId,
+    kind: "image",
+    name: row.name,
+    prompt: row.prompt ?? "",
+    params: JSON.stringify({ assetType: row.type }),
+    createTime: Date.now()
+  });
+  const imageId = await copyImage(row.imageId, projectId, { canvasNodeId: newId }, "canvas");
+  if (imageId) await utils_default.db("o_canvasNode").where("id", newId).update({ imageId });
+  return nodeKey(newId);
+}
+var import_express33, import_path12, router33, duplicateNodes_default, ASSET_DIR;
+var init_duplicateNodes = __esm({
+  "src/routes/canvas/duplicateNodes.ts"() {
+    "use strict";
+    import_express33 = __toESM(require_express2());
+    init_zod();
+    import_path12 = __toESM(require("path"));
+    init_dist_node();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router33 = import_express33.default.Router();
+    duplicateNodes_default = router33.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        sourceProjectId: external_exports.number().optional().nullable(),
+        items: external_exports.array(external_exports.object({ key: external_exports.string(), position: external_exports.object({ x: external_exports.number(), y: external_exports.number() }) })).min(1).max(100)
+      }),
+      async (req, res) => {
+        const { projectId, items } = req.body;
+        const sourceProjectId = req.body.sourceProjectId ?? projectId;
+        const crossProject = sourceProjectId !== projectId;
+        try {
+          const keyMap = {};
+          const positions = {};
+          for (const item of items) {
+            const owner = parseKey(item.key);
+            if (owner.kind === "node") keyMap[item.key] = await copyNode(owner.id, sourceProjectId, projectId);
+            else if (owner.kind === "asset") keyMap[item.key] = crossProject ? await assetToNode(owner.id, sourceProjectId, projectId) : await copyAsset(owner.id, projectId);
+            else continue;
+            positions[keyMap[item.key]] = item.position;
+          }
+          const edges = await utils_default.db("o_canvasEdge").where("projectId", sourceProjectId).whereIn("sourceKey", Object.keys(keyMap)).whereIn("targetKey", Object.keys(keyMap));
+          if (edges.length) {
+            await utils_default.db("o_canvasEdge").insert(edges.map((e) => ({ projectId, sourceKey: keyMap[e.sourceKey], targetKey: keyMap[e.targetKey], sort: e.sort ?? 0, createTime: Date.now() })));
+          }
+          const layout = await readLayout(projectId);
+          await writeLayout(projectId, { ...layout, positions: { ...layout.positions, ...positions } });
+          res.status(200).send(success3({ keyMap, keys: Object.values(keyMap) }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+    ASSET_DIR = { role: "role", scene: "scene", tool: "props" };
+  }
+});
+
+// src/lib/canvasNodeAudio.ts
+async function prepareNodeAudio(input) {
+  const [imageId] = await utils_default.db("o_image").insert({
+    type: "canvas",
+    state: "\u751F\u6210\u4E2D",
+    canvasNodeId: input.nodeId,
+    model: input.model.split(/:(.+)/)[1],
+    prompt: input.text,
+    kind: "audio",
+    refs: input.refKeys?.length ? JSON.stringify(input.refKeys) : null,
+    createTime: Date.now()
+  });
+  const run = async () => {
+    const filePath = `/${input.projectId}/canvas/${v4_default()}.mp3`;
+    try {
+      const config3 = {
+        text: input.text,
+        voice: input.voice,
+        speechRate: input.speechRate,
+        pitchRate: input.pitchRate,
+        volume: input.volume,
+        referenceList: (input.referenceBase64 ?? []).filter(Boolean).map((base644) => ({ type: "audio", base64: base644 }))
+      };
+      const ai = utils_default.Ai.Audio(input.model);
+      await ai.run(config3, {
+        taskClass: "\u753B\u5E03\u8BED\u97F3\u751F\u6210",
+        describe: `\u753B\u5E03\u97F3\u9891\u8282\u70B9\uFF1A${input.nodeName}`,
+        projectId: input.projectId,
+        relatedObjects: JSON.stringify({ projectId: input.projectId, canvasNodeId: input.nodeId })
+      });
+      const current = await utils_default.db("o_image").where("id", imageId).select("state").first();
+      if (!current) return { ok: false, error: "\u8282\u70B9\u5DF2\u88AB\u5220\u9664" };
+      if (current.state === "\u751F\u6210\u5931\u8D25") return { ok: false, error: "\u5DF2\u53D6\u6D88" };
+      await ai.save(filePath);
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u5DF2\u5B8C\u6210", filePath });
+      await utils_default.db("o_canvasNode").where("id", input.nodeId).update({ imageId });
+      return { ok: true, filePath };
+    } catch (e) {
+      const message = utils_default.error(e).message || "\u8BED\u97F3\u751F\u6210\u5931\u8D25";
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+      return { ok: false, error: message };
+    }
+  };
+  return { imageId, run };
+}
+var init_canvasNodeAudio = __esm({
+  "src/lib/canvasNodeAudio.ts"() {
+    "use strict";
+    init_dist_node();
+    init_utils3();
+  }
+});
+
+// src/routes/canvas/generateAudio.ts
+var import_express34, router34, MAX_VOICE_REFS, generateAudio_default;
+var init_generateAudio = __esm({
+  "src/routes/canvas/generateAudio.ts"() {
+    "use strict";
+    import_express34 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_canvasNodeAudio();
+    init_genQueue();
+    router34 = import_express34.default.Router();
+    MAX_VOICE_REFS = 1;
+    generateAudio_default = router34.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        target: external_exports.string(),
+        model: external_exports.string().regex(/^[^:]+:.+$/, "\u8BF7\u9009\u62E9\u8BED\u97F3\u6A21\u578B"),
+        text: external_exports.string().min(1, "\u8BF7\u8F93\u5165\u8981\u6717\u8BFB\u7684\u6587\u672C"),
+        voice: external_exports.string().optional().default(""),
+        speechRate: external_exports.number().min(0.1).max(5).optional().default(1),
+        pitchRate: external_exports.number().min(0.1).max(5).optional().default(1),
+        volume: external_exports.number().min(0).max(5).optional().default(1)
+      }),
+      async (req, res) => {
+        const { projectId, target, model, text: text2 } = req.body;
+        const voice = req.body.voice ?? "";
+        const speechRate = req.body.speechRate ?? 1;
+        const pitchRate = req.body.pitchRate ?? 1;
+        const volume = req.body.volume ?? 1;
+        try {
+          const owner = await resolveOwner(projectId, target);
+          if (!owner.node || owner.node.kind !== "audio") return res.status(400).send(error50("\u53EA\u6709\u97F3\u9891\u8282\u70B9\u53EF\u4EE5\u751F\u6210\u8BED\u97F3"));
+          const keys2 = (await incomingEdges(projectId, target)).map((e) => e.sourceKey);
+          const expanded = await expandTextRefs(projectId, keys2, text2);
+          const voiceRefs = (await resolveRefs(projectId, expanded.refKeys)).filter((r) => r.kind === "audio").slice(0, MAX_VOICE_REFS);
+          if (!expanded.prompt.trim()) return res.status(400).send(error50("\u8981\u6717\u8BFB\u7684\u6587\u672C\u662F\u7A7A\u7684"));
+          const params = JSON.stringify({ model, voice, speechRate, pitchRate, volume });
+          await utils_default.db("o_canvasNode").where("id", owner.id).update({ prompt: text2, params });
+          const job = await prepareNodeAudio({
+            projectId,
+            nodeId: owner.id,
+            nodeName: owner.node.name ?? "\u97F3\u9891",
+            model,
+            text: expanded.prompt,
+            voice,
+            speechRate,
+            pitchRate,
+            volume,
+            referenceBase64: voiceRefs.map((r) => r.base64),
+            refKeys: voiceRefs.map((r) => r.key)
+          });
+          res.status(200).send(success3({ imageId: job.imageId, usedRefs: voiceRefs.map((r) => ({ key: r.key, kind: r.kind })) }));
+          enqueue(job.imageId, "audio", job.run);
+        } catch (e) {
+          if (!res.headersSent) res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/lib/artStyleWords.ts
+function parseGene(prefix) {
+  const out = {};
+  for (const line of prefix.split("\n")) {
+    const match = /^\|\s*\**([^*|]+?)\**\s*\|\s*([^|]+?)\s*\|/.exec(line);
+    if (!match) continue;
+    const key = match[1].trim();
+    if (GENE_ROWS.includes(key) && !out[key]) out[key] = match[2].trim();
+  }
+  return out;
+}
+function styleName(stylePath) {
+  const readme = readText(import_path13.default.join(utils_default.getPath(["skills", "art_skills", stylePath]), "README.md"));
+  return (readme.split("\n")[0] ?? "").replace(/^#+\s*/, "").replace(/--/g, "").trim() || stylePath;
+}
+function styleLine(stylePath) {
+  const dir = utils_default.getPath(["skills", "art_skills", stylePath]);
+  if (!import_fs9.default.existsSync(dir)) return "";
+  const gene = parseGene(readText(import_path13.default.join(dir, "prefix.md")));
+  const main = [gene["\u4E00\u7EA7\u98CE\u683C"], gene["\u4E8C\u7EA7\u98CE\u683C"]].filter(Boolean).join(" \xB7 ");
+  const texture = (gene["\u8D28\u611F\u951A\u8BCD"] ?? "").slice(0, MAX_TEXTURE_CHARS);
+  const parts = [main ? `\u753B\u98CE\uFF1A${main}` : `\u753B\u98CE\uFF1A${styleName(stylePath)}`, texture ? `\u8D28\u611F\uFF1A${texture}` : ""].filter(Boolean);
+  return parts.join("\uFF1B");
+}
+async function listArtStyles() {
+  const root2 = utils_default.getPath(["skills", "art_skills"]);
+  if (!import_fs9.default.existsSync(root2)) return [];
+  const dirs = import_fs9.default.readdirSync(root2, { withFileTypes: true }).filter((d) => d.isDirectory());
+  return Promise.all(
+    dirs.map(async (d) => {
+      let cover = null;
+      try {
+        const images = import_fs9.default.readdirSync(import_path13.default.join(root2, d.name, "images")).filter((f) => /\.(png|jpe?g|webp|gif)$/i.test(f)).sort();
+        if (images[0]) cover = await utils_default.oss.getFileUrl(import_path13.default.join("art_skills", d.name, "images", images[0]), "skills");
+      } catch {
+        cover = null;
+      }
+      return { stylePath: d.name, name: styleName(d.name), cover, line: styleLine(d.name) };
+    })
+  );
+}
+var import_fs9, import_path13, GENE_ROWS, MAX_TEXTURE_CHARS, readText;
+var init_artStyleWords = __esm({
+  "src/lib/artStyleWords.ts"() {
+    "use strict";
+    import_fs9 = __toESM(require("fs"));
+    import_path13 = __toESM(require("path"));
+    init_utils3();
+    GENE_ROWS = ["\u4E00\u7EA7\u98CE\u683C", "\u4E8C\u7EA7\u98CE\u683C", "\u8D28\u611F\u951A\u8BCD"];
+    MAX_TEXTURE_CHARS = 60;
+    readText = (file3) => {
+      try {
+        return import_fs9.default.readFileSync(file3, "utf-8");
+      } catch {
+        return "";
+      }
+    };
+  }
+});
+
+// src/lib/canvasNodeImage.ts
+async function prepareNodeImage(input) {
+  const [imageId] = await utils_default.db("o_image").insert({
+    type: "canvas",
+    state: "\u751F\u6210\u4E2D",
+    canvasNodeId: input.nodeId,
+    model: input.model.split(/:(.+)/)[1],
+    resolution: input.size,
+    aspectRatio: input.aspectRatio,
+    prompt: input.prompt,
+    kind: "image",
+    stage: input.stage ?? null,
+    refs: input.refKeys?.length ? JSON.stringify(input.refKeys) : null,
+    createTime: Date.now()
+  });
+  const run = async () => {
+    const filePath = `/${input.projectId}/canvas/${v4_default()}.jpg`;
+    try {
+      const referenceList = [...input.referenceBase64 ?? [], ...input.resolveReferences ? await input.resolveReferences() : []].filter(Boolean).map((base644) => ({ type: "image", base64: base644 }));
+      const ai = utils_default.Ai.Image(input.model);
+      await ai.run(
+        { prompt: input.prompt, referenceList, size: input.size, aspectRatio: input.aspectRatio },
+        {
+          taskClass: "\u753B\u5E03\u56FE\u7247\u751F\u6210",
+          describe: `\u753B\u5E03\u56FE\u7247\u8282\u70B9\uFF1A${input.nodeName}`,
+          projectId: input.projectId,
+          relatedObjects: JSON.stringify({ projectId: input.projectId, canvasNodeId: input.nodeId })
+        }
+      );
+      const current = await utils_default.db("o_image").where("id", imageId).select("state").first();
+      if (!current) return { ok: false, error: "\u8282\u70B9\u5DF2\u88AB\u5220\u9664" };
+      if (current.state === "\u751F\u6210\u5931\u8D25") return { ok: false, error: "\u5DF2\u53D6\u6D88" };
+      await ai.save(filePath);
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u5DF2\u5B8C\u6210", filePath });
+      if (input.setCurrent !== false) await utils_default.db("o_canvasNode").where("id", input.nodeId).update({ imageId });
+      return { ok: true, filePath };
+    } catch (e) {
+      const message = utils_default.error(e).message || "\u56FE\u7247\u751F\u6210\u5931\u8D25";
+      await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+      return { ok: false, error: message };
+    }
+  };
+  return { imageId, run };
+}
+var init_canvasNodeImage = __esm({
+  "src/lib/canvasNodeImage.ts"() {
+    "use strict";
+    init_dist_node();
+    init_utils3();
+  }
+});
+
+// src/lib/canvasPresets.ts
+function parsePreset(id, text2) {
+  const match = /^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/.exec(text2.replace(/\r\n/g, "\n"));
+  if (!match) return null;
+  const meta4 = {};
+  for (const line of match[1].split("\n")) {
+    const kv = /^\s*([A-Za-z]+)\s*:\s*(.*)$/.exec(line);
+    if (kv) meta4[kv[1]] = kv[2].trim();
+  }
+  if (!meta4.name) return null;
+  return {
+    id,
+    name: meta4.name,
+    group: meta4.group || "\u901A\u7528",
+    icon: meta4.icon || "magic",
+    desc: meta4.desc || "",
+    targets: (meta4.targets || "image").split(",").map((s) => s.trim()).filter(Boolean),
+    binding: pair(meta4.binding),
+    model: pair(meta4.model),
+    ratio: meta4.ratio || "",
+    size: meta4.size || "",
+    requiresRef: meta4.requiresRef === "true",
+    polish: meta4.polish || "",
+    hint: meta4.hint || "",
+    order: Number(meta4.order) || 100,
+    pre: meta4.pre || "",
+    hidden: meta4.hidden === "true",
+    body: match[2].trim()
+  };
+}
+function listPresets() {
+  const dir = getPath_default(["skills", PRESET_DIR]);
+  if (!import_fs10.default.existsSync(dir)) return [];
+  const presets = [];
+  for (const file3 of import_fs10.default.readdirSync(dir)) {
+    if (!file3.endsWith(".md") || file3.toLowerCase() === "readme.md") continue;
+    try {
+      const preset = parsePreset(file3.replace(/\.md$/, ""), import_fs10.default.readFileSync(import_path14.default.join(dir, file3), "utf-8"));
+      if (preset) presets.push(preset);
+    } catch (e) {
+      console.warn("[\u76EE\u6807\u6A21\u677F] \u8BFB\u53D6\u5931\u8D25", file3, utils_default.error(e).message);
+    }
+  }
+  return presets.sort((a, b) => a.order - b.order);
+}
+function getPreset(id) {
+  return listPresets().find((p3) => p3.id === id);
+}
+function orientationOf2(aspectRatio) {
+  const [w, h] = aspectRatio.split(":").map(Number);
+  if (!w || !h || w === h) return "";
+  return w > h ? "\u6A2A\u5411" : "\u7AD6\u5411";
+}
+function expandIncludes(body) {
+  return body.replace(/\{\{include:([^}]+)\}\}/g, (_, name28) => {
+    const file3 = getPath_default(["skills", name28.trim()]);
+    if (!import_fs10.default.existsSync(file3)) return "";
+    return import_fs10.default.readFileSync(file3, "utf-8").replace(/<!--[\s\S]*?-->/g, "").trim();
+  }).replace(/<!--[\s\S]*?-->/g, "");
+}
+function renderPreset(preset, text2, aspectRatio) {
+  return expandIncludes(preset.body).replaceAll("{{\u9700\u6C42}}", text2.trim()).replaceAll("{{ratio}}", aspectRatio).replaceAll("{{orientation}}", orientationOf2(aspectRatio)).trim();
+}
+async function presetDefaultModels(projectId, preset) {
+  if (!preset.binding.some(Boolean) && !preset.model.some(Boolean)) return ["", ""];
+  const models = await getAssetModels(projectId);
+  const project = await utils_default.db("o_project").where("id", projectId).select("imageModel").first();
+  const pick3 = (index) => {
+    const key = preset.binding[index];
+    const bound = ASSET_MODEL_KEYS.includes(key) ? models[key].model : "";
+    return bound || preset.model[index] || project?.imageModel || "";
+  };
+  return [pick3(0), pick3(1)];
+}
+var import_fs10, import_path14, PRESET_DIR, pair;
+var init_canvasPresets = __esm({
+  "src/lib/canvasPresets.ts"() {
+    "use strict";
+    import_fs10 = __toESM(require("fs"));
+    import_path14 = __toESM(require("path"));
+    init_utils3();
+    init_getPath();
+    init_assetGen();
+    PRESET_DIR = "canvas_presets";
+    pair = (raw) => {
+      const [a = "", b] = String(raw ?? "").split("|").map((s) => s.trim());
+      return [a, b ?? a];
+    };
+  }
+});
+
+// src/lib/modelLadder.ts
+function pickImageModel(shape) {
+  const refs = shape.scenes + shape.subjects + shape.frames;
+  if (refs <= 0) return "krea2_t2i";
+  if (refs === 1) return "krea2_edit";
+  if (refs === 2) return "krea2_dual";
+  return "krea2_multi";
+}
+function pickVideoModel(shape) {
+  if (shape.frames <= 0) return "h3_t2v";
+  if (shape.voices > 0 || shape.shots > 1) return "h3_ref2v_multi";
+  return "h3_i2v";
+}
+function withVendor(configured, modelName) {
+  const vendorId = (configured ?? "").split(/:(.+)/)[0];
+  return vendorId ? `${vendorId}:${modelName}` : modelName;
+}
+function pickModel(type, shape, available, configured) {
+  const wanted = type === "image" ? pickImageModel(shape) : pickVideoModel(shape);
+  const has = new Set(available.map((m) => m.split(/:(.+)/)[1] ?? m));
+  if (!has.has(wanted)) return { model: configured ?? "", auto: false, reason: `\u8FD9\u53F0\u673A\u5668\u6CA1\u6709 ${wanted} \u5DE5\u4F5C\u6D41\uFF0C\u7528\u9879\u76EE\u914D\u7F6E\u7684\u6A21\u578B` };
+  return { model: withVendor(configured, wanted), auto: true, reason: reasonFor(type, wanted, shape) };
+}
+function reasonFor(type, modelName, shape) {
+  if (type === "image") {
+    const refs = shape.scenes + shape.subjects + shape.frames;
+    return refs ? `${refs} \u5F20\u53C2\u8003` : "\u6CA1\u6709\u53C2\u8003\uFF0C\u6587\u751F\u56FE";
+  }
+  if (modelName === "h3_ref2v_multi") {
+    const why = [shape.voices > 0 ? `${shape.voices} \u6BB5\u97F3\u8272` : "", shape.shots > 1 ? `${shape.shots} \u4E2A\u955C\u5934` : ""].filter(Boolean);
+    return `${why.join(" \xB7 ")}\uFF0C\u9700\u8981\u591A\u53C2\u8003\u6A21\u5F0F`;
+  }
+  if (modelName === "h3_t2v") return "\u6CA1\u6709\u5206\u955C\u56FE\uFF0C\u6587\u751F\u89C6\u9891";
+  return "\u5355\u955C\u65E0\u53F0\u8BCD\uFF0C\u9501\u4F4F\u5DF2\u786E\u8BA4\u7684\u5206\u955C\u56FE";
+}
+function hasDialogue(videoDesc) {
+  const matched = /台词[：:]\s*([^、。\n]*)/.exec(videoDesc ?? "");
+  const line = (matched?.[1] ?? "").trim();
+  return !!line && !/^(无|没有|N\/A|—|-)$/i.test(line);
+}
+var init_modelLadder = __esm({
+  "src/lib/modelLadder.ts"() {
+    "use strict";
+  }
+});
+
+// src/lib/autoModel.ts
+async function availableModels(configured, type) {
+  const vendorId = (configured ?? "").split(/:(.+)/)[0];
+  if (!vendorId) return [];
+  try {
+    const models = await utils_default.vendor.getModelList(vendorId);
+    return models.filter((m) => m.type === type).map((m) => m.modelName);
+  } catch {
+    return [];
+  }
+}
+async function shotRefShape(projectId, storyboardId) {
+  const edges = await incomingEdges(projectId, storyboardKey(storyboardId));
+  if (!edges.length) return { ...EMPTY };
+  const assetIds = edges.map((e) => Number(/^a:(\d+)$/.exec(String(e.sourceKey))?.[1] ?? 0)).filter(Boolean);
+  const types = new Map(
+    assetIds.length ? (await utils_default.db("o_assets").whereIn("id", assetIds).select("id", "type")).map((a) => [a.id, a.type ?? ""]) : []
+  );
+  const shape = { ...EMPTY };
+  for (const edge of edges) {
+    const key = String(edge.sourceKey);
+    if (key.startsWith("s:")) shape.frames += 1;
+    else if (types.get(Number(/^a:(\d+)$/.exec(key)?.[1] ?? 0)) === "scene") shape.scenes += 1;
+    else shape.subjects += 1;
+  }
+  return shape;
+}
+async function autoImageModel(projectId, storyboardId) {
+  const project = await utils_default.db("o_project").where("id", projectId).select("imageModel").first();
+  const picked = pickModel("image", await shotRefShape(projectId, storyboardId), await availableModels(project?.imageModel, "image"), project?.imageModel);
+  return picked.auto ? picked : null;
+}
+async function trackRefShape(projectId, trackId, voiceCount) {
+  const shots = await utils_default.db("o_storyboard").where({ trackId, projectId }).select("id", "videoDesc", "imageId");
+  const frames = shots.filter((s) => !!s.imageId).length;
+  return {
+    frames,
+    scenes: 0,
+    subjects: 0,
+    // 音色只有在这一段真有人说话时才有意义；没人说话就别为此升级模型
+    voices: shots.some((s) => hasDialogue(s.videoDesc)) ? voiceCount : 0,
+    shots: shots.length
+  };
+}
+async function autoVideoModel(projectId, trackId, voiceCount) {
+  const project = await utils_default.db("o_project").where("id", projectId).select("videoModel").first();
+  const shape = await trackRefShape(projectId, trackId, voiceCount);
+  const picked = pickModel("video", shape, await availableModels(project?.videoModel, "video"), project?.videoModel);
+  return picked.auto ? picked : null;
+}
+var EMPTY;
+var init_autoModel = __esm({
+  "src/lib/autoModel.ts"() {
+    "use strict";
+    init_utils3();
+    init_canvas();
+    init_modelLadder();
+    EMPTY = { frames: 0, scenes: 0, subjects: 0, voices: 0, shots: 0 };
+  }
+});
+
+// src/routes/canvas/generateImage.ts
+async function rememberPreset(projectId, key, presetId) {
+  const layout = await readLayout(projectId);
+  const meta4 = layout.nodeMeta[key] ?? {};
+  if (meta4.presetId === presetId) return;
+  await writeLayout(projectId, { ...layout, nodeMeta: { ...layout.nodeMeta, [key]: { ...meta4, presetId } } });
+}
+var import_express35, router35, PRESET_GROUP_TYPE, generateImage_default;
+var init_generateImage = __esm({
+  "src/routes/canvas/generateImage.ts"() {
+    "use strict";
+    import_express35 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_artStyleWords();
+    init_genQueue();
+    init_assetGen();
+    init_canvasNodeImage();
+    init_storyboardImage();
+    init_canvasPresets();
+    init_canvas();
+    init_autoModel();
+    router35 = import_express35.default.Router();
+    PRESET_GROUP_TYPE = { \u4EBA\u7269: "role", \u573A\u666F: "scene", \u9053\u5177: "tool" };
+    generateImage_default = router35.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        target: external_exports.string(),
+        model: external_exports.string().optional().nullable(),
+        size: external_exports.enum(["1K", "2K", "4K"]).optional().nullable(),
+        aspectRatio: external_exports.string().regex(/^\d+:\d+$/).optional().nullable(),
+        prompt: external_exports.string().optional().nullable(),
+        promptMode: external_exports.enum(["raw", "template"]).optional().nullable(),
+        refs: external_exports.array(external_exports.string()).optional().nullable(),
+        presetId: external_exports.string().optional().nullable(),
+        // 目标模板：套模板正文、默认模型与比例
+        artStyle: external_exports.string().optional().nullable()
+        // 节点风格（视觉手册目录名）；不传时读节点 params.artStyle
+      }),
+      async (req, res) => {
+        const { projectId, target, model, size, aspectRatio, prompt, promptMode, refs, presetId, artStyle } = req.body;
+        try {
+          const owner = await resolveOwner(projectId, target);
+          if (owner.node && owner.node.kind !== "image") return res.status(400).send(error50("\u89C6\u9891\u8282\u70B9\u8BF7\u7528\u751F\u6210\u89C6\u9891"));
+          if (owner.track) return res.status(400).send(error50("\u7247\u6BB5\u8BF7\u7528\u751F\u6210\u89C6\u9891"));
+          const rawKeys = refs ?? (await incomingEdges(projectId, target)).map((e) => e.sourceKey);
+          const textExpanded = await expandTextRefs(projectId, rawKeys, prompt ?? "");
+          const edgeKeys = textExpanded.refKeys;
+          const edgeRefs = (await resolveRefs(projectId, edgeKeys)).filter((r) => r.kind === "image");
+          const preset = presetId ? getPreset(presetId) : void 0;
+          if (presetId && !preset) return res.status(400).send(error50("\u76EE\u6807\u6A21\u677F\u4E0D\u5B58\u5728"));
+          const hasRefs = edgeRefs.length > 0 || owner.asset?.assetsId != null && !!await assetReferencePath(owner.asset.assetsId);
+          if (preset?.requiresRef && !hasRefs) return res.status(400).send(error50(`\u300C${preset.name}\u300D\u9700\u8981\u5148\u8FDE\u5165\u53C2\u8003\u56FE`));
+          const presetRatio = aspectRatio ?? (preset?.ratio || void 0);
+          const presetModel = preset && !model ? (await presetDefaultModels(projectId, preset))[hasRefs ? 1 : 0] || void 0 : void 0;
+          const autoModel = !model && !presetModel && owner.storyboard ? (await autoImageModel(projectId, owner.id))?.model : void 0;
+          const project = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality", "videoRatio").first();
+          const effectiveModel = (stepModel) => stepModel || autoModel || (owner.asset ? void 0 : project?.imageModel ?? void 0);
+          const sceneFirstKeys = await sceneFirst(projectId, edgeKeys);
+          const refKeysFor = (stepModel) => isSceneFirstModel(effectiveModel(stepModel)) ? sceneFirstKeys : edgeKeys;
+          const refBase64For = (stepModel) => refKeysFor(stepModel).flatMap((key) => edgeRefs.filter((r) => r.key === key).map((r) => r.base64));
+          const refKeys = refKeysFor(model ?? presetModel ?? autoModel);
+          const imageKeys = edgeRefs.map((r) => r.key);
+          const remapped = remapRefTokens(
+            textExpanded.prompt,
+            imageKeys,
+            refKeys.filter((k) => imageKeys.includes(k))
+          );
+          const nodeStyle = owner.node ? artStyle ?? nodeArtStyle(owner.node.params) : null;
+          const styleWords = nodeStyle ? styleLine(nodeStyle) : "";
+          const sentPrompt = styleWords ? `${remapped.trim()}
+${styleWords}` : remapped;
+          const presetPrompt = preset ? renderPreset(preset, sentPrompt, presetRatio ?? "16:9") : void 0;
+          if (preset) await rememberPreset(projectId, target, preset.id);
+          if (owner.asset && typeof prompt === "string") await utils_default.db("o_assets").where("id", owner.id).update({ prompt });
+          if (owner.storyboard && typeof prompt === "string") await utils_default.db("o_storyboard").where("id", owner.id).update({ prompt });
+          if (owner.node) {
+            const tag = PRESET_GROUP_TYPE[preset?.group ?? ""];
+            const params = JSON.parse(owner.node.params || "{}");
+            const tagged = tag && !nodeAssetType(owner.node.params) ? { params: JSON.stringify({ ...params, assetType: tag }) } : {};
+            await utils_default.db("o_canvasNode").where("id", owner.id).update({ prompt: prompt ?? owner.node.prompt ?? "", ...tagged });
+          }
+          const makeJob = async (job2) => {
+            const jobSize = size ?? (preset?.size || void 0);
+            if (owner.asset) {
+              return prepareAssetStage({
+                projectId,
+                assetId: owner.id,
+                model: job2.model,
+                size: jobSize,
+                aspectRatio: job2.ratio,
+                prompt: job2.text ?? sentPrompt ?? void 0,
+                rawPrompt: job2.text !== void 0 || promptMode === "raw",
+                referenceBase64: job2.refs,
+                resolveReferences: job2.resolveReferences,
+                refKeys,
+                stage: job2.stage,
+                setCurrent: job2.setCurrent
+              });
+            }
+            const useModel = job2.model || project?.imageModel;
+            if (!useModel || !useModel.includes(":")) throw new Error("\u8BF7\u9009\u62E9\u751F\u6210\u6A21\u578B");
+            if (owner.storyboard) {
+              return prepareStoryboardImage({
+                projectId,
+                scriptId: owner.storyboard.scriptId,
+                storyboardId: owner.id,
+                model: useModel,
+                size: jobSize ?? (project?.imageQuality || "1K"),
+                aspectRatio: job2.ratio ?? project?.videoRatio ?? "16:9",
+                prompt: job2.text ?? sentPrompt ?? owner.storyboard.prompt ?? "",
+                referenceBase64: job2.refs,
+                resolveReferences: job2.resolveReferences,
+                refKeys,
+                setCurrent: job2.setCurrent
+              });
+            }
+            return prepareNodeImage({
+              projectId,
+              nodeId: owner.id,
+              nodeName: owner.node.name ?? "",
+              model: useModel,
+              size: jobSize ?? (project?.imageQuality || "1K"),
+              aspectRatio: job2.ratio ?? "16:9",
+              prompt: job2.text ?? sentPrompt ?? owner.node.prompt ?? "",
+              referenceBase64: job2.refs,
+              resolveReferences: job2.resolveReferences,
+              refKeys,
+              stage: job2.stage,
+              setCurrent: job2.setCurrent
+            });
+          };
+          const pre = preset?.pre ? getPreset(preset.pre) : void 0;
+          if (preset?.pre && !pre) return res.status(400).send(error50(`\u6A21\u677F\u300C${preset.name}\u300D\u7684\u524D\u7F6E\u6B65\u9AA4 ${preset.pre} \u4E0D\u5B58\u5728`));
+          if (pre) {
+            const preRatio = pre.ratio || presetRatio || "9:16";
+            const preModel = (await presetDefaultModels(projectId, pre))[1] || void 0;
+            const step1 = await makeJob({
+              model: preModel,
+              ratio: preRatio,
+              text: renderPreset(pre, prompt ?? "", preRatio),
+              refs: refBase64For(preModel),
+              stage: pre.id,
+              setCurrent: false
+            });
+            let step1File;
+            const step2 = await makeJob({
+              model: model ?? presetModel,
+              ratio: presetRatio,
+              text: presetPrompt,
+              resolveReferences: async () => step1File ? [await utils_default.oss.getImageBase64(step1File)] : []
+            });
+            enqueue(step2.imageId, "image", async () => {
+              const first = await step1.run();
+              if (!first.ok || !first.filePath) {
+                await utils_default.db("o_image").where("id", step2.imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: `\u7B2C\u4E00\u6B65\u300C${pre.name}\u300D\u5931\u8D25\uFF1A${first.error ?? "\u672A\u77E5\u539F\u56E0"}` });
+                return;
+              }
+              step1File = first.filePath;
+              await step2.run();
+            });
+            return res.status(200).send(success3({ imageId: step2.imageId, steps: [step1.imageId, step2.imageId] }));
+          }
+          const job = await makeJob({
+            model: model ?? presetModel ?? autoModel,
+            ratio: presetRatio,
+            text: presetPrompt,
+            refs: refBase64For(model ?? presetModel ?? autoModel)
+          });
+          enqueue(job.imageId, "image", job.run);
+          return res.status(200).send(success3({ imageId: job.imageId }));
+        } catch (e) {
+          if (!res.headersSent) res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/generateText.ts
+async function loadSkill() {
+  try {
+    return await import_promises5.default.readFile(import_path15.default.join(utils_default.getPath(["skills"]), TEXT_SKILL), "utf-8");
+  } catch {
+    return TEXT_SKILL_FALLBACK;
+  }
+}
+var import_express36, import_promises5, import_path15, router36, TEXT_SKILL, TEXT_SKILL_FALLBACK, MAX_IMAGES, generateText_default;
+var init_generateText = __esm({
+  "src/routes/canvas/generateText.ts"() {
+    "use strict";
+    import_express36 = __toESM(require_express2());
+    init_zod();
+    import_promises5 = __toESM(require("fs/promises"));
+    import_path15 = __toESM(require("path"));
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router36 = import_express36.default.Router();
+    TEXT_SKILL = "canvas_text_generate.md";
+    TEXT_SKILL_FALLBACK = "\u4F60\u662F\u5F71\u89C6\u521B\u4F5C\u52A9\u624B\uFF0C\u5728\u4E00\u5F20\u81EA\u7531\u753B\u5E03\u4E0A\u5E2E\u7528\u6237\u5199\u6587\u672C\uFF1A\u7075\u611F\u3001\u53F0\u8BCD\u3001\u5206\u955C\u5927\u7EB2\u3001\u753B\u9762\u63CF\u8FF0\u90FD\u53EF\u80FD\u3002\u4E25\u683C\u6309\u7528\u6237\u6307\u4EE4\u7684\u4F53\u88C1\u4E0E\u957F\u5EA6\u5199\uFF0C\u53C2\u8003\u8D44\u6599\u53EA\u4F5C\u4F9D\u636E\u4E0D\u8981\u590D\u8FF0\uFF0C\u8F93\u51FA\u4E2D\u6587\u6B63\u6587\u672C\u8EAB\uFF0C\u4E0D\u52A0\u6807\u9898\u3001\u89E3\u91CA\u6216 Markdown \u4EE3\u7801\u5757\u3002";
+    MAX_IMAGES = 5;
+    generateText_default = router36.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        target: external_exports.string(),
+        instruction: external_exports.string().optional().default("")
+      }),
+      async (req, res) => {
+        const { projectId, target } = req.body;
+        const instruction = (req.body.instruction ?? "").trim();
+        try {
+          const owner = await resolveOwner(projectId, target);
+          if (!owner.node || owner.node.kind !== "text") return res.status(400).send(error50("\u53EA\u6709\u6587\u672C\u8282\u70B9\u53EF\u4EE5 AI \u751F\u6210\u6587\u672C"));
+          const keys2 = (await incomingEdges(projectId, target)).map((e) => e.sourceKey);
+          const { texts, refKeys } = await expandTextRefs(projectId, keys2, "");
+          const images = (await resolveRefs(projectId, refKeys)).filter((r) => r.kind === "image").slice(0, MAX_IMAGES);
+          const previous = owner.node.prompt ?? "";
+          const system = await loadSkill();
+          const lines = [
+            instruction ? `\u6307\u4EE4\uFF1A${instruction}` : "\u6307\u4EE4\uFF1A\u6CA1\u6709\u5177\u4F53\u6307\u4EE4\uFF0C\u8BF7\u6839\u636E\u53C2\u8003\u8D44\u6599\u5199\u4E00\u6BB5\u6700\u6709\u7528\u7684\u5185\u5BB9\uFF08\u5982\u5927\u7EB2\u3001\u753B\u9762\u63CF\u8FF0\u6216\u53F0\u8BCD\uFF09",
+            previous.trim() ? `\u8FD9\u4E2A\u4FBF\u7B7E\u5F53\u524D\u7684\u5185\u5BB9\uFF08\u53EF\u5728\u6B64\u57FA\u7840\u4E0A\u6539\u5199\uFF09\uFF1A
+${previous.trim()}` : "\u8FD9\u4E2A\u4FBF\u7B7E\u76EE\u524D\u662F\u7A7A\u7684",
+            ...texts.filter((t) => t.content).map((t) => `\u53C2\u8003\u6587\u672C\u300C${t.name}\u300D\uFF1A
+${t.content}`),
+            images.length ? `\u53E6\u9644 ${images.length} \u5F20\u53C2\u8003\u56FE\uFF0C\u5199\u4F5C\u65F6\u4EE5\u753B\u9762\u5185\u5BB9\u4E3A\u51C6` : ""
+          ].filter(Boolean);
+          const parts = images.map((r) => {
+            const matched = /^data:([^;]+);base64,(.*)$/s.exec(r.base64);
+            return matched ? { type: "image", image: matched[2], mediaType: matched[1] } : { type: "image", image: r.base64 };
+          });
+          const invoke = async (withImages) => {
+            const user = withImages && parts.length ? { role: "user", content: [{ type: "text", text: lines.join("\n\n") }, ...parts] } : { role: "user", content: lines.join("\n\n") };
+            const { text: text2 } = await utils_default.Ai.Text("universalAi").invoke({ system, messages: [user] });
+            return (text2 ?? "").trim().replace(/^```\w*\n?|\n?```$/g, "").trim();
+          };
+          let output = "";
+          try {
+            output = await invoke(true);
+          } catch (e) {
+            if (!parts.length) throw e;
+            console.warn("[\u753B\u5E03\u6587\u672C] \u5E26\u56FE\u8C03\u7528\u5931\u8D25\uFF0C\u56DE\u843D\u7EAF\u6587\u672C\uFF1A", utils_default.error(e).message);
+            output = await invoke(false);
+          }
+          if (!output) return res.status(500).send(error50("\u751F\u6210\u7ED3\u679C\u4E3A\u7A7A"));
+          await utils_default.db("o_canvasNode").where("id", owner.id).update({ prompt: output });
+          res.status(200).send(success3({ text: output, previous }));
+        } catch (e) {
+          res.status(400).send(error50(`\u751F\u6210\u5931\u8D25\uFF1A${utils_default.error(e).message || "\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"}`));
+        }
+      }
+    );
+  }
+});
+
+// src/lib/canvasVideoPrompt.ts
+async function loadVideoRules(model, mode, segment) {
+  const [vendorId, modelName] = model.split(/:(.+)/);
+  const root2 = utils_default.getPath(["modelPrompt"]);
+  const read = async (relative) => {
+    try {
+      return await import_promises6.default.readFile(import_path16.default.join(root2, relative), "utf-8");
+    } catch {
+      return null;
+    }
+  };
+  if (segment) {
+    const segmentFile = segmentRuleFile(modelName ?? "");
+    const content2 = segmentFile ? await read(import_path16.default.join("video", segmentFile)) : null;
+    if (content2 && segmentFile) return { fileName: segmentFile, content: content2 };
+  }
+  const bound = await utils_default.db("o_modelPrompt").where({ vendorId, model: modelName }).first();
+  if (bound?.path) {
+    const content2 = await read(bound.path);
+    if (content2) return { fileName: bound.fileName ?? import_path16.default.basename(bound.path), content: content2 };
+  }
+  const fallback = fallbackRuleFile(modelName ?? "", mode, segment);
+  if (!fallback) return null;
+  const content = await read(import_path16.default.join("video", fallback));
+  return content ? { fileName: fallback, content } : null;
+}
+function segmentRuleFile(modelName) {
+  return modelName.toLowerCase().startsWith("h3_") ? "minimaxH3SegmentMode.md" : null;
+}
+function fallbackRuleFile(modelName, mode, segment) {
+  const name28 = modelName.toLowerCase();
+  if (segment) {
+    const segmentFile = segmentRuleFile(name28);
+    if (segmentFile) return segmentFile;
+  }
+  const byName = [
+    [/^h3_ref2v_multi$/, "minimaxH3ReferenceMultiMode.md"],
+    [/^h3_ref2v$/, "minimaxH3ReferenceMode.md"],
+    [/^h3_i2v$/, "minimaxH3FirstFrameMode.md"],
+    // 这两条以前没有：h3_flf 靠能力兜到通用首尾帧模板（这里写明），
+    // h3_t2v 则一条都匹配不上，点「推理提示词」直接抛「没有可用的提示词规则」
+    [/^h3_flf$/, "universalFirstAndLastFrameMode.md"],
+    [/^h3_t2v$/, "minimaxH3TextMode.md"],
+    [/wan.*2\.6/, "wan2.6Single-imageFirstFrameMode.md"],
+    [/seedance.*2[.\-]0/, "seedance2Multi-parameterMode.md"]
+  ];
+  for (const [pattern, file3] of byName) if (pattern.test(name28)) return file3;
+  const flat = mode.flat();
+  if (mode.some(Array.isArray)) return "universalMulti-parameterMode.md";
+  if (flat.some((m) => ["startEndRequired", "endFrameOptional", "startFrameOptional"].includes(m))) return "universalFirstAndLastFrameMode.md";
+  return null;
+}
+async function loadSkill2(fileName) {
+  try {
+    return await import_promises6.default.readFile(import_path16.default.join(utils_default.getPath(["skills"]), fileName), "utf-8");
+  } catch {
+    return "";
+  }
+}
+async function describeVideoRefs(projectId, keys2, model, extraRefs = []) {
+  const mode = await getVideoModelMode(model);
+  const media = extraRefs.length ? await resolveRefs(projectId, keys2) : await resolveRefs(projectId, keys2, { withVoice: true });
+  const fitted = fitRefsToMode([...media, ...extraRefs], mode);
+  const counters = { image: 0, audio: 0, video: 0 };
+  const TAG = { image: "Picture", audio: "Audio", video: "Video" };
+  const infos = [];
+  for (const ref of fitted.refs) {
+    counters[ref.kind] += 1;
+    infos.push({ ...await refMeta(projectId, ref), key: ref.key, kind: ref.kind, tag: `<${TAG[ref.kind]} ${counters[ref.kind]}>` });
+  }
+  return { refs: infos, mode: fitted.mode };
+}
+async function refMeta(projectId, ref) {
+  const [baseKey2, suffix] = ref.key.split("#");
+  const owner = await resolveOwner(projectId, baseKey2);
+  if (suffix === "voice") return { name: `${owner.asset?.name ?? ""}\u7684\u97F3\u8272`, type: "audio", detail: `\u89D2\u8272\u300C${owner.asset?.name ?? ""}\u300D\u7684\u97F3\u8272\u53C2\u8003` };
+  if (owner.asset) {
+    const parent = owner.asset.assetsId ? await utils_default.db("o_assets").where("id", owner.asset.assetsId).select("name").first() : void 0;
+    const lines = [owner.asset.describe, owner.asset.prompt].map((t) => (t ?? "").trim()).filter(Boolean);
+    return {
+      name: owner.asset.name ?? "",
+      type: ref.kind === "image" ? TYPE_FOR_RULES[owner.asset.type ?? ""] ?? "reference" : ref.kind,
+      detail: [parent ? `\u662F\u300C${parent.name}\u300D\u7684\u4E00\u4E2A\u72B6\u6001` : "", ...lines].filter(Boolean).join("\uFF1B").slice(0, 800)
+    };
+  }
+  if (owner.storyboard) {
+    const detail = (owner.storyboard.videoDesc ?? owner.storyboard.prompt ?? "").trim().slice(0, 800);
+    return { name: `\u955C\u5934 ${(owner.storyboard.index ?? 0) + 1}`, type: ref.kind === "image" ? "frame" : ref.kind, detail };
+  }
+  if (owner.track) return { name: `\u7247\u6BB5 ${owner.id}`, type: ref.kind, detail: (owner.track.prompt ?? "").trim().slice(0, 400) };
+  const tag = nodeAssetType(owner.node.params);
+  return {
+    name: owner.node.name ?? "",
+    type: ref.kind === "image" ? tag ? TYPE_FOR_RULES[tag] : "reference" : ref.kind,
+    detail: (owner.node.prompt ?? "").trim().slice(0, 400) || (tag ? "" : "\u672A\u6807\u6CE8\u7C7B\u578B\u7684\u53C2\u8003\u56FE\uFF0C\u6309\u7528\u6237\u63CF\u8FF0\u5224\u65AD\u5B83\u662F\u4EBA\u7269\u3001\u573A\u666F\u8FD8\u662F\u9053\u5177")
+  };
+}
+function buildRuleInput(opts) {
+  const { model, refs, text: text2, duration: duration4, aspectRatio, shots, story } = opts;
+  const pictures = refs.filter((r) => r.kind !== "audio");
+  const voiceOf = (r) => refs.find((a) => a.kind === "audio" && a.key === `${r.key}#voice`);
+  const assetInfo = pictures.map((r) => `[${r.key}, ${r.type}, ${r.name}${voiceOf(r) ? `, audio:${voiceOf(r).name}` : ""}]`).join(", ");
+  const refLines = refs.map((r) => `${r.tag} = ${r.name}\uFF08${r.type}\uFF09${r.detail ? `\uFF1A${r.detail}` : ""}`);
+  const desc = esc3(text2.trim()) || "\uFF08\u7528\u6237\u672A\u586B\u5199\uFF0C\u8BF7\u6309\u53C2\u8003\u7D20\u6750\u5199\u4E00\u4E2A\u5408\u7406\u7684\u955C\u5934\uFF09";
+  const items = shots?.length ? shots.map((shot) => `<storyboardItem videoDesc='${esc3((shot.videoDesc ?? "").trim()) || desc}' duration='${shot.duration ?? duration4}'></storyboardItem>`) : [`<storyboardItem videoDesc='${desc}' duration='${duration4}'></storyboardItem>`];
+  const frames = (shots ?? []).filter((shot) => (shot.imagePrompt ?? "").trim()).map((shot, i) => `\u955C\u5934${(shot.index ?? i) + 1}\uFF1A${esc3(shot.imagePrompt.trim()).slice(0, 700)}`);
+  return [
+    `**\u6A21\u578B\u540D\u79F0**\uFF1A${model.split(/:(.+)/)[1] ?? model}`,
+    `**\u8D44\u4EA7\u4FE1\u606F**\uFF08\u6309\u5B9E\u9645\u4F20\u5165\u987A\u5E8F\uFF09\uFF1A${assetInfo || "\u65E0"}`,
+    `**\u53C2\u8003\u7D20\u6750\u7F16\u53F7**\uFF08\u4E0E\u5B9E\u9645\u4F20\u5165\u6A21\u578B\u7684\u987A\u5E8F\u4E00\u81F4\uFF0C\u5FC5\u987B\u7167\u6B64\u7F16\u53F7\uFF09\uFF1A`,
+    ...refLines.length ? refLines : ["\u65E0\u53C2\u8003\u7D20\u6750"],
+    `**\u753B\u5E45**\uFF1A${aspectRatio}`,
+    `**\u5206\u955C\u4FE1\u606F**\uFF1A`,
+    ...items,
+    ...frames.length ? ["", `**\u5206\u955C\u56FE\u753B\u9762**\uFF08\u8FD9\u5C31\u662F\u8981\u52A8\u8D77\u6765\u7684\u90A3\u4E00\u5E27\uFF0C\u89C6\u9891\u63D0\u793A\u8BCD\u5FC5\u987B\u4E0E\u5B83\u4E00\u81F4\uFF0C\u4E0D\u8981\u53E6\u8D77\u753B\u9762\uFF09\uFF1A`, ...frames] : [],
+    ...storyLines(story)
+  ].join("\n");
+}
+function storyLines(story) {
+  if (!story) return [];
+  const out = ["", `**\u8FD9\u4E00\u6BB5\u5728\u5267\u60C5\u91CC\u7684\u4F4D\u7F6E**\uFF1A\u7B2C ${story.from === story.to ? story.from : `${story.from}~${story.to}`} \u955C / \u5171 ${story.total} \u955C\u3002`];
+  if (story.before.length) out.push(`\u4E0A\u6587\uFF1A${story.before.join("\uFF1B")}`);
+  if (story.after.length) out.push(`\u4E0B\u6587\uFF1A${story.after.join("\uFF1B")}`);
+  if (story.scriptContent?.trim()) {
+    out.push(
+      "",
+      `**\u672C\u96C6\u5267\u672C${story.scriptName ? `\u300A${story.scriptName}\u300B` : ""}\u5168\u6587**\uFF08\u53EA\u4F5C\u80CC\u666F\uFF0C\u5E2E\u4F60\u5224\u65AD\u8FD9\u6BB5\u620F\u7684\u524D\u56E0\u540E\u679C\u4E0E\u4EBA\u7269\u5173\u7CFB\uFF1B\u4E0D\u8981\u628A\u6CA1\u5728\u5206\u955C\u4FE1\u606F\u91CC\u51FA\u73B0\u7684\u60C5\u8282\u6216\u53F0\u8BCD\u5199\u8FDB\u753B\u9762\uFF09\uFF1A`,
+      story.scriptContent.trim()
+    );
+  }
+  return out;
+}
+async function buildVideoPrompt(input) {
+  const { refs, mode } = await describeVideoRefs(input.projectId, input.refKeys, input.model, input.extraRefs ?? []);
+  const rules = await loadVideoRules(input.model, mode, input.segment);
+  if (!rules) throw new Error("\u8FD9\u4E2A\u89C6\u9891\u6A21\u578B\u6CA1\u6709\u53EF\u7528\u7684\u63D0\u793A\u8BCD\u89C4\u5219\uFF08\u8BBE\u7F6E \u2192 \u6A21\u578B\u63D0\u793A\u8BCD\uFF09\uFF0C\u65E0\u6CD5\u6309\u6A21\u677F\u6269\u5199");
+  const project = await utils_default.db("o_project").where("id", input.projectId).select("artStyle").first();
+  const visualManual = utils_default.getArtPrompt(project?.artStyle || "\u65E0", "art_skills", "art_storyboard_video");
+  const canvasSkill = await loadCanvasVideoSkill();
+  const ruleInput = buildRuleInput({
+    model: input.model,
+    refs,
+    text: input.text,
+    duration: input.duration,
+    aspectRatio: input.aspectRatio,
+    shots: input.shots,
+    story: input.story
+  });
+  const h3Skill = /^h3_/i.test(input.model.split(/:(.+)/)[1] ?? "") ? await loadSkill2(H3_DIALOGUE_SKILL) : "";
+  const system = [rules.content, canvasSkill, h3Skill].filter(Boolean).join("\n\n---\n\n");
+  const assistant = visualManual ? [{ role: "assistant", content: `\u89C6\u89C9\u98CE\u683C\u7EA6\u675F\uFF1A
+${visualManual}` }] : [];
+  const images = (input.shotImages ?? []).filter(Boolean).slice(0, 5);
+  const invoke = async (withImages) => {
+    const parts = images.map((dataUrl) => {
+      const matched = /^data:([^;]+);base64,(.*)$/s.exec(dataUrl);
+      return matched ? { type: "image", image: matched[2], mediaType: matched[1] } : { type: "image", image: dataUrl };
+    });
+    const user = withImages && parts.length ? { role: "user", content: [{ type: "text", text: ruleInput }, ...parts] } : { role: "user", content: ruleInput };
+    const { text: text2 } = await utils_default.Ai.Text("universalAi").invoke({ system, messages: [...assistant, user] });
+    return (text2 ?? "").trim().replace(/^```\w*\n?|\n?```$/g, "").trim();
+  };
+  let output = "";
+  let framesSent = images.length;
+  let frameError;
+  try {
+    output = await invoke(images.length > 0);
+  } catch (e) {
+    if (!images.length) throw e;
+    frameError = utils_default.error(e).message;
+    console.warn("[\u89C6\u9891\u63D0\u793A\u8BCD] \u5E26\u56FE\u8C03\u7528\u5931\u8D25\uFF0C\u56DE\u843D\u7EAF\u6587\u672C\uFF1A", frameError);
+    framesSent = 0;
+    output = await invoke(false);
+  }
+  if (!output) throw new Error("\u6269\u5199\u7ED3\u679C\u4E3A\u7A7A");
+  return { text: output, rules: rules.fileName, refs, framesSent, frameError };
+}
+function toH3RefTags(prompt) {
+  return prompt.replace(/@\s*图片\s*(\d+)/g, "<Picture $1>").replace(/@\s*音频\s*(\d+)/g, "<Audio $1>").replace(/@\s*视频\s*(\d+)/g, "<Video $1>");
+}
+var import_promises6, import_path16, CANVAS_SKILL, H3_DIALOGUE_SKILL, TYPE_FOR_RULES, loadCanvasVideoSkill, esc3, isH3ReferenceModel;
+var init_canvasVideoPrompt = __esm({
+  "src/lib/canvasVideoPrompt.ts"() {
+    "use strict";
+    import_promises6 = __toESM(require("fs/promises"));
+    import_path16 = __toESM(require("path"));
+    init_utils3();
+    init_canvas();
+    CANVAS_SKILL = "canvas_video_polish.md";
+    H3_DIALOGUE_SKILL = "h3_dialogue_polish.md";
+    TYPE_FOR_RULES = { role: "role", scene: "scene", tool: "prop" };
+    loadCanvasVideoSkill = () => loadSkill2(CANVAS_SKILL);
+    esc3 = (text2) => text2.replace(/'/g, "\u2019");
+    isH3ReferenceModel = (model, mode) => /^h3_/.test(model.split(/:(.+)/)[1] ?? "") && mode.some(Array.isArray);
+  }
+});
+
+// src/lib/trackVideo.ts
+async function trackShots(projectId, trackId) {
+  return utils_default.db("o_storyboard").where({ trackId, projectId }).orderBy([{ column: "index" }, { column: "id" }]).select("id", "index", "imageId");
+}
+async function framedShots(projectId, trackId) {
+  const shots = await trackShots(projectId, trackId);
+  const ids2 = shots.map((s) => s.imageId).filter((id) => !!id);
+  if (!ids2.length) return [];
+  const ready = new Set((await utils_default.db("o_image").whereIn("id", ids2).where("state", "\u5DF2\u5B8C\u6210").whereNotNull("filePath").select("id")).map((i) => i.id));
+  return shots.filter((s) => s.imageId && ready.has(s.imageId));
+}
+async function trackAssetRefs(projectId, trackId) {
+  const shots = await trackShots(projectId, trackId);
+  if (!shots.length) return { keys: [], roleIds: [] };
+  const shotKeys = shots.map((s) => storyboardKey(s.id));
+  const rank = new Map(shotKeys.map((key, i) => [key, i]));
+  const edges = (await utils_default.db("o_canvasEdge").where("projectId", projectId).whereIn("targetKey", shotKeys)).sort(
+    (a, b) => (rank.get(String(a.targetKey)) ?? 0) - (rank.get(String(b.targetKey)) ?? 0) || (a.sort ?? 0) - (b.sort ?? 0) || (a.id ?? 0) - (b.id ?? 0)
+  );
+  const assetIds = [...new Set(edges.map((e) => /^a:(\d+)$/.exec(String(e.sourceKey))?.[1]).filter(Boolean))].map(Number);
+  const typeOf = new Map(
+    assetIds.length ? (await utils_default.db("o_assets").whereIn("id", assetIds).select("id", "type")).map((a) => [a.id, a.type ?? ""]) : []
+  );
+  const grouped = { role: [], tool: [], other: [], scene: [] };
+  const roleIds = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const edge of edges) {
+    const key = String(edge.sourceKey);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const assetId = Number(/^a:(\d+)$/.exec(key)?.[1] ?? 0);
+    const type = assetId ? typeOf.get(assetId) ?? "" : "";
+    const group = type === "role" ? "role" : type === "scene" ? "scene" : type === "tool" ? "tool" : "other";
+    grouped[group].push(key);
+    if (group === "role" && assetId) roleIds.push(assetId);
+  }
+  return { keys: GROUP_ORDER.flatMap((g) => grouped[g]), roleIds };
+}
+async function deriveTrackRefs(projectId, trackId) {
+  const shots = await framedShots(projectId, trackId);
+  const { keys: keys2 } = await trackAssetRefs(projectId, trackId);
+  return [...shots.map((s) => storyboardKey(s.id)), ...keys2];
+}
+async function trackRefsOverridden(projectId, trackId) {
+  const row = await utils_default.db("o_videoTrack").where({ id: trackId, projectId }).select("refMode").first();
+  return row?.refMode === "manual";
+}
+async function materializeTrackRefs(projectId, trackId) {
+  if (await trackRefsOverridden(projectId, trackId)) return;
+  const keys2 = await deriveTrackRefs(projectId, trackId);
+  await utils_default.db("o_canvasEdge").where({ projectId, targetKey: trackKey(trackId) }).del();
+  const now2 = Date.now();
+  const rows = keys2.map((sourceKey, sort) => ({ projectId, sourceKey, targetKey: trackKey(trackId), sort, createTime: now2 }));
+  for (let i = 0; i < rows.length; i += 200) await utils_default.db("o_canvasEdge").insert(rows.slice(i, i + 200));
+  await utils_default.db("o_videoTrack").where({ id: trackId, projectId }).update({ refMode: "manual" });
+}
+async function resetTrackRefs(projectId, trackId) {
+  await utils_default.db("o_canvasEdge").where({ projectId, targetKey: trackKey(trackId) }).del();
+  await utils_default.db("o_videoTrack").where({ id: trackId, projectId }).update({ refMode: "auto" });
+}
+async function trackVoiceRefs(projectId, trackId) {
+  const roleIds = await trackRefsOverridden(projectId, trackId) ? await overriddenRoleIds(projectId, trackId) : (await trackAssetRefs(projectId, trackId)).roleIds;
+  const refs = [];
+  for (const roleId of roleIds) {
+    const sample = await roleVoiceSample(roleId);
+    if (!sample) continue;
+    try {
+      refs.push({ key: assetKey(roleId) + "#voice", kind: "audio", base64: await utils_default.oss.getImageBase64(sample) });
+    } catch {
+    }
+  }
+  return refs;
+}
+async function trackVoiceNames(projectId, trackId) {
+  const roleIds = await trackRefsOverridden(projectId, trackId) ? await overriddenRoleIds(projectId, trackId) : (await trackAssetRefs(projectId, trackId)).roleIds;
+  const out = [];
+  for (const roleId of roleIds) {
+    if (!await roleVoiceSample(roleId)) continue;
+    const role = await utils_default.db("o_assets").where("id", roleId).select("name").first();
+    out.push({ assetId: roleId, name: role?.name ?? `\u8D44\u4EA7 ${roleId}` });
+  }
+  return out;
+}
+async function overriddenRoleIds(projectId, trackId) {
+  const edges = await utils_default.db("o_canvasEdge").where({ projectId, targetKey: trackKey(trackId) }).orderBy([{ column: "sort" }, { column: "id" }]);
+  const ids2 = edges.map((e) => Number(/^a:(\d+)$/.exec(String(e.sourceKey))?.[1] ?? 0)).filter(Boolean);
+  if (!ids2.length) return [];
+  const roles = new Set((await utils_default.db("o_assets").whereIn("id", ids2).where("type", "role").select("id")).map((a) => a.id));
+  return ids2.filter((id) => roles.has(id));
+}
+async function trackRefKeys(projectId, trackId) {
+  if (!await trackRefsOverridden(projectId, trackId)) return deriveTrackRefs(projectId, trackId);
+  const edges = await utils_default.db("o_canvasEdge").where({ projectId, targetKey: trackKey(trackId) }).orderBy([{ column: "sort" }, { column: "id" }]);
+  return edges.map((e) => e.sourceKey);
+}
+async function resolveTrackRefs(projectId, trackId, keys2) {
+  const refKeys = keys2 ?? await trackRefKeys(projectId, trackId);
+  const media = await resolveRefs(projectId, refKeys);
+  return [...media, ...await trackVoiceRefs(projectId, trackId)];
+}
+async function shotBriefs(trackId) {
+  const rows = await utils_default.db("o_storyboard").where("trackId", trackId).orderBy([{ column: "index" }, { column: "id" }]).select("id", "index", "videoDesc", "prompt", "duration", "imageId");
+  const shots = rows.map((r) => ({
+    index: r.index,
+    videoDesc: r.videoDesc,
+    imagePrompt: r.prompt,
+    duration: r.duration
+  }));
+  const images = [];
+  for (const row of rows) {
+    if (!row.imageId) continue;
+    const image = await utils_default.db("o_image").where({ id: row.imageId, state: "\u5DF2\u5B8C\u6210" }).select("filePath").first();
+    if (!image?.filePath) continue;
+    try {
+      images.push(await utils_default.oss.getImageBase64(image.filePath));
+    } catch {
+    }
+  }
+  return { shots, images };
+}
+async function trackStoryContext(projectId, trackId) {
+  const shots = await trackShots(projectId, trackId);
+  if (!shots.length) return void 0;
+  const track = await utils_default.db("o_videoTrack").where({ id: trackId, projectId }).select("scriptId").first();
+  if (!track?.scriptId) return void 0;
+  const all3 = await utils_default.db("o_storyboard").where({ scriptId: track.scriptId, projectId }).orderBy([{ column: "index" }, { column: "id" }]).select("id", "index", "videoDesc");
+  const ids2 = new Set(shots.map((s) => s.id));
+  const from = all3.findIndex((s) => ids2.has(s.id));
+  if (from < 0) return void 0;
+  const to = all3.findLastIndex((s) => ids2.has(s.id));
+  const desc = (row, i) => `\u7B2C ${(row.index ?? i) + 1} \u955C\uFF1A${(row.videoDesc ?? "").trim().slice(0, 300)}`;
+  const script = await utils_default.db("o_script").where("id", track.scriptId).select("name", "content").first();
+  return {
+    scriptName: script?.name ?? null,
+    scriptContent: script?.content ?? null,
+    from: from + 1,
+    to: to + 1,
+    total: all3.length,
+    before: all3.slice(Math.max(0, from - 2), from).map(desc),
+    after: all3.slice(to + 1, to + 3).map(desc)
+  };
+}
+async function generateTrackPrompt(input) {
+  const { projectId, trackId, model, info } = input;
+  await utils_default.db("o_videoTrack").where("id", trackId).update({ state: "\u751F\u6210\u4E2D", reason: null });
+  try {
+    const track = await utils_default.db("o_videoTrack").where({ id: trackId, projectId }).first();
+    if (!track) throw new Error("\u7247\u6BB5\u4E0D\u5B58\u5728");
+    const fromInfo = (info ?? []).map((item) => item.sources === "storyboard" ? storyboardKey(item.id) : assetKey(item.id));
+    const refKeys = fromInfo.length ? fromInfo : await trackRefKeys(projectId, trackId);
+    const brief = await shotBriefs(trackId);
+    const { text: text2 } = await buildVideoPrompt({
+      projectId,
+      model,
+      refKeys,
+      extraRefs: await trackVoiceRefs(projectId, trackId),
+      text: "",
+      duration: Number(track.duration ?? 5),
+      aspectRatio: (await utils_default.db("o_project").where("id", projectId).select("videoRatio").first())?.videoRatio ?? "16:9",
+      shots: brief.shots,
+      shotImages: brief.images,
+      story: await trackStoryContext(projectId, trackId),
+      segment: track.kind === "segment" || brief.shots.length > 1
+    });
+    await utils_default.db("o_videoTrack").where("id", trackId).update({ state: "\u5DF2\u5B8C\u6210", prompt: text2 });
+    return text2;
+  } catch (e) {
+    await utils_default.db("o_videoTrack").where("id", trackId).update({ state: "\u751F\u6210\u5931\u8D25", reason: utils_default.error(e).message });
+    throw e;
+  }
+}
+var GROUP_ORDER;
+var init_trackVideo = __esm({
+  "src/lib/trackVideo.ts"() {
+    "use strict";
+    init_utils3();
+    init_canvas();
+    init_canvasVideoPrompt();
+    GROUP_ORDER = ["role", "tool", "other", "scene"];
+  }
+});
+
+// src/routes/canvas/generateVideo.ts
+var import_express37, router37, generateVideo_default;
+var init_generateVideo = __esm({
+  "src/routes/canvas/generateVideo.ts"() {
+    "use strict";
+    import_express37 = __toESM(require_express2());
+    init_zod();
+    init_dist_node();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_canvasVideoPrompt();
+    init_trackVideo();
+    init_autoModel();
+    init_genQueue();
+    router37 = import_express37.default.Router();
+    generateVideo_default = router37.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        target: external_exports.string(),
+        model: external_exports.string().optional().nullable(),
+        prompt: external_exports.string(),
+        duration: external_exports.number().int().min(1).max(60),
+        resolution: external_exports.string(),
+        aspectRatio: external_exports.enum(["16:9", "9:16"]).optional().nullable(),
+        audio: external_exports.boolean().optional().nullable(),
+        refs: external_exports.array(external_exports.string()).optional().nullable()
+      }),
+      async (req, res) => {
+        const { projectId, target, model, prompt, duration: duration4, resolution, aspectRatio, audio, refs } = req.body;
+        let imageId;
+        try {
+          const owner = await resolveOwner(projectId, target);
+          const isTrack = owner.kind === "track";
+          if (!isTrack && owner.node?.kind !== "video") return res.status(400).send(error50("\u53EA\u6709\u89C6\u9891\u8282\u70B9\u6216\u7247\u6BB5\u53EF\u4EE5\u751F\u6210\u89C6\u9891"));
+          const project = await utils_default.db("o_project").where("id", projectId).select("videoModel", "videoRatio").first();
+          const auto = !model && isTrack ? await autoVideoModel(projectId, owner.id, (await trackVoiceRefs(projectId, owner.id)).length) : null;
+          const useModel = model || auto?.model || owner.track?.model || project?.videoModel;
+          if (!useModel || !useModel.includes(":")) return res.status(400).send(error50("\u8BF7\u9009\u62E9\u89C6\u9891\u6A21\u578B"));
+          const rawKeys = refs ?? (isTrack ? await trackRefKeys(projectId, owner.id) : (await incomingEdges(projectId, target)).map((e) => e.sourceKey));
+          const textExpanded = isTrack ? { prompt, refKeys: rawKeys } : await expandTextRefs(projectId, rawKeys, prompt);
+          const refKeys = textExpanded.refKeys;
+          const modelMode = await getVideoModelMode(useModel);
+          const resolved = isTrack ? await resolveTrackRefs(projectId, owner.id, refKeys) : await resolveRefs(projectId, refKeys, { withVoice: true });
+          const fitted = fitRefsToMode(resolved, modelMode);
+          const sendPrompt = isH3ReferenceModel(useModel, modelMode) ? toH3RefTags(textExpanded.prompt) : textExpanded.prompt;
+          const ratio = aspectRatio ?? project?.videoRatio ?? "16:9";
+          const params = JSON.stringify({
+            model: useModel,
+            duration: duration4,
+            resolution,
+            aspectRatio: ratio,
+            audio: !!audio
+          });
+          if (isTrack) await utils_default.db("o_videoTrack").where("id", owner.id).update({ prompt, model: useModel, params });
+          else await utils_default.db("o_canvasNode").where("id", owner.id).update({ prompt, params });
+          [imageId] = await utils_default.db("o_image").insert({
+            type: isTrack ? "storyboard" : "canvas",
+            state: "\u751F\u6210\u4E2D",
+            canvasNodeId: isTrack ? null : owner.id,
+            videoTrackId: isTrack ? owner.id : null,
+            model: useModel.split(/:(.+)/)[1],
+            resolution,
+            aspectRatio: ratio,
+            prompt: sendPrompt,
+            kind: "video",
+            refs: JSON.stringify(fitted.refs.map((r) => r.key)),
+            createTime: Date.now()
+          });
+          let videoRowId;
+          if (isTrack) {
+            [videoRowId] = await utils_default.db("o_video").insert({
+              state: "\u751F\u6210\u4E2D",
+              projectId,
+              scriptId: owner.track.scriptId,
+              videoTrackId: owner.id,
+              imageId,
+              time: duration4
+            });
+          }
+          res.status(200).send(
+            success3({
+              imageId,
+              videoId: videoRowId ?? null,
+              usedRefs: fitted.refs.map((r) => ({ key: r.key, kind: r.kind }))
+            })
+          );
+          const jobImageId = imageId;
+          const run = async () => {
+            try {
+              const filePath = isTrack ? `/${projectId}/video/${v4_default()}.mp4` : `/${projectId}/canvas/${v4_default()}.mp4`;
+              const ai = utils_default.Ai.Video(useModel);
+              await ai.run(
+                {
+                  prompt: sendPrompt,
+                  referenceList: toReferenceList(fitted.refs),
+                  mode: fitted.mode,
+                  duration: duration4,
+                  resolution,
+                  aspectRatio: ratio,
+                  audio: !!audio
+                },
+                {
+                  taskClass: isTrack ? "\u89C6\u9891\u751F\u6210" : "\u753B\u5E03\u89C6\u9891\u751F\u6210",
+                  describe: isTrack ? `\u7247\u6BB5\uFF1A${owner.id}` : `\u753B\u5E03\u89C6\u9891\u8282\u70B9\uFF1A${owner.node.name}`,
+                  projectId,
+                  relatedObjects: JSON.stringify(isTrack ? { projectId, videoTrackId: owner.id } : { projectId, canvasNodeId: owner.id })
+                }
+              );
+              const current = await utils_default.db("o_image").where("id", imageId).select("state").first();
+              if (!current || current.state === "\u751F\u6210\u5931\u8D25") return;
+              await ai.save(filePath);
+              await utils_default.db("o_image").where("id", imageId).update({ state: "\u5DF2\u5B8C\u6210", filePath });
+              if (isTrack) {
+                await utils_default.db("o_video").where("id", videoRowId).update({ state: "\u751F\u6210\u6210\u529F", filePath });
+                await utils_default.db("o_videoTrack").where("id", owner.id).update({ videoId: videoRowId });
+              } else {
+                await utils_default.db("o_canvasNode").where("id", owner.id).update({ imageId });
+              }
+            } catch (e) {
+              const message = utils_default.error(e).message;
+              await utils_default.db("o_image").where("id", jobImageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+              await utils_default.db("o_video").where("imageId", jobImageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+            }
+          };
+          enqueue(jobImageId, "video", run);
+        } catch (e) {
+          const message = utils_default.error(e).message;
+          if (imageId) {
+            await utils_default.db("o_image").where("id", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+            await utils_default.db("o_video").where("imageId", imageId).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: message });
+          }
+          if (!res.headersSent) res.status(400).send(error50(message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/getCanvas.ts
+var import_express38, router38, imageDto, getCanvas_default;
+var init_getCanvas = __esm({
+  "src/routes/canvas/getCanvas.ts"() {
+    "use strict";
+    import_express38 = __toESM(require_express2());
+    init_genQueue();
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_assetGen();
+    router38 = import_express38.default.Router();
+    imageDto = async (row) => row ? {
+      imageId: row.id,
+      state: row.state,
+      stage: row.stage,
+      kind: row.kind ?? "image",
+      aspectRatio: row.aspectRatio,
+      errorReason: row.errorReason,
+      src: row.state === "\u5DF2\u5B8C\u6210" ? await fileUrl(row.filePath) : null,
+      queue: row.state === "\u751F\u6210\u4E2D" ? queueInfo(row.id) : null
+    } : null;
+    getCanvas_default = router38.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        scriptId: external_exports.number().optional().nullable()
+      }),
+      async (req, res) => {
+        const { projectId, scriptId } = req.body;
+        const layout = await readLayout(projectId);
+        const canvasRow = await utils_default.db("o_canvas").where("projectId", projectId).select("viewport").first();
+        let assets = await utils_default.db("o_assets").where("projectId", projectId).whereIn("type", CANVAS_ASSET_TYPES).select("*");
+        if (scriptId) {
+          const linked = new Set((await utils_default.db("o_scriptAssets").where("scriptId", scriptId).select("assetId")).map((r) => r.assetId));
+          const pinned = new Set(layout.pinned);
+          const rootIds = new Set(assets.filter((a) => a.assetsId == null && (linked.has(a.id) || pinned.has(assetKey(a.id)))).map((a) => a.id));
+          assets = assets.filter((a) => rootIds.has(a.assetsId == null ? a.id : a.assetsId) || pinned.has(assetKey(a.id)));
+        }
+        const assetIds = assets.map((a) => a.id);
+        const nodes = await utils_default.db("o_canvasNode").where("projectId", projectId).select("*");
+        const nodeIds = nodes.map((n) => n.id);
+        const images = await utils_default.db("o_image").where((qb) => qb.whereIn("assetsId", assetIds).orWhereIn("canvasNodeId", nodeIds)).select("id", "filePath", "state", "stage", "kind", "errorReason", "aspectRatio", "assetsId", "canvasNodeId");
+        const imageById = new Map(images.map((i) => [i.id, i]));
+        const latestBy = (column, id) => images.filter((i) => i[column] === id).sort((a, b) => b.id - a.id)[0];
+        const pendingBy = (column, id) => images.filter((i) => i[column] === id && i.state === "\u751F\u6210\u4E2D").map((i) => i.id);
+        const voiceRows = await utils_default.db("o_assetsRole2Audio").leftJoin("o_assets", "o_assets.id", "o_assetsRole2Audio.assetsAudioId").whereIn("o_assetsRole2Audio.assetsRoleId", assetIds).select("o_assets.id", "o_assets.name", "o_assetsRole2Audio.assetsRoleId");
+        const assetNodes = await Promise.all(
+          assets.map(async (a) => ({
+            key: assetKey(a.id),
+            kind: "asset",
+            id: a.id,
+            assetType: a.type,
+            parentKey: a.assetsId != null ? assetKey(a.assetsId) : null,
+            name: a.name,
+            describe: a.describe,
+            prompt: a.prompt,
+            promptState: a.promptState,
+            audioBindState: a.audioBindState ?? null,
+            current: await imageDto(a.imageId ? imageById.get(a.imageId) : void 0),
+            latest: await imageDto(latestBy("assetsId", a.id)),
+            pendingImageIds: pendingBy("assetsId", a.id),
+            voices: voiceRows.filter((v) => v.assetsRoleId === a.id).map((v) => ({ id: v.id, name: v.name }))
+          }))
+        );
+        const freeNodes = await Promise.all(
+          nodes.map(async (n) => ({
+            key: nodeKey(n.id),
+            kind: n.kind,
+            id: n.id,
+            name: n.name,
+            prompt: n.prompt,
+            params: n.params ? JSON.parse(n.params) : {},
+            assetType: nodeAssetType(n.params),
+            current: await imageDto(n.imageId ? imageById.get(n.imageId) : void 0),
+            latest: await imageDto(latestBy("canvasNodeId", n.id)),
+            pendingImageIds: pendingBy("canvasNodeId", n.id)
+          }))
+        );
+        const visible = /* @__PURE__ */ new Set([...assetNodes.map((n) => n.key), ...freeNodes.map((n) => n.key)]);
+        const refEdges = (await utils_default.db("o_canvasEdge").where("projectId", projectId).orderBy([{ column: "targetKey" }, { column: "sort" }, { column: "id" }])).filter((e) => visible.has(e.sourceKey) && visible.has(e.targetKey)).map((e) => ({ id: `ref-${e.id}`, edgeId: e.id, source: e.sourceKey, target: e.targetKey, kind: "ref", sort: e.sort }));
+        const deriveEdges = assetNodes.filter((n) => n.parentKey && visible.has(n.parentKey)).map((n) => ({ id: `derive-${n.key}`, source: n.parentKey, target: n.key, kind: "derive" }));
+        const audioAssets = await utils_default.db("o_assets").where({ projectId, type: "audio" }).whereNull("assetsId").select("id", "name", "describe");
+        const project = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality", "videoModel", "videoRatio").first();
+        res.status(200).send(
+          success3({
+            viewport: canvasRow?.viewport ? JSON.parse(canvasRow.viewport) : null,
+            layout,
+            nodes: [...assetNodes, ...freeNodes],
+            edges: [...deriveEdges, ...refEdges],
+            voices: audioAssets,
+            defaults: { ...project, assetModels: await getAssetModels(projectId) }
+          })
+        );
+      }
+    );
+  }
+});
+
+// src/routes/canvas/getPresets.ts
+var import_express39, router39, getPresets_default;
+var init_getPresets = __esm({
+  "src/routes/canvas/getPresets.ts"() {
+    "use strict";
+    import_express39 = __toESM(require_express2());
+    init_zod();
+    init_responseFormat();
+    init_middleware();
+    init_canvasPresets();
+    router39 = import_express39.default.Router();
+    getPresets_default = router39.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number()
+      }),
+      async (req, res) => {
+        const { projectId } = req.body;
+        const presets = await Promise.all(
+          listPresets().filter((p3) => !p3.hidden).map(async (p3) => {
+            const [modelNoRef, modelWithRef] = await presetDefaultModels(projectId, p3);
+            return {
+              id: p3.id,
+              name: p3.name,
+              group: p3.group,
+              icon: p3.icon,
+              desc: p3.desc,
+              targets: p3.targets,
+              ratio: p3.ratio,
+              size: p3.size,
+              requiresRef: p3.requiresRef,
+              canPolish: !!p3.polish,
+              steps: p3.pre ? [getPreset(p3.pre)?.name ?? p3.pre, p3.name] : [],
+              hint: p3.hint,
+              modelNoRef,
+              modelWithRef,
+              body: expandIncludes(p3.body)
+              // 供前端预览：include 已展开，{{需求}} 等占位符保留
+            };
+          })
+        );
+        res.status(200).send(success3(presets));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/listArtStyles.ts
+var import_express40, router40, listArtStyles_default;
+var init_listArtStyles = __esm({
+  "src/routes/canvas/listArtStyles.ts"() {
+    "use strict";
+    import_express40 = __toESM(require_express2());
+    init_responseFormat();
+    init_artStyleWords();
+    router40 = import_express40.default.Router();
+    listArtStyles_default = router40.post("/", async (_req, res) => {
+      res.status(200).send(success3(await listArtStyles()));
+    });
+  }
+});
+
+// src/routes/canvas/listHistory.ts
+var import_express41, router41, listHistory_default;
+var init_listHistory = __esm({
+  "src/routes/canvas/listHistory.ts"() {
+    "use strict";
+    import_express41 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router41 = import_express41.default.Router();
+    listHistory_default = router41.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        target: external_exports.string().optional().nullable(),
+        scriptId: external_exports.number().optional().nullable(),
+        // 只在列镜头历史时有意义
+        kind: external_exports.enum(["image", "video", "audio"]).optional().nullable(),
+        page: external_exports.number().int().min(1).default(1),
+        limit: external_exports.number().int().min(1).max(100).default(30)
+      }),
+      async (req, res) => {
+        const { projectId, target, scriptId, kind, page, limit } = req.body;
+        let assetIds = [];
+        let nodeIds = [];
+        let storyboardIds = [];
+        let trackIds = [];
+        if (target) {
+          try {
+            const owner = await resolveOwner(projectId, target);
+            if (owner.kind === "asset") assetIds = [owner.id];
+            else if (owner.kind === "storyboard") storyboardIds = [owner.id];
+            else if (owner.kind === "track") trackIds = [owner.id];
+            else nodeIds = [owner.id];
+          } catch (e) {
+            return res.status(400).send(error50(utils_default.error(e).message));
+          }
+        } else if (scriptId) {
+          storyboardIds = (await utils_default.db("o_storyboard").where({ projectId, scriptId }).select("id")).map((r) => r.id);
+        } else {
+          assetIds = (await utils_default.db("o_assets").where("projectId", projectId).whereIn("type", ["role", "scene", "tool"]).select("id")).map((r) => r.id);
+          nodeIds = (await utils_default.db("o_canvasNode").where("projectId", projectId).select("id")).map((r) => r.id);
+        }
+        const query = utils_default.db("o_image").where((qb) => qb.whereIn("assetsId", assetIds).orWhereIn("canvasNodeId", nodeIds).orWhereIn("storyboardId", storyboardIds).orWhereIn("videoTrackId", trackIds)).modify((qb) => {
+          if (kind === "video") qb.where("kind", "video");
+          if (kind === "image") qb.where((w) => w.whereNull("kind").orWhere("kind", "image"));
+        });
+        const total = Number((await query.clone().count("id as n").first())?.n ?? 0);
+        const rows = await query.clone().orderBy("id", "desc").offset((page - 1) * limit).limit(limit).select("*");
+        const assets = await utils_default.db("o_assets").whereIn("id", assetIds).select("id", "name", "imageId");
+        const nodes = await utils_default.db("o_canvasNode").whereIn("id", nodeIds).select("id", "name", "imageId");
+        const shots = await utils_default.db("o_storyboard").whereIn("id", storyboardIds).select("id", "index", "imageId");
+        const tracks = await utils_default.db("o_videoTrack").whereIn("id", trackIds).select("id", "videoId");
+        const currentVideoImage = new Map(
+          (await utils_default.db("o_video").whereIn("id", tracks.map((t) => t.videoId).filter(Boolean)).select("id", "imageId", "videoTrackId")).map((v) => [v.videoTrackId, v.imageId])
+        );
+        const assetMap = new Map(assets.map((a) => [a.id, a]));
+        const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+        const shotMap = new Map(shots.map((s) => [s.id, s]));
+        const list2 = await Promise.all(
+          rows.map(async (r) => {
+            const asset = r.assetsId ? assetMap.get(r.assetsId) : void 0;
+            const node = r.canvasNodeId ? nodeMap.get(r.canvasNodeId) : void 0;
+            const shot = r.storyboardId ? shotMap.get(r.storyboardId) : void 0;
+            const current = asset?.imageId ?? node?.imageId ?? shot?.imageId ?? (r.videoTrackId ? currentVideoImage.get(r.videoTrackId) : void 0);
+            return {
+              imageId: r.id,
+              owner: asset ? assetKey(asset.id) : node ? nodeKey(node.id) : shot ? storyboardKey(shot.id) : r.videoTrackId ? trackKey(r.videoTrackId) : imageOwnerKey(r),
+              ownerName: asset?.name ?? node?.name ?? (shot ? `\u955C\u5934 ${(shot.index ?? 0) + 1}` : r.videoTrackId ? `\u7247\u6BB5 ${r.videoTrackId}` : ""),
+              state: r.state,
+              errorReason: r.errorReason,
+              stage: r.stage,
+              kind: r.kind ?? "image",
+              model: r.model,
+              resolution: r.resolution,
+              aspectRatio: r.aspectRatio,
+              prompt: r.prompt,
+              createTime: r.createTime,
+              src: r.state === "\u5DF2\u5B8C\u6210" ? await fileUrl(r.filePath) : null,
+              isCurrent: current != null && current === r.id
+            };
+          })
+        );
+        res.status(200).send(success3({ total, list: list2 }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/polishPreset.ts
+async function loadFreePolish() {
+  try {
+    return await import_promises7.default.readFile(import_path17.default.join(utils_default.getPath(["skills"]), FREE_POLISH_SKILL), "utf-8");
+  } catch {
+    return FREE_POLISH_FALLBACK;
+  }
+}
+async function describeShotRefs(projectId, targetKey) {
+  const edges = await incomingEdges(projectId, targetKey);
+  const lines = [];
+  for (const edge of edges) {
+    let name28 = String(edge.sourceKey);
+    let type = "\u53C2\u8003\u56FE";
+    try {
+      const src = await resolveOwner(projectId, edge.sourceKey);
+      if (src.asset) {
+        name28 = src.asset.name ?? name28;
+        type = TYPE_LABEL[src.asset.type ?? ""] ?? "\u53C2\u8003\u56FE";
+      } else if (src.storyboard) {
+        name28 = `\u955C\u5934 ${(src.storyboard.index ?? 0) + 1}`;
+        type = "\u5DF2\u751F\u6210\u7684\u5206\u955C\u56FE";
+      } else if (src.node) {
+        name28 = src.node.name ?? name28;
+        const tag = nodeAssetType(src.node.params);
+        type = tag && TYPE_LABEL[tag] || "\u53C2\u8003\u56FE";
+      }
+    } catch {
+      type = "\u5DF2\u5931\u6548\u7684\u53C2\u8003";
+    }
+    lines.push(`\u56FE${lines.length + 1} = ${name28}\uFF08${type}\uFF09`);
+  }
+  return lines;
+}
+var import_express42, import_promises7, import_path17, router42, FREE_POLISH_SKILL, FREE_POLISH_FALLBACK, polishPreset_default, TYPE_LABEL;
+var init_polishPreset = __esm({
+  "src/routes/canvas/polishPreset.ts"() {
+    "use strict";
+    import_express42 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    import_promises7 = __toESM(require("fs/promises"));
+    import_path17 = __toESM(require("path"));
+    init_canvasPresets();
+    init_canvas();
+    router42 = import_express42.default.Router();
+    FREE_POLISH_SKILL = "canvas_free_polish.md";
+    FREE_POLISH_FALLBACK = "\u4F60\u662F\u8D44\u6DF1\u7684 AI \u7ED8\u753B\u63D0\u793A\u8BCD\u5199\u624B\u3002\u628A\u7528\u6237\u7684\u7B80\u77ED\u9700\u6C42\u5199\u6210\u4E00\u6BB5\u5B8C\u6574\u3001\u5177\u4F53\u7684\u753B\u9762\u63CF\u8FF0\uFF1A\u4E3B\u4F53\u3001\u52A8\u4F5C\u3001\u73AF\u5883\u3001\u5149\u7EBF\u3001\u6784\u56FE\u3001\u6C1B\u56F4\u3001\u753B\u98CE\u8D28\u611F\uFF0C\u53EA\u5199\u9759\u6B62\u7684\u4E00\u77AC\u95F4\uFF0C\u4E0D\u5199\u8FD0\u955C\u548C\u53F0\u8BCD\uFF0C\u753B\u9762\u91CC\u4E0D\u51FA\u73B0\u6587\u5B57\u3002\u4FDD\u7559\u7528\u6237\u63D0\u5230\u7684 @\u56FEN \u5F15\u7528\u58F0\u660E\uFF0C\u5148\u58F0\u660E\u6BCF\u5F20\u53C2\u8003\u56FE\u4EE3\u8868\u4EC0\u4E48\uFF0C\u518D\u5199\u753B\u9762\u3002\u8F93\u51FA\u4E2D\u6587\uFF0C\u4E0D\u52A0\u89E3\u91CA\u3002";
+    polishPreset_default = router42.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        presetId: external_exports.string(),
+        text: external_exports.string(),
+        nodeKey: external_exports.string().optional().nullable(),
+        artStyle: external_exports.string().optional().nullable()
+        // 节点自己选的风格，优先于项目画风
+      }),
+      async (req, res) => {
+        const { projectId, presetId, text: text2, nodeKey: nodeKey2, artStyle } = req.body;
+        const preset = getPreset(presetId);
+        if (!preset) return res.status(404).send(error50("\u6A21\u677F\u4E0D\u5B58\u5728"));
+        if (!preset.polish) return res.status(400).send(error50("\u8FD9\u4E2A\u6A21\u677F\u4E0D\u9700\u8981\u6269\u5199"));
+        const project = await utils_default.db("o_project").where("id", projectId).select("artStyle").first();
+        if (!project) return res.status(404).send(error50("\u9879\u76EE\u4E0D\u5B58\u5728"));
+        const useStyle = artStyle || project.artStyle || "";
+        const manual = useStyle && utils_default.getArtPrompt(useStyle, "art_skills", preset.polish) || await loadFreePolish();
+        const context2 = [];
+        if (nodeKey2) {
+          try {
+            const owner = await resolveOwner(projectId, nodeKey2);
+            if (owner.node) {
+              const keys2 = (await incomingEdges(projectId, nodeKey2)).map((e) => e.sourceKey);
+              const { texts } = await expandTextRefs(projectId, keys2, "");
+              texts.filter((t) => t.content).forEach((t) => context2.push(`\u53C2\u8003\u6587\u672C\u300C${t.name}\u300D\uFF1A
+${t.content}`));
+            }
+            if (owner.asset) {
+              context2.push(`\u540D\u79F0\uFF1A${owner.asset.name ?? ""}`, `\u63CF\u8FF0\uFF1A${owner.asset.describe ?? "\u65E0"}`);
+              if (owner.asset.assetsId) {
+                const parent = await utils_default.db("o_assets").where("id", owner.asset.assetsId).select("name", "describe").first();
+                if (parent) context2.push(`\u7236\u7EA7\u8D44\u4EA7\uFF1A${parent.name}\uFF0C${parent.describe ?? "\u65E0\u8BE6\u7EC6\u63CF\u8FF0"}`);
+              }
+            }
+            if (owner.storyboard) {
+              context2.push(`\u955C\u5934\u5E8F\u53F7\uFF1A\u7B2C ${(owner.storyboard.index ?? 0) + 1} \u4E2A\u955C\u5934`, `\u5EFA\u8BAE\u65F6\u957F\uFF1A${owner.storyboard.duration ?? "\u672A\u6807\u6CE8"} \u79D2`);
+              const refs = await describeShotRefs(projectId, nodeKey2);
+              context2.push(
+                refs.length ? `\u8FDE\u5165\u7684\u53C2\u8003\u56FE\uFF08\u7F16\u53F7\u5FC5\u987B\u7167\u6B64\u4F7F\u7528\uFF1B\u5206\u955C\u4FE1\u606F\u91CC\u7684\u300C\u5173\u8054\u8D44\u4EA7ID\u300D\u5DF2\u8FC7\u65F6\uFF0C\u4E00\u5F8B\u4EE5\u8FD9\u4EFD\u4E3A\u51C6\uFF09\uFF1A
+${refs.join("\n")}` : "\u6CA1\u6709\u8FDE\u5165\u53C2\u8003\u56FE\uFF08\u5206\u955C\u4FE1\u606F\u91CC\u7684\u300C\u5173\u8054\u8D44\u4EA7ID\u300D\u5DF2\u8FC7\u65F6\uFF0C\u4E0D\u8981\u7167\u5B83\u5199\u4EBA\u7269\u6216\u573A\u666F\uFF09"
+              );
+              if (owner.storyboard.videoDesc) context2.push(`\u5206\u955C\u8868\u5199\u7684\u8FD9\u4E00\u955C\u4FE1\u606F\uFF1A${owner.storyboard.videoDesc}`);
+              const script = owner.storyboard.scriptId ? await utils_default.db("o_script").where("id", owner.storyboard.scriptId).select("name", "content").first() : null;
+              if (script?.content) context2.push(`\u672C\u96C6\u5267\u672C\u300A${script.name ?? ""}\u300B\u5168\u6587\uFF08\u53EA\u4F5C\u80CC\u666F\uFF0C\u4E0D\u8981\u628A\u53F0\u8BCD\u5199\u8FDB\u753B\u9762\uFF09\uFF1A
+${script.content}`);
+            }
+          } catch {
+          }
+        }
+        try {
+          const { text: output } = await utils_default.Ai.Text("universalAi").invoke({
+            system: manual,
+            messages: [
+              {
+                role: "user",
+                content: [`\u76EE\u6807\uFF1A${preset.name}\uFF08${preset.desc}\uFF09`, ...context2, `\u7528\u6237\u7684\u7B80\u77ED\u9700\u6C42\uFF1A${text2 || "\uFF08\u672A\u586B\u5199\uFF0C\u8BF7\u6309\u8D44\u4EA7\u63CF\u8FF0\u751F\u6210\uFF09"}`].join("\n")
+              }
+            ]
+          });
+          if (!output?.trim()) return res.status(500).send(error50("\u6269\u5199\u7ED3\u679C\u4E3A\u7A7A"));
+          res.status(200).send(success3({ text: output.trim() }));
+        } catch (e) {
+          res.status(500).send(error50(`\u6269\u5199\u5931\u8D25\uFF1A${utils_default.error(e).message || "\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"}`));
+        }
+      }
+    );
+    TYPE_LABEL = { role: "\u89D2\u8272", scene: "\u573A\u666F", tool: "\u9053\u5177" };
+  }
+});
+
+// src/routes/canvas/polishVideoPrompt.ts
+var import_express43, router43, polishVideoPrompt_default;
+var init_polishVideoPrompt = __esm({
+  "src/routes/canvas/polishVideoPrompt.ts"() {
+    "use strict";
+    import_express43 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_canvasVideoPrompt();
+    init_trackVideo();
+    router43 = import_express43.default.Router();
+    polishVideoPrompt_default = router43.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        nodeKey: external_exports.string(),
+        model: external_exports.string().regex(/^[^:]+:.+$/, "\u8BF7\u9009\u62E9\u89C6\u9891\u6A21\u578B"),
+        text: external_exports.string(),
+        duration: external_exports.number().int().min(1).max(60),
+        aspectRatio: external_exports.enum(["16:9", "9:16"]).optional().nullable()
+      }),
+      async (req, res) => {
+        const { projectId, nodeKey: nodeKey2, model, text: text2, duration: duration4, aspectRatio } = req.body;
+        try {
+          const owner = await resolveOwner(projectId, nodeKey2);
+          const isTrack = owner.kind === "track";
+          if (!isTrack && owner.node?.kind !== "video") return res.status(400).send(error50("\u53EA\u6709\u89C6\u9891\u8282\u70B9\u6216\u7247\u6BB5\u53EF\u4EE5\u6309\u89C6\u9891\u6A21\u677F\u6269\u5199"));
+          const brief = isTrack ? await shotBriefs(owner.id) : { shots: [], images: [] };
+          const expanded = isTrack ? { prompt: text2, refKeys: await trackRefKeys(projectId, owner.id) } : await expandTextRefs(projectId, (await incomingEdges(projectId, nodeKey2)).map((e) => e.sourceKey), text2);
+          const result = await buildVideoPrompt({
+            projectId,
+            model,
+            refKeys: expanded.refKeys,
+            extraRefs: isTrack ? await trackVoiceRefs(projectId, owner.id) : [],
+            text: expanded.prompt,
+            duration: duration4,
+            aspectRatio: aspectRatio ?? "16:9",
+            shots: brief.shots,
+            shotImages: brief.images,
+            story: isTrack ? await trackStoryContext(projectId, owner.id) : void 0,
+            segment: isTrack && (owner.track.kind === "segment" || brief.shots.length > 1)
+          });
+          res.status(200).send(success3({ text: result.text, rules: result.rules, framesSent: result.framesSent, frameError: result.frameError, refs: result.refs.map((r) => ({ tag: r.tag, name: r.name, type: r.type })) }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message || "\u6269\u5199\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u300C\u901A\u7528 AI\u300D\u6587\u672C\u6A21\u578B\u914D\u7F6E"));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/pollVersions.ts
+var import_express44, router44, pollVersions_default;
+var init_pollVersions = __esm({
+  "src/routes/canvas/pollVersions.ts"() {
+    "use strict";
+    import_express44 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_genQueue();
+    router44 = import_express44.default.Router();
+    pollVersions_default = router44.post(
+      "/",
+      validateFields({
+        ids: external_exports.array(external_exports.number()).max(200)
+      }),
+      async (req, res) => {
+        const { ids: ids2 } = req.body;
+        const rows = await utils_default.db("o_image").whereIn("id", ids2).select("id", "state", "errorReason", "filePath", "stage", "kind", "assetsId", "canvasNodeId", "storyboardId", "videoTrackId");
+        const data = await Promise.all(
+          rows.map(async (r) => ({
+            imageId: r.id,
+            state: r.state,
+            errorReason: r.errorReason,
+            stage: r.stage,
+            kind: r.kind ?? "image",
+            owner: imageOwnerKey(r),
+            src: r.state === "\u5DF2\u5B8C\u6210" ? await fileUrl(r.filePath) : null,
+            queue: r.state === "\u751F\u6210\u4E2D" ? queueInfo(r.id) : null
+          }))
+        );
+        res.status(200).send(success3(data));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/removeEdge.ts
+var import_express45, router45, removeEdge_default;
+var init_removeEdge = __esm({
+  "src/routes/canvas/removeEdge.ts"() {
+    "use strict";
+    import_express45 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_storyboardImage();
+    router45 = import_express45.default.Router();
+    removeEdge_default = router45.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        id: external_exports.number()
+      }),
+      async (req, res) => {
+        const { projectId, id } = req.body;
+        const edge = await utils_default.db("o_canvasEdge").where({ projectId, id }).first();
+        await utils_default.db("o_canvasEdge").where({ projectId, id }).delete();
+        if (edge) await syncStoryboardAssetLink(String(edge.sourceKey), String(edge.targetKey), "remove");
+        res.status(200).send(success3({ message: "\u5DF2\u5220\u9664" }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/reorderEdges.ts
+var import_express46, router46, reorderEdges_default;
+var init_reorderEdges = __esm({
+  "src/routes/canvas/reorderEdges.ts"() {
+    "use strict";
+    import_express46 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_db();
+    init_responseFormat();
+    init_middleware();
+    router46 = import_express46.default.Router();
+    reorderEdges_default = router46.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        targetKey: external_exports.string(),
+        ids: external_exports.array(external_exports.number())
+      }),
+      async (req, res) => {
+        const { projectId, targetKey, ids: ids2 } = req.body;
+        const rows = await utils_default.db("o_canvasEdge").where({ projectId, targetKey }).select("id");
+        const owned = new Set(rows.map((r) => r.id));
+        if (ids2.length !== owned.size || ids2.some((id) => !owned.has(id))) return res.status(400).send(error50("\u8FDE\u7EBF\u5217\u8868\u4E0E\u5F53\u524D\u53C2\u8003\u4E0D\u4E00\u81F4"));
+        await db.transaction(async (trx) => {
+          for (const [sort, id] of ids2.entries()) await trx("o_canvasEdge").where({ id }).update({ sort });
+        });
+        res.status(200).send(success3({ message: "\u5DF2\u8C03\u6574\u987A\u5E8F" }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/restoreNode.ts
+var import_express47, router47, restoreNode_default;
+var init_restoreNode = __esm({
+  "src/routes/canvas/restoreNode.ts"() {
+    "use strict";
+    import_express47 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvasTrash();
+    router47 = import_express47.default.Router();
+    restoreNode_default = router47.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        trashId: external_exports.number()
+      }),
+      async (req, res) => {
+        const { projectId, trashId } = req.body;
+        try {
+          res.status(200).send(success3(await restoreFromTrash(projectId, trashId)));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/saveLayout.ts
+var import_express48, router48, point, saveLayout_default;
+var init_saveLayout = __esm({
+  "src/routes/canvas/saveLayout.ts"() {
+    "use strict";
+    import_express48 = __toESM(require_express2());
+    init_zod();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router48 = import_express48.default.Router();
+    point = external_exports.object({ x: external_exports.number(), y: external_exports.number() });
+    saveLayout_default = router48.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        viewport: external_exports.object({ x: external_exports.number(), y: external_exports.number(), zoom: external_exports.number() }).optional(),
+        positions: external_exports.record(external_exports.string(), point).optional(),
+        nodeMeta: external_exports.record(external_exports.string(), external_exports.record(external_exports.string(), external_exports.unknown())).optional(),
+        pinned: external_exports.array(external_exports.string()).optional(),
+        hidden: external_exports.array(external_exports.string()).optional()
+      }),
+      async (req, res) => {
+        const { projectId, viewport, positions, nodeMeta, pinned, hidden } = req.body;
+        const layout = await readLayout(projectId);
+        await writeLayout(
+          projectId,
+          {
+            positions: { ...layout.positions, ...positions ?? {} },
+            nodeMeta: { ...layout.nodeMeta, ...nodeMeta ?? {} },
+            pinned: pinned ?? layout.pinned,
+            hidden: hidden ?? layout.hidden
+          },
+          viewport
+        );
+        res.status(200).send(success3({ message: "\u5DF2\u4FDD\u5B58" }));
+      }
+    );
+  }
+});
+
+// src/routes/canvas/saveNodeToAssets.ts
+var import_express49, router49, saveNodeToAssets_default;
+var init_saveNodeToAssets = __esm({
+  "src/routes/canvas/saveNodeToAssets.ts"() {
+    "use strict";
+    import_express49 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_db();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router49 = import_express49.default.Router();
+    saveNodeToAssets_default = router49.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        nodeId: external_exports.number(),
+        type: external_exports.enum(["role", "scene", "tool"]),
+        name: external_exports.string().min(1),
+        describe: external_exports.string().optional(),
+        parentAssetId: external_exports.number().optional().nullable()
+      }),
+      async (req, res) => {
+        const { projectId, nodeId, type, name: name28, describe: describe4, parentAssetId } = req.body;
+        try {
+          const owner = await resolveOwner(projectId, nodeKey(nodeId));
+          if (owner.node.kind !== "image") return res.status(400).send(error50("\u53EA\u6709\u56FE\u7247\u8282\u70B9\u53EF\u4EE5\u5B58\u5165\u8D44\u4EA7\u5E93"));
+          if (!owner.node.imageId) return res.status(400).send(error50("\u8282\u70B9\u8FD8\u6CA1\u6709\u56FE\u7247"));
+          let rootId = null;
+          let assetType = type;
+          if (parentAssetId) {
+            const parent = await resolveOwner(projectId, assetKey(parentAssetId));
+            rootId = parent.asset.assetsId ?? parent.asset.id;
+            const root2 = await utils_default.db("o_assets").where("id", rootId).select("type").first();
+            assetType = root2?.type ?? type;
+          }
+          const assetId = await db.transaction(async (trx) => {
+            const [id] = await trx("o_assets").insert({
+              name: name28,
+              describe: describe4 ?? "",
+              prompt: owner.node.prompt ?? "",
+              type: assetType,
+              projectId,
+              assetsId: rootId,
+              imageId: owner.node.imageId,
+              startTime: Date.now()
+            });
+            await trx("o_image").where("canvasNodeId", nodeId).update({ assetsId: id, canvasNodeId: null, type: assetType });
+            if (rootId) {
+              const links = await trx("o_scriptAssets").where("assetId", rootId).select("scriptId");
+              if (links.length) await trx("o_scriptAssets").insert(links.map((l) => ({ scriptId: l.scriptId, assetId: id })));
+            }
+            await trx("o_canvasNode").where("id", nodeId).delete();
+            return id;
+          });
+          await renameKey(projectId, nodeKey(nodeId), assetKey(assetId));
+          res.status(200).send(success3({ key: assetKey(assetId), id: assetId }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/setCurrentVersion.ts
+var import_express50, router50, setCurrentVersion_default;
+var init_setCurrentVersion = __esm({
+  "src/routes/canvas/setCurrentVersion.ts"() {
+    "use strict";
+    import_express50 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router50 = import_express50.default.Router();
+    setCurrentVersion_default = router50.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        target: external_exports.string(),
+        imageId: external_exports.number()
+      }),
+      async (req, res) => {
+        const { projectId, target, imageId } = req.body;
+        try {
+          const owner = await resolveOwner(projectId, target);
+          const column = OWNER_IMAGE_COLUMN[owner.kind];
+          const image = await utils_default.db("o_image").where({ id: imageId, [column]: owner.id, state: "\u5DF2\u5B8C\u6210" }).first();
+          if (!image) return res.status(400).send(error50("\u7248\u672C\u4E0D\u5B58\u5728\u6216\u672A\u751F\u6210\u5B8C\u6210"));
+          if (owner.kind === "asset") {
+            await utils_default.db("o_assets").where("id", owner.id).update({ imageId });
+          } else if (owner.kind === "storyboard") {
+            await utils_default.db("o_storyboard").where("id", owner.id).update({ imageId, filePath: image.filePath, state: "\u5DF2\u5B8C\u6210", reason: null });
+          } else if (owner.kind === "track") {
+            const video = await utils_default.db("o_video").where({ imageId, videoTrackId: owner.id, state: "\u751F\u6210\u6210\u529F" }).first();
+            if (!video) return res.status(400).send(error50("\u8FD9\u4E00\u6761\u89C6\u9891\u4E0D\u53EF\u7528"));
+            await utils_default.db("o_videoTrack").where("id", owner.id).update({ videoId: video.id });
+          } else {
+            await utils_default.db("o_canvasNode").where("id", owner.id).update({ imageId });
+          }
+          res.status(200).send(success3({ message: "\u5DF2\u5207\u6362" }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/updateNode.ts
+var import_express51, router51, updateNode_default;
+var init_updateNode = __esm({
+  "src/routes/canvas/updateNode.ts"() {
+    "use strict";
+    import_express51 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router51 = import_express51.default.Router();
+    updateNode_default = router51.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        key: external_exports.string(),
+        name: external_exports.string().trim().min(1, "\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A").max(40).optional(),
+        describe: external_exports.string().optional(),
+        prompt: external_exports.string().optional(),
+        params: external_exports.record(external_exports.string(), external_exports.unknown()).optional(),
+        assetType: external_exports.enum(CANVAS_ASSET_TYPES).nullable().optional()
+      }),
+      async (req, res) => {
+        const { projectId, key, name: name28, describe: describe4, prompt, params, assetType } = req.body;
+        try {
+          const owner = await resolveOwner(projectId, key);
+          const pick3 = (obj) => Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== void 0));
+          if (owner.kind === "asset") {
+            const patch = pick3({ name: name28, describe: describe4, prompt });
+            if (Object.keys(patch).length) await utils_default.db("o_assets").where("id", owner.id).update(patch);
+            if (assetType === null) return res.status(400).send(error50("\u8D44\u4EA7\u5FC5\u987B\u6709\u7C7B\u578B"));
+            if (assetType) {
+              const rootId = owner.asset.assetsId ?? owner.id;
+              await utils_default.db("o_assets").where("projectId", projectId).where((qb) => qb.where("id", rootId).orWhere("assetsId", rootId)).update({ type: assetType });
+            }
+          } else {
+            const merged = assetType !== void 0 ? { ...params ?? JSON.parse(owner.node.params || "{}"), assetType } : params;
+            const patch = pick3({ name: name28, prompt, params: merged ? JSON.stringify(merged) : void 0 });
+            if (Object.keys(patch).length) await utils_default.db("o_canvasNode").where("id", owner.id).update(patch);
+          }
+          res.status(200).send(success3({ message: "\u5DF2\u4FDD\u5B58" }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/canvas/upload.ts
+var import_express52, router52, MIME_EXT, upload_default;
+var init_upload = __esm({
+  "src/routes/canvas/upload.ts"() {
+    "use strict";
+    import_express52 = __toESM(require_express2());
+    init_zod();
+    init_dist_node();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router52 = import_express52.default.Router();
+    MIME_EXT = {
+      "image/jpeg": { ext: "jpg", kind: "image" },
+      "image/jpg": { ext: "jpg", kind: "image" },
+      "image/png": { ext: "png", kind: "image" },
+      "image/webp": { ext: "webp", kind: "image" },
+      "video/mp4": { ext: "mp4", kind: "video" },
+      "video/webm": { ext: "webm", kind: "video" },
+      "audio/mpeg": { ext: "mp3", kind: "audio" },
+      "audio/mp3": { ext: "mp3", kind: "audio" },
+      "audio/wav": { ext: "wav", kind: "audio" },
+      "audio/x-wav": { ext: "wav", kind: "audio" },
+      "audio/mp4": { ext: "m4a", kind: "audio" },
+      "audio/x-m4a": { ext: "m4a", kind: "audio" }
+    };
+    upload_default = router52.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        base64Data: external_exports.string().regex(/^data:[\w/+.-]+;base64,/, "\u9700\u8981 data URL"),
+        name: external_exports.string().optional(),
+        target: external_exports.string().optional().nullable(),
+        position: external_exports.object({ x: external_exports.number(), y: external_exports.number() }).optional()
+      }),
+      async (req, res) => {
+        const { projectId, base64Data, name: name28, target, position } = req.body;
+        const mime = /^data:([\w/+.-]+);base64,/.exec(base64Data)[1].toLowerCase();
+        const type = MIME_EXT[mime];
+        if (!type) return res.status(400).send(error50(`\u4E0D\u652F\u6301\u7684\u6587\u4EF6\u7C7B\u578B: ${mime}`));
+        const filePath = `/${projectId}/canvas/${v4_default()}.${type.ext}`;
+        try {
+          const owner = target ? await resolveOwner(projectId, target) : null;
+          if (owner?.asset && type.kind !== "image") return res.status(400).send(error50("\u8D44\u4EA7\u8282\u70B9\u53EA\u80FD\u4E0A\u4F20\u56FE\u7247"));
+          await utils_default.oss.writeFile(filePath, base64Data);
+          if (owner?.asset) {
+            const [imageId2] = await utils_default.db("o_image").insert({
+              type: owner.asset.type,
+              state: "\u5DF2\u5B8C\u6210",
+              filePath,
+              assetsId: owner.id,
+              kind: "image",
+              model: "\u4E0A\u4F20",
+              createTime: Date.now()
+            });
+            await utils_default.db("o_assets").where("id", owner.id).update({ imageId: imageId2 });
+            return res.status(200).send(success3({ key: owner.key, imageId: imageId2 }));
+          }
+          let nodeId = owner?.id;
+          if (!owner) {
+            [nodeId] = await utils_default.db("o_canvasNode").insert({ projectId, kind: type.kind, name: name28 ?? "\u4E0A\u4F20\u7D20\u6750", prompt: "", createTime: Date.now() });
+            if (position) {
+              const layout = await readLayout(projectId);
+              await writeLayout(projectId, { ...layout, positions: { ...layout.positions, [nodeKey(nodeId)]: position } });
+            }
+          } else if (owner.node.kind !== type.kind) {
+            return res.status(400).send(error50(`\u8BE5\u8282\u70B9\u53EA\u80FD\u4E0A\u4F20${owner.node.kind === "video" ? "\u89C6\u9891" : owner.node.kind === "audio" ? "\u97F3\u9891" : "\u56FE\u7247"}`));
+          }
+          const [imageId] = await utils_default.db("o_image").insert({
+            type: "canvas",
+            state: "\u5DF2\u5B8C\u6210",
+            filePath,
+            canvasNodeId: nodeId,
+            kind: type.kind,
+            model: "\u4E0A\u4F20",
+            createTime: Date.now()
+          });
+          await utils_default.db("o_canvasNode").where("id", nodeId).update({ imageId });
+          res.status(200).send(success3({ key: nodeKey(nodeId), imageId }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
 // src/routes/common/getBigImage.ts
-var import_express27, router27, getBigImage_default;
+var import_express53, router53, getBigImage_default;
 var init_getBigImage = __esm({
   "src/routes/common/getBigImage.ts"() {
     "use strict";
-    import_express27 = __toESM(require_express2());
+    import_express53 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
     init_zod();
     init_middleware();
-    router27 = import_express27.default.Router();
-    getBigImage_default = router27.post(
+    router53 = import_express53.default.Router();
+    getBigImage_default = router53.post(
       "/",
       validateFields({
         url: external_exports.string()
@@ -239019,18 +242311,18 @@ var init_getBigImage = __esm({
 });
 
 // src/routes/cornerScape/batchBindAudio.ts
-var import_express28, router28, batchBindAudio_default;
+var import_express54, router54, batchBindAudio_default;
 var init_batchBindAudio = __esm({
   "src/routes/cornerScape/batchBindAudio.ts"() {
     "use strict";
-    import_express28 = __toESM(require_express2());
+    import_express54 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
     init_dist22();
-    router28 = import_express28.default.Router();
-    batchBindAudio_default = router28.post(
+    router54 = import_express54.default.Router();
+    batchBindAudio_default = router54.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -239111,17 +242403,17 @@ var init_batchBindAudio = __esm({
 });
 
 // src/routes/cornerScape/getAllAssets.ts
-var import_express29, router29, getAllAssets_default;
+var import_express55, router55, getAllAssets_default;
 var init_getAllAssets = __esm({
   "src/routes/cornerScape/getAllAssets.ts"() {
     "use strict";
-    import_express29 = __toESM(require_express2());
+    import_express55 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router29 = import_express29.default.Router();
-    getAllAssets_default = router29.post(
+    router55 = import_express55.default.Router();
+    getAllAssets_default = router55.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -239173,24 +242465,24 @@ var init_getAllAssets = __esm({
 });
 
 // src/routes/cornerScape/pollingAudio.ts
-var import_express30, router30, pollingAudio_default;
+var import_express56, router56, pollingAudio_default;
 var init_pollingAudio = __esm({
   "src/routes/cornerScape/pollingAudio.ts"() {
     "use strict";
-    import_express30 = __toESM(require_express2());
+    import_express56 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router30 = import_express30.default.Router();
-    pollingAudio_default = router30.post(
+    router56 = import_express56.default.Router();
+    pollingAudio_default = router56.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_assets").whereIn("id", ids).whereNot("audioBindState", "\u751F\u6210\u4E2D").select("*");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_assets").whereIn("id", ids2).whereNot("audioBindState", "\u751F\u6210\u4E2D").select("*");
         res.status(200).send(success3(data));
       }
     );
@@ -239198,17 +242490,17 @@ var init_pollingAudio = __esm({
 });
 
 // src/routes/cornerScape/updateAssetsAudio.ts
-var import_express31, router31, updateAssetsAudio_default;
+var import_express57, router57, updateAssetsAudio_default;
 var init_updateAssetsAudio = __esm({
   "src/routes/cornerScape/updateAssetsAudio.ts"() {
     "use strict";
-    import_express31 = __toESM(require_express2());
+    import_express57 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router31 = import_express31.default.Router();
-    updateAssetsAudio_default = router31.post(
+    router57 = import_express57.default.Router();
+    updateAssetsAudio_default = router57.post(
       "/",
       validateFields({
         assetsId: external_exports.number(),
@@ -239228,17 +242520,17 @@ var init_updateAssetsAudio = __esm({
 });
 
 // src/routes/general/generalStatistics.ts
-var import_express32, router32, generalStatistics_default;
+var import_express58, router58, generalStatistics_default;
 var init_generalStatistics = __esm({
   "src/routes/general/generalStatistics.ts"() {
     "use strict";
-    import_express32 = __toESM(require_express2());
+    import_express58 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router32 = import_express32.default.Router();
-    generalStatistics_default = router32.post(
+    router58 = import_express58.default.Router();
+    generalStatistics_default = router58.post(
       "/",
       validateFields({
         projectId: external_exports.number()
@@ -239264,17 +242556,17 @@ var init_generalStatistics = __esm({
 });
 
 // src/routes/general/getSingleProject.ts
-var import_express33, router33, getSingleProject_default;
+var import_express59, router59, getSingleProject_default;
 var init_getSingleProject = __esm({
   "src/routes/general/getSingleProject.ts"() {
     "use strict";
-    import_express33 = __toESM(require_express2());
+    import_express59 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router33 = import_express33.default.Router();
-    getSingleProject_default = router33.post(
+    router59 = import_express59.default.Router();
+    getSingleProject_default = router59.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -239289,17 +242581,17 @@ var init_getSingleProject = __esm({
 });
 
 // src/routes/general/updateProject.ts
-var import_express34, router34, updateProject_default;
+var import_express60, router60, updateProject_default;
 var init_updateProject = __esm({
   "src/routes/general/updateProject.ts"() {
     "use strict";
-    import_express34 = __toESM(require_express2());
+    import_express60 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router34 = import_express34.default.Router();
-    updateProject_default = router34.post(
+    router60 = import_express60.default.Router();
+    updateProject_default = router60.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -239331,18 +242623,18 @@ function setToken(payload, expiresIn, secret) {
   }
   return import_jsonwebtoken4.default.sign(payload, secret, { expiresIn });
 }
-var import_express35, import_jsonwebtoken4, router35, login_default;
+var import_express61, import_jsonwebtoken4, router61, login_default;
 var init_login = __esm({
   "src/routes/login/login.ts"() {
     "use strict";
-    import_express35 = __toESM(require_express2());
+    import_express61 = __toESM(require_express2());
     init_utils3();
     import_jsonwebtoken4 = __toESM(require_jsonwebtoken());
     init_responseFormat();
     init_middleware();
     init_zod();
-    router35 = import_express35.default.Router();
-    login_default = router35.post(
+    router61 = import_express61.default.Router();
+    login_default = router61.post(
       "/",
       validateFields({
         username: external_exports.string(),
@@ -239373,17 +242665,17 @@ var init_login = __esm({
 });
 
 // src/routes/modelSelect/getModelDetail.ts
-var import_express36, router36, getModelDetail_default;
+var import_express62, router62, getModelDetail_default;
 var init_getModelDetail = __esm({
   "src/routes/modelSelect/getModelDetail.ts"() {
     "use strict";
-    import_express36 = __toESM(require_express2());
+    import_express62 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router36 = import_express36.default.Router();
-    getModelDetail_default = router36.post(
+    router62 = import_express62.default.Router();
+    getModelDetail_default = router62.post(
       "/",
       validateFields({
         modelId: external_exports.string()
@@ -239400,20 +242692,20 @@ var init_getModelDetail = __esm({
 });
 
 // src/routes/modelSelect/getModelList.ts
-var import_express37, router37, getModelList_default;
+var import_express63, router63, getModelList_default;
 var init_getModelList = __esm({
   "src/routes/modelSelect/getModelList.ts"() {
     "use strict";
-    import_express37 = __toESM(require_express2());
+    import_express63 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router37 = import_express37.default.Router();
-    getModelList_default = router37.post(
+    router63 = import_express63.default.Router();
+    getModelList_default = router63.post(
       "/",
       validateFields({
-        type: external_exports.enum(["text", "image", "video", "all"])
+        type: external_exports.enum(["text", "image", "video", "tts", "all"])
       }),
       async (req, res) => {
         const { type } = req.body;
@@ -239426,7 +242718,7 @@ var init_getModelList = __esm({
           dataList.map(async (data, index) => {
             const vendorData2 = await utils_default.vendor.getVendor(data.id);
             const models = modelList[index];
-            const filtered = type === "all" ? models.filter((item) => item.type !== "video") : models.filter((item) => item.type === type);
+            const filtered = type === "all" ? models.filter((item) => item.type !== "video" && item.type !== "tts") : models.filter((item) => item.type === type);
             return filtered.map((item) => ({
               id: data.id,
               label: item.name,
@@ -239443,17 +242735,17 @@ var init_getModelList = __esm({
 });
 
 // src/routes/novel/addNovel.ts
-var import_express38, router38, addNovel_default;
+var import_express64, router64, addNovel_default;
 var init_addNovel = __esm({
   "src/routes/novel/addNovel.ts"() {
     "use strict";
-    import_express38 = __toESM(require_express2());
+    import_express64 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router38 = import_express38.default.Router();
-    addNovel_default = router38.post(
+    router64 = import_express64.default.Router();
+    addNovel_default = router64.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -239499,31 +242791,31 @@ var init_addNovel = __esm({
 });
 
 // src/routes/novel/batchDeleteNovel.ts
-var import_express39, router39, batchDeleteNovel_default;
+var import_express65, router65, batchDeleteNovel_default;
 var init_batchDeleteNovel = __esm({
   "src/routes/novel/batchDeleteNovel.ts"() {
     "use strict";
-    import_express39 = __toESM(require_express2());
+    import_express65 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router39 = import_express39.default.Router();
-    batchDeleteNovel_default = router39.post(
+    router65 = import_express65.default.Router();
+    batchDeleteNovel_default = router65.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        if (!ids.length) {
+        const { ids: ids2 } = req.body;
+        if (!ids2.length) {
           return res.status(400).send(error50("\u8BF7\u5148\u9009\u62E9\u9700\u8981\u5220\u9664\u7684\u5185\u5BB9"));
         }
-        const chapterData = await utils_default.db("o_eventChapter").whereIn("novelId", ids);
-        await utils_default.db("o_eventChapter").whereIn("novelId", ids).delete();
+        const chapterData = await utils_default.db("o_eventChapter").whereIn("novelId", ids2);
+        await utils_default.db("o_eventChapter").whereIn("novelId", ids2).delete();
         const eventIds = chapterData.map((i) => i.id);
         if (eventIds.length) await utils_default.db("o_event").whereIn("id", eventIds).delete();
-        await utils_default.db("o_novel").whereIn("id", ids).del();
+        await utils_default.db("o_novel").whereIn("id", ids2).del();
         res.status(200).send(success3({ message: "\u5220\u9664\u539F\u6587\u6210\u529F" }));
       }
     );
@@ -239531,17 +242823,17 @@ var init_batchDeleteNovel = __esm({
 });
 
 // src/routes/novel/delNovel.ts
-var import_express40, router40, delNovel_default;
+var import_express66, router66, delNovel_default;
 var init_delNovel = __esm({
   "src/routes/novel/delNovel.ts"() {
     "use strict";
-    import_express40 = __toESM(require_express2());
+    import_express66 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router40 = import_express40.default.Router();
-    delNovel_default = router40.post(
+    router66 = import_express66.default.Router();
+    delNovel_default = router66.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -239560,25 +242852,25 @@ var init_delNovel = __esm({
 });
 
 // src/routes/novel/event/batchDeleteEvent.ts
-var import_express41, router41, batchDeleteEvent_default;
+var import_express67, router67, batchDeleteEvent_default;
 var init_batchDeleteEvent = __esm({
   "src/routes/novel/event/batchDeleteEvent.ts"() {
     "use strict";
-    import_express41 = __toESM(require_express2());
+    import_express67 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router41 = import_express41.default.Router();
-    batchDeleteEvent_default = router41.post(
+    router67 = import_express67.default.Router();
+    batchDeleteEvent_default = router67.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        await utils_default.db("o_event").whereIn("id", ids).del();
-        await utils_default.db("o_eventChapter").whereIn("eventId", ids).del();
+        const { ids: ids2 } = req.body;
+        await utils_default.db("o_event").whereIn("id", ids2).del();
+        await utils_default.db("o_eventChapter").whereIn("eventId", ids2).del();
         res.status(200).send(success3({ message: "\u5220\u9664\u4E8B\u4EF6\u6210\u529F" }));
       }
     );
@@ -239586,17 +242878,17 @@ var init_batchDeleteEvent = __esm({
 });
 
 // src/routes/novel/event/deletEvent.ts
-var import_express42, router42, deletEvent_default;
+var import_express68, router68, deletEvent_default;
 var init_deletEvent = __esm({
   "src/routes/novel/event/deletEvent.ts"() {
     "use strict";
-    import_express42 = __toESM(require_express2());
+    import_express68 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router42 = import_express42.default.Router();
-    deletEvent_default = router42.post(
+    router68 = import_express68.default.Router();
+    deletEvent_default = router68.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -239612,17 +242904,17 @@ var init_deletEvent = __esm({
 });
 
 // src/routes/novel/event/generateEvents.ts
-var import_express43, router43, generateEvents_default;
+var import_express69, router69, generateEvents_default;
 var init_generateEvents = __esm({
   "src/routes/novel/event/generateEvents.ts"() {
     "use strict";
-    import_express43 = __toESM(require_express2());
+    import_express69 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router43 = import_express43.default.Router();
-    generateEvents_default = router43.post(
+    router69 = import_express69.default.Router();
+    generateEvents_default = router69.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -239650,18 +242942,18 @@ var init_generateEvents = __esm({
 });
 
 // src/routes/novel/event/getEvent.ts
-var import_express44, router44, getEvent_default;
+var import_express70, router70, getEvent_default;
 var init_getEvent = __esm({
   "src/routes/novel/event/getEvent.ts"() {
     "use strict";
-    import_express44 = __toESM(require_express2());
+    import_express70 = __toESM(require_express2());
     init_utils3();
     init_db();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router44 = import_express44.default.Router();
-    getEvent_default = router44.post(
+    router70 = import_express70.default.Router();
+    getEvent_default = router70.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -239695,17 +242987,17 @@ var init_getEvent = __esm({
 });
 
 // src/routes/novel/getNovel.ts
-var import_express45, router45, getNovel_default;
+var import_express71, router71, getNovel_default;
 var init_getNovel = __esm({
   "src/routes/novel/getNovel.ts"() {
     "use strict";
-    import_express45 = __toESM(require_express2());
+    import_express71 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router45 = import_express45.default.Router();
-    getNovel_default = router45.post(
+    router71 = import_express71.default.Router();
+    getNovel_default = router71.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -239733,17 +243025,17 @@ var init_getNovel = __esm({
 });
 
 // src/routes/novel/getNovelData.ts
-var import_express46, router46, getNovelData_default;
+var import_express72, router72, getNovelData_default;
 var init_getNovelData = __esm({
   "src/routes/novel/getNovelData.ts"() {
     "use strict";
-    import_express46 = __toESM(require_express2());
+    import_express72 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router46 = import_express46.default.Router();
-    getNovelData_default = router46.post(
+    router72 = import_express72.default.Router();
+    getNovelData_default = router72.post(
       "/",
       validateFields({
         projectId: external_exports.number()
@@ -239758,24 +243050,24 @@ var init_getNovelData = __esm({
 });
 
 // src/routes/novel/getNovelEventState.ts
-var import_express47, router47, getNovelEventState_default;
+var import_express73, router73, getNovelEventState_default;
 var init_getNovelEventState = __esm({
   "src/routes/novel/getNovelEventState.ts"() {
     "use strict";
-    import_express47 = __toESM(require_express2());
+    import_express73 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router47 = import_express47.default.Router();
-    getNovelEventState_default = router47.post(
+    router73 = import_express73.default.Router();
+    getNovelEventState_default = router73.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_novel").whereIn("id", ids).whereNot("eventState", 0).select("id", "event", "eventState", "errorReason");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_novel").whereIn("id", ids2).whereNot("eventState", 0).select("id", "event", "eventState", "errorReason");
         res.status(200).send(success3(data));
       }
     );
@@ -239783,17 +243075,17 @@ var init_getNovelEventState = __esm({
 });
 
 // src/routes/novel/getNovelIndex.ts
-var import_express48, router48, getNovelIndex_default;
+var import_express74, router74, getNovelIndex_default;
 var init_getNovelIndex = __esm({
   "src/routes/novel/getNovelIndex.ts"() {
     "use strict";
-    import_express48 = __toESM(require_express2());
+    import_express74 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router48 = import_express48.default.Router();
-    getNovelIndex_default = router48.post(
+    router74 = import_express74.default.Router();
+    getNovelIndex_default = router74.post(
       "/",
       validateFields({
         projectId: external_exports.number()
@@ -239808,17 +243100,17 @@ var init_getNovelIndex = __esm({
 });
 
 // src/routes/novel/updateNovel.ts
-var import_express49, router49, updateNovel_default;
+var import_express75, router75, updateNovel_default;
 var init_updateNovel = __esm({
   "src/routes/novel/updateNovel.ts"() {
     "use strict";
-    import_express49 = __toESM(require_express2());
+    import_express75 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router49 = import_express49.default.Router();
-    updateNovel_default = router49.post(
+    router75 = import_express75.default.Router();
+    updateNovel_default = router75.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -239844,16 +243136,16 @@ var init_updateNovel = __esm({
 });
 
 // src/routes/other/deleteAllData.ts
-var import_express50, router50, deleteAllData_default;
+var import_express76, router76, deleteAllData_default;
 var init_deleteAllData = __esm({
   "src/routes/other/deleteAllData.ts"() {
     "use strict";
-    import_express50 = __toESM(require_express2());
+    import_express76 = __toESM(require_express2());
     init_initDB();
     init_db();
     init_responseFormat();
-    router50 = import_express50.default.Router();
-    deleteAllData_default = router50.post(
+    router76 = import_express76.default.Router();
+    deleteAllData_default = router76.post(
       "/",
       async (req, res) => {
         await initDB_default(db, true);
@@ -239864,15 +243156,15 @@ var init_deleteAllData = __esm({
 });
 
 // src/routes/other/getVersion.ts
-var import_express51, router51, getVersion_default;
+var import_express77, router77, getVersion_default;
 var init_getVersion = __esm({
   "src/routes/other/getVersion.ts"() {
     "use strict";
-    import_express51 = __toESM(require_express2());
+    import_express77 = __toESM(require_express2());
     init_responseFormat();
     init_writeVersion();
-    router51 = import_express51.default.Router();
-    getVersion_default = router51.get("/", async (req, res) => {
+    router77 = import_express77.default.Router();
+    getVersion_default = router77.get("/", async (req, res) => {
       const version3 = await getVersion();
       res.status(200).send(success3(version3));
     });
@@ -239880,17 +243172,18 @@ var init_getVersion = __esm({
 });
 
 // src/routes/production/assets/batchGenerateAssetsImage.ts
-var import_express52, router52, batchGenerateAssetsImage_default;
+var import_express78, router78, batchGenerateAssetsImage_default;
 var init_batchGenerateAssetsImage = __esm({
   "src/routes/production/assets/batchGenerateAssetsImage.ts"() {
     "use strict";
-    import_express52 = __toESM(require_express2());
+    import_express78 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router52 = import_express52.default.Router();
-    batchGenerateAssetsImage_default = router52.post(
+    init_assetGen();
+    router78 = import_express78.default.Router();
+    batchGenerateAssetsImage_default = router78.post(
       "/",
       validateFields({
         assetIds: external_exports.array(external_exports.number()),
@@ -239899,104 +243192,50 @@ var init_batchGenerateAssetsImage = __esm({
         concurrentCount: external_exports.number().min(1).optional()
       }),
       async (req, res) => {
-        const { assetIds, projectId, scriptId, concurrentCount = 5 } = req.body;
-        const projectSettingData = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality", "artStyle").first();
-        const assetsDataArr = await utils_default.db("o_assets").whereIn("id", assetIds).select("id", "describe", "name", "type", "assetsId");
-        const parentIds = assetsDataArr.map((item) => item.assetsId).filter((id) => id !== null);
-        const parentAssetsData = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").whereIn("o_assets.id", parentIds).select("o_assets.id", "o_image.filePath", "o_assets.describe");
-        assetsDataArr.forEach((i) => {
-          const parent = parentAssetsData.find((item) => item.id === i.assetsId);
-          if (parent) {
-            i.parentDescribe = parent.describe;
-          }
-        });
-        const imageUrlRecord = {};
-        parentAssetsData.forEach((item) => {
-          if (item.filePath) imageUrlRecord[item.id] = item.filePath;
-        });
-        const rolePrompt = utils_default.getArtPrompt(projectSettingData.artStyle, "art_skills", "art_character_derivative");
-        const toolPrompt = utils_default.getArtPrompt(projectSettingData.artStyle, "art_skills", "art_prop_derivative");
-        const scenePrompt = utils_default.getArtPrompt(projectSettingData.artStyle, "art_skills", "art_scene_derivative");
-        const promptRecord = {
-          role: {
-            prompt: rolePrompt
-          },
-          tool: {
-            prompt: toolPrompt
-          },
-          scene: {
-            prompt: scenePrompt
-          }
-        };
-        const imageIdMap = {};
-        for (const item of assetsDataArr) {
-          const [imageId] = await utils_default.db("o_image").insert({
-            assetsId: item.id,
-            type: item.type,
-            state: "\u751F\u6210\u4E2D",
-            resolution: projectSettingData?.imageQuality,
-            model: projectSettingData?.imageModel
-          });
-          imageIdMap[item.id] = imageId;
-          await utils_default.db("o_assets").where("id", item.id).update({ imageId });
-        }
-        const imageData = [];
-        res.status(200).send(success3("\u5F00\u59CB\u751F\u6210\u8D44\u4EA7\u56FE\u7247"));
-        const generateSingleAsset = async (item) => {
-          const imageId = imageIdMap[item.id];
-          const typeConfig = promptRecord[item.type] || promptRecord["role"];
+        const { assetIds, projectId, concurrentCount = 5 } = req.body;
+        const project = await utils_default.db("o_project").where("id", projectId).select("imageQuality", "artStyle").first();
+        const artStyle = project?.artStyle ?? "";
+        const size = project?.imageQuality ?? "1K";
+        const assets = await utils_default.db("o_assets").whereIn("id", assetIds).select("id", "describe", "name", "type", "assetsId");
+        const parentIds = assets.map((item) => item.assetsId).filter((id) => id != null);
+        const parents = await utils_default.db("o_assets").whereIn("id", parentIds).select("id", "describe");
+        const parentDescribe = new Map(parents.map((p3) => [p3.id, p3.describe]));
+        const writePrompt = async (asset) => {
+          const isDerived = asset.assetsId != null;
           const { text: text2 } = await utils_default.Ai.Text("universalAi").invoke({
-            system: `${typeConfig.prompt}`,
+            system: getPolishManual(artStyle, asset.type, isDerived),
             messages: [
               {
                 role: "user",
                 content: `
-            \u7236\u7EA7\u8D44\u4EA7\u63CF\u8FF0: ${item.parentDescribe || "\u65E0\u8BE6\u7EC6\u63CF\u8FF0"}
-            \u5F53\u524D\u8D44\u4EA7\u63CF\u8FF0: ${item.describe || "\u65E0\u8BE6\u7EC6\u63CF\u8FF0"}`
+            \u7236\u7EA7\u8D44\u4EA7\u63CF\u8FF0: ${asset.assetsId && parentDescribe.get(asset.assetsId) || "\u65E0\u8BE6\u7EC6\u63CF\u8FF0"}
+            \u5F53\u524D\u8D44\u4EA7\u63CF\u8FF0: ${asset.describe || "\u65E0\u8BE6\u7EC6\u63CF\u8FF0"}`
               }
             ]
           });
-          await utils_default.db("o_assets").where("id", item.id).update({ prompt: text2 });
-          const imageBase64 = imageUrlRecord[item.assetsId] ? await utils_default.oss.getImageBase64(imageUrlRecord[item.assetsId]) : null;
-          try {
-            const repeloadObj = {
-              prompt: text2,
-              size: projectSettingData?.imageQuality,
-              aspectRatio: "16:9"
-            };
-            const imageCls = await utils_default.Ai.Image(projectSettingData?.imageModel).run(
-              {
-                referenceList: imageBase64 ? [{ type: "image", base64: imageBase64 }] : [],
-                ...repeloadObj
-              },
-              {
-                taskClass: "\u751F\u6210\u56FE\u7247",
-                describe: "\u8D44\u4EA7\u56FE\u7247\u751F\u6210",
-                relatedObjects: JSON.stringify(repeloadObj),
-                projectId
-              }
-            );
-            const savePath = `/${projectId}/assets/${scriptId}/${item.type}/${utils_default.uuid()}.jpg`;
-            await imageCls.save(savePath);
-            await utils_default.db("o_image").where({ id: imageId }).update({ state: "\u5DF2\u5B8C\u6210", filePath: savePath });
-            return {
-              id: item.id,
-              state: "\u5DF2\u5B8C\u6210",
-              src: await utils_default.oss.getSmallImageUrl(savePath)
-            };
-          } catch (e) {
-            await utils_default.db("o_image").where({ id: imageId }).update({ state: "\u751F\u6210\u5931\u8D25", errorReason: utils_default.error(e).message });
-            return {
-              id: item.id,
-              state: "\u751F\u6210\u5931\u8D25",
-              src: ""
-            };
-          }
+          return text2;
         };
-        for (let i = 0; i < assetsDataArr.length; i += concurrentCount) {
-          const batch = assetsDataArr.slice(i, i + concurrentCount);
-          const batchResults = await Promise.all(batch.map(generateSingleAsset));
-          imageData.push(...batchResults);
+        const prepared = [];
+        for (const asset of assets) {
+          try {
+            const stage = await prepareAssetStage({
+              projectId,
+              assetId: asset.id,
+              size,
+              // 角色：LLM 只写【人物需求】正文，由模板补上固定输出格式；场景 / 道具沿用原样发送
+              rawPrompt: asset.type !== "role",
+              earlyRepoint: true,
+              resolvePrompt: () => writePrompt(asset)
+            });
+            prepared.push({ asset, stage });
+          } catch (e) {
+            console.error("[\u884D\u751F\u8D44\u4EA7\u751F\u56FE] \u51C6\u5907\u5931\u8D25", asset.id, utils_default.error(e).message);
+          }
+        }
+        res.status(200).send(success3("\u5F00\u59CB\u751F\u6210\u8D44\u4EA7\u56FE\u7247"));
+        const generateOne = ({ stage }) => stage.run();
+        for (let i = 0; i < prepared.length; i += concurrentCount) {
+          await Promise.all(prepared.slice(i, i + concurrentCount).map(generateOne));
         }
       }
     );
@@ -240004,17 +243243,17 @@ var init_batchGenerateAssetsImage = __esm({
 });
 
 // src/routes/production/assets/deleteAssetsDireve.ts
-var import_express53, router53, deleteAssetsDireve_default;
+var import_express79, router79, deleteAssetsDireve_default;
 var init_deleteAssetsDireve = __esm({
   "src/routes/production/assets/deleteAssetsDireve.ts"() {
     "use strict";
-    import_express53 = __toESM(require_express2());
+    import_express79 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router53 = import_express53.default.Router();
-    deleteAssetsDireve_default = router53.post(
+    router79 = import_express79.default.Router();
+    deleteAssetsDireve_default = router79.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -240026,7 +243265,6 @@ var init_deleteAssetsDireve = __esm({
         if (!assetsFirstData) {
           return res.status(404).send({ error: "\u8D44\u6E90\u672A\u627E\u5230" });
         }
-        if (assetsFirstData?.flowId) await utils_default.db("o_imageFlow").where("id", assetsFirstData?.flowId).delete();
         await utils_default.db("o_assets").where("id", id).delete();
         await utils_default.db("o_assets2Storyboard").where("assetId", id).delete();
         res.status(200).send(success3({ message: "\u89C6\u9891\u5220\u9664\u6210\u529F" }));
@@ -240036,24 +243274,24 @@ var init_deleteAssetsDireve = __esm({
 });
 
 // src/routes/production/assets/pollingImage.ts
-var import_express54, router54, pollingImage_default;
+var import_express80, router80, pollingImage_default;
 var init_pollingImage = __esm({
   "src/routes/production/assets/pollingImage.ts"() {
     "use strict";
-    import_express54 = __toESM(require_express2());
+    import_express80 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router54 = import_express54.default.Router();
-    pollingImage_default = router54.post(
+    router80 = import_express80.default.Router();
+    pollingImage_default = router80.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").whereIn("o_assets.id", ids).whereNot("o_image.state", "\u751F\u6210\u4E2D").select("o_image.state", "o_assets.id", "o_image.filePath", "o_image.errorReason", "o_assets.prompt");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_assets").leftJoin("o_image", "o_assets.imageId", "o_image.id").whereIn("o_assets.id", ids2).whereNot("o_image.state", "\u751F\u6210\u4E2D").select("o_image.state", "o_assets.id", "o_image.filePath", "o_image.errorReason", "o_assets.prompt");
         const result = await Promise.all(
           data.map(async (item) => ({
             ...item,
@@ -240066,315 +243304,18 @@ var init_pollingImage = __esm({
   }
 });
 
-// src/routes/production/assets/updateAssetsUrl.ts
-var import_express55, router55, updateAssetsUrl_default;
-var init_updateAssetsUrl = __esm({
-  "src/routes/production/assets/updateAssetsUrl.ts"() {
-    "use strict";
-    import_express55 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router55 = import_express55.default.Router();
-    updateAssetsUrl_default = router55.post(
-      "/",
-      validateFields({
-        id: external_exports.number(),
-        url: external_exports.string(),
-        flowId: external_exports.number()
-      }),
-      async (req, res) => {
-        const { id, url: url4, flowId } = req.body;
-        const [imageId] = await utils_default.db("o_image").insert({
-          filePath: utils_default.replaceUrl(url4),
-          state: "\u5DF2\u5B8C\u6210",
-          assetsId: id
-        });
-        await utils_default.db("o_assets").where({ id }).update({ flowId, imageId });
-        res.status(200).send(success3({ message: "\u66F4\u65B0\u63D0\u793A\u8BCD\u6210\u529F" }));
-      }
-    );
-  }
-});
-
-// src/routes/production/editImage/generateFlowImage.ts
-async function urlToBase643(imageUrl) {
-  if (imageUrl.startsWith("/oss/")) {
-    return await utils_default.oss.getImageBase64(utils_default.replaceUrl(imageUrl).replace("/smallImage", ""));
-  }
-  imageUrl = await utils_default.oss.getFileUrl(utils_default.replaceUrl(imageUrl));
-  const response = await axios_default.get(imageUrl, { responseType: "arraybuffer" });
-  const contentType = response.headers["content-type"] || "image/png";
-  const base644 = Buffer.from(response.data, "binary").toString("base64");
-  return `data:${contentType};base64,${base644}`;
-}
-var import_express56, router56, generateFlowImage_default;
-var init_generateFlowImage = __esm({
-  "src/routes/production/editImage/generateFlowImage.ts"() {
-    "use strict";
-    import_express56 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    init_axios2();
-    router56 = import_express56.default.Router();
-    generateFlowImage_default = router56.post(
-      "/",
-      validateFields({
-        model: external_exports.string(),
-        references: external_exports.array(external_exports.string()).optional(),
-        quality: external_exports.string(),
-        ratio: external_exports.string(),
-        prompt: external_exports.string(),
-        projectId: external_exports.number()
-      }),
-      async (req, res) => {
-        const { model, references = [], quality, ratio, prompt, projectId } = req.body;
-        try {
-          const imageClass = await utils_default.Ai.Image(model).run(
-            {
-              prompt,
-              referenceList: await (async () => {
-                const list2 = [];
-                for (const url5 of references) {
-                  list2.push({ type: "image", base64: await urlToBase643(url5) });
-                }
-                return list2;
-              })(),
-              size: quality,
-              aspectRatio: ratio
-            },
-            {
-              taskClass: "\u5DE5\u4F5C\u6D41\u56FE\u7247\u751F\u6210",
-              describe: "\u5DE5\u4F5C\u6D41\u56FE\u7247\u751F\u6210",
-              relatedObjects: JSON.stringify(req.body),
-              projectId
-            }
-          );
-          const savePath = `${projectId}/workFlow/${utils_default.uuid()}.jpg`;
-          await imageClass.save(savePath);
-          const url4 = await utils_default.oss.getSmallImageUrl(savePath);
-          return res.status(200).send(success3({ url: url4 }));
-        } catch (e) {
-          res.status(400).send(error50(utils_default.error(e).message));
-        }
-      }
-    );
-  }
-});
-
-// src/routes/production/editImage/getImageDefaultModle.ts
-var import_express57, router57, getImageDefaultModle_default;
-var init_getImageDefaultModle = __esm({
-  "src/routes/production/editImage/getImageDefaultModle.ts"() {
-    "use strict";
-    import_express57 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router57 = import_express57.default.Router();
-    getImageDefaultModle_default = router57.post(
-      "/",
-      validateFields({
-        projectId: external_exports.number()
-      }),
-      async (req, res) => {
-        const { projectId } = req.body;
-        const imageFlowData = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality").first();
-        return res.status(200).send(success3(imageFlowData));
-      }
-    );
-  }
-});
-
-// src/routes/production/editImage/getImageFlow.ts
-var import_express58, router58, getImageFlow_default;
-var init_getImageFlow = __esm({
-  "src/routes/production/editImage/getImageFlow.ts"() {
-    "use strict";
-    import_express58 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router58 = import_express58.default.Router();
-    getImageFlow_default = router58.post(
-      "/",
-      validateFields({
-        id: external_exports.number()
-      }),
-      async (req, res) => {
-        const { id, type } = req.body;
-        const imageFlowData = await utils_default.db("o_imageFlow").where("id", id).first();
-        if (imageFlowData?.flowData) {
-          const parseFlow = JSON.parse(imageFlowData.flowData);
-          await Promise.all(
-            parseFlow.nodes.map(async (node) => {
-              if (node.type === "upload") {
-                node.data.image = node.data.image ? await utils_default.oss.getSmallImageUrl(node.data.image) : "";
-              } else if (node.type === "generated") {
-                node.data.generatedImage = node.data.generatedImage ? await utils_default.oss.getSmallImageUrl(node.data.generatedImage) : "";
-                node.data.references = await Promise.all(node.data.references.map(async (item) => {
-                  return {
-                    image: await utils_default.oss.getSmallImageUrl(item.image)
-                  };
-                }));
-              }
-            })
-          );
-          return res.status(200).send(success3({ ...parseFlow, id: imageFlowData.id }));
-        }
-        return res.status(200).send(success3(null));
-      }
-    );
-  }
-});
-
-// src/routes/production/editImage/saveImageFlow.ts
-var import_express59, router59, saveImageFlow_default;
-var init_saveImageFlow = __esm({
-  "src/routes/production/editImage/saveImageFlow.ts"() {
-    "use strict";
-    import_express59 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router59 = import_express59.default.Router();
-    saveImageFlow_default = router59.post(
-      "/",
-      validateFields({
-        edges: external_exports.any(),
-        nodes: external_exports.any()
-      }),
-      async (req, res) => {
-        const { edges, nodes } = req.body;
-        nodes.forEach((node) => {
-          if (node.type == "upload") {
-            node.data.image = node.data.image ? utils_default.replaceUrl(node.data.image) : "";
-          }
-          if (node.type == "generated") {
-            node.data.generatedImage = node.data.generatedImage ? utils_default.replaceUrl(node.data.generatedImage) : "";
-            node.data.references.forEach((item) => {
-              item.image = item.image ? utils_default.replaceUrl(item.image) : "";
-            });
-          }
-        });
-        const [insertFlowId] = await utils_default.db("o_imageFlow").insert({
-          flowData: JSON.stringify({ edges, nodes })
-        });
-        return res.status(200).send(success3({ id: insertFlowId }));
-      }
-    );
-  }
-});
-
-// src/routes/production/editImage/updateImageFlow.ts
-var import_express60, router60, updateImageFlow_default;
-var init_updateImageFlow = __esm({
-  "src/routes/production/editImage/updateImageFlow.ts"() {
-    "use strict";
-    import_express60 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router60 = import_express60.default.Router();
-    updateImageFlow_default = router60.post(
-      "/",
-      validateFields({
-        edges: external_exports.any(),
-        nodes: external_exports.any(),
-        flowId: external_exports.number()
-      }),
-      async (req, res) => {
-        const { edges, nodes, flowId } = req.body;
-        nodes.forEach((node) => {
-          if (node.type == "upload") {
-            node.data.image = node.data.image ? utils_default.replaceUrl(node.data.image) : "";
-          }
-          if (node.type == "generated") {
-            node.data.generatedImage = node.data.generatedImage ? utils_default.replaceUrl(node.data.generatedImage) : "";
-            node.data.references.forEach((item) => {
-              item.image = item.image ? utils_default.replaceUrl(item.image) : "";
-            });
-          }
-        });
-        await utils_default.db("o_imageFlow").where("id", flowId).update({
-          flowData: JSON.stringify({ edges, nodes })
-        });
-        return res.status(200).send(success3());
-      }
-    );
-  }
-});
-
-// src/routes/production/editImage/uploadImage.ts
-var import_express61, router61, uploadImage_default;
-var init_uploadImage = __esm({
-  "src/routes/production/editImage/uploadImage.ts"() {
-    "use strict";
-    import_express61 = __toESM(require_express2());
-    init_utils3();
-    init_responseFormat();
-    init_middleware();
-    init_zod();
-    init_dist_node();
-    router61 = import_express61.default.Router();
-    uploadImage_default = router61.post(
-      "/",
-      validateFields({
-        projectId: external_exports.number(),
-        scriptId: external_exports.number(),
-        base64Data: external_exports.string()
-      }),
-      async (req, res) => {
-        const { base64Data, projectId, scriptId } = req.body;
-        function getExtFromBase642(base64Data2) {
-          const mime = base64Data2.match(/^data:([^;]+);base64,/)?.[1] ?? "";
-          const mimeMap = {
-            // 图片
-            "image/jpeg": "jpeg",
-            "image/jpg": "jpg",
-            "image/png": "png",
-            // 音频
-            "audio/mpeg": "mp3",
-            "audio/mp3": "mp3",
-            "audio/wav": "wav",
-            // 视频
-            "video/mp4": "mp4",
-            "video/webm": "webm"
-          };
-          return mimeMap[mime] ?? "bin";
-        }
-        const ext = getExtFromBase642(base64Data);
-        if (!["jpeg", "jpg", "png"].includes(ext)) {
-          return res.status(400).send(error50("\u4E0D\u652F\u6301\u7684\u6587\u4EF6\u7C7B\u578B"));
-        }
-        const savePath = `/${projectId}/imageFlow/${scriptId}/${v4_default()}.${ext}`;
-        await utils_default.oss.writeFile(savePath, Buffer.from(base64Data.match(/base64,([A-Za-z0-9+/=]+)/)[1] ?? "", "base64"));
-        const url4 = await utils_default.oss.getSmallImageUrl(savePath);
-        res.status(200).send(success3(url4));
-      }
-    );
-  }
-});
-
 // src/routes/production/getFlowData.ts
-var import_express62, router62, getFlowData_default;
+var import_express81, router81, getFlowData_default;
 var init_getFlowData = __esm({
   "src/routes/production/getFlowData.ts"() {
     "use strict";
-    import_express62 = __toESM(require_express2());
+    import_express81 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router62 = import_express62.default.Router();
-    getFlowData_default = router62.post(
+    router81 = import_express81.default.Router();
+    getFlowData_default = router81.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -240504,17 +243445,17 @@ var init_getFlowData = __esm({
 });
 
 // src/routes/production/getStoryboardData.ts
-var import_express63, router63, getStoryboardData_default;
+var import_express82, router82, getStoryboardData_default;
 var init_getStoryboardData = __esm({
   "src/routes/production/getStoryboardData.ts"() {
     "use strict";
-    import_express63 = __toESM(require_express2());
+    import_express82 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router63 = import_express63.default.Router();
-    getStoryboardData_default = router63.post(
+    router82 = import_express82.default.Router();
+    getStoryboardData_default = router82.post(
       "/",
       validateFields({
         scriptId: external_exports.number(),
@@ -240578,17 +243519,17 @@ var init_getStoryboardData = __esm({
 });
 
 // src/routes/production/saveFlowData.ts
-var import_express64, router64, saveFlowData_default;
+var import_express83, router83, saveFlowData_default;
 var init_saveFlowData = __esm({
   "src/routes/production/saveFlowData.ts"() {
     "use strict";
-    import_express64 = __toESM(require_express2());
+    import_express83 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router64 = import_express64.default.Router();
-    saveFlowData_default = router64.post(
+    router83 = import_express83.default.Router();
+    saveFlowData_default = router83.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -240636,18 +243577,305 @@ var init_saveFlowData = __esm({
   }
 });
 
+// src/routes/production/shots/getShots.ts
+var import_express84, router84, imageDto2, getShots_default;
+var init_getShots = __esm({
+  "src/routes/production/shots/getShots.ts"() {
+    "use strict";
+    import_express84 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    init_storyboardImage();
+    init_trackVideo();
+    init_autoModel();
+    router84 = import_express84.default.Router();
+    imageDto2 = async (row) => row ? {
+      imageId: row.id,
+      state: row.state,
+      stage: row.stage,
+      kind: row.kind ?? "image",
+      aspectRatio: row.aspectRatio,
+      errorReason: row.errorReason,
+      src: row.state === "\u5DF2\u5B8C\u6210" ? await fileUrl(row.filePath) : null,
+      // 镜头台顶部是大图预览，缩略图不够用
+      full: row.state === "\u5DF2\u5B8C\u6210" && row.filePath ? await utils_default.oss.getFileUrl(row.filePath) : null
+    } : null;
+    getShots_default = router84.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        scriptId: external_exports.number()
+      }),
+      async (req, res) => {
+        const { projectId, scriptId } = req.body;
+        const shots = await utils_default.db("o_storyboard").where({ projectId, scriptId }).orderBy([{ column: "index" }, { column: "id" }]).select("*");
+        const shotIds = shots.map((s) => s.id);
+        await ensureStoryboardEdges(projectId, shotIds);
+        const assets = await utils_default.db("o_assets").where("projectId", projectId).whereIn("type", CANVAS_ASSET_TYPES).select("id", "name", "type", "assetsId", "imageId");
+        const freeNodes = await utils_default.db("o_canvasNode").where("projectId", projectId).select("id", "name", "kind", "imageId");
+        const tracksForImages = await utils_default.db("o_videoTrack").where({ projectId, scriptId }).select("id");
+        const images = await utils_default.db("o_image").where(
+          (qb) => qb.whereIn(
+            "assetsId",
+            assets.map((a) => a.id)
+          ).orWhereIn(
+            "canvasNodeId",
+            freeNodes.map((n) => n.id)
+          ).orWhereIn("storyboardId", shotIds).orWhereIn(
+            "videoTrackId",
+            tracksForImages.map((t) => t.id)
+          )
+        ).select("id", "filePath", "state", "stage", "kind", "errorReason", "aspectRatio", "assetsId", "canvasNodeId", "storyboardId", "videoTrackId");
+        const imageById = new Map(images.map((i) => [i.id, i]));
+        const latestShot = (id) => images.filter((i) => i.storyboardId === id).sort((a, b) => b.id - a.id)[0];
+        const pendingShot = (id) => images.filter((i) => i.storyboardId === id && i.state === "\u751F\u6210\u4E2D").map((i) => i.id);
+        const pool = /* @__PURE__ */ new Map();
+        for (const a of assets) {
+          pool.set(assetKey(a.id), {
+            key: assetKey(a.id),
+            name: a.name ?? "",
+            kind: "image",
+            assetType: a.type ?? null,
+            src: await fileUrl(imageById.get(a.imageId)?.filePath)
+          });
+        }
+        for (const n of freeNodes) {
+          pool.set(nodeKey(n.id), {
+            key: nodeKey(n.id),
+            name: n.name ?? "",
+            kind: n.kind ?? "image",
+            assetType: nodeAssetType(null),
+            src: await fileUrl(imageById.get(n.imageId)?.filePath)
+          });
+        }
+        for (const s of shots) {
+          pool.set(storyboardKey(s.id), {
+            key: storyboardKey(s.id),
+            name: `\u955C\u5934 ${(s.index ?? 0) + 1}`,
+            kind: "image",
+            assetType: null,
+            src: await fileUrl(imageById.get(s.imageId)?.filePath)
+          });
+        }
+        const trackIdsAll = [...new Set(shots.map((s) => s.trackId).filter((id) => !!id))];
+        const edges = await utils_default.db("o_canvasEdge").where("projectId", projectId).whereIn("targetKey", [...shotIds.map((id) => storyboardKey(id)), ...trackIdsAll.map((id) => trackKey(id))]).orderBy([{ column: "targetKey" }, { column: "sort" }, { column: "id" }]);
+        const refDto = (sourceKey, edgeId, sort) => {
+          const item = pool.get(sourceKey);
+          return {
+            edgeId,
+            key: sourceKey,
+            sort,
+            name: item?.name ?? sourceKey,
+            kind: item?.kind ?? "image",
+            assetType: item?.assetType ?? null,
+            src: item?.src ?? null,
+            missing: !item
+            // 资产被删了但边还在
+          };
+        };
+        const refsOf = (key) => edges.filter((e) => e.targetKey === key).map((e) => refDto(String(e.sourceKey), e.id ?? null, e.sort ?? 0));
+        const trackRefsOf = async (track) => {
+          if (track.refMode === "manual") return { refs: refsOf(trackKey(track.id)), derived: false };
+          const keys2 = await deriveTrackRefs(projectId, track.id);
+          return { refs: keys2.map((key, i) => refDto(key, null, i)), derived: true };
+        };
+        const trackVideoAuto = async (trackId) => {
+          const voices = await trackVoiceNames(projectId, trackId);
+          return { voices, auto: await autoVideoModel(projectId, trackId, voices.length) };
+        };
+        const shotList = await Promise.all(
+          shots.map(async (s) => ({
+            key: storyboardKey(s.id),
+            id: s.id,
+            index: s.index ?? 0,
+            prompt: s.prompt,
+            videoDesc: s.videoDesc,
+            duration: Number(s.duration ?? 0),
+            track: s.track,
+            trackId: s.trackId,
+            shouldGenerateImage: s.shouldGenerateImage,
+            state: s.state,
+            reason: s.reason,
+            current: await imageDto2(s.imageId ? imageById.get(s.imageId) : void 0),
+            latest: await imageDto2(latestShot(s.id)),
+            pendingImageIds: pendingShot(s.id),
+            refs: refsOf(storyboardKey(s.id)),
+            auto: await autoImageModel(projectId, s.id)
+          }))
+        );
+        const liveTrackIds = new Set(shots.map((s) => s.trackId).filter(Boolean));
+        const tracks = (await utils_default.db("o_videoTrack").where({ projectId, scriptId }).select("*")).filter((t) => liveTrackIds.has(t.id));
+        const videos = await utils_default.db("o_video").whereIn(
+          "videoTrackId",
+          tracks.map((t) => t.id)
+        ).select("id", "videoTrackId", "filePath", "state", "errorReason", "imageId");
+        const trackList = await Promise.all(
+          tracks.map(async (t) => ({
+            key: trackKey(t.id),
+            id: t.id,
+            kind: t.kind ?? "shot",
+            duration: t.duration,
+            prompt: t.prompt,
+            state: t.state,
+            reason: t.reason,
+            model: t.model,
+            params: t.params ? JSON.parse(t.params) : {},
+            videoId: t.videoId,
+            shotIds: shots.filter((s) => s.trackId === t.id).map((s) => s.id),
+            ...await trackRefsOf(t),
+            ...await trackVideoAuto(t.id),
+            pendingImageIds: images.filter((i) => i.videoTrackId === t.id && i.state === "\u751F\u6210\u4E2D").map((i) => i.id),
+            videos: await Promise.all(
+              videos.filter((v) => v.videoTrackId === t.id).map(async (v) => ({
+                id: v.id,
+                imageId: v.imageId,
+                state: v.state,
+                errorReason: v.errorReason,
+                src: v.state === "\u751F\u6210\u6210\u529F" ? await fileUrl(v.filePath) : null
+              }))
+            )
+          }))
+        );
+        const project = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality", "videoModel", "videoRatio", "artStyle").first();
+        res.status(200).send(
+          success3({
+            defaults: project ?? {},
+            shots: shotList,
+            tracks: trackList,
+            pool: [...pool.values()]
+          })
+        );
+      }
+    );
+  }
+});
+
+// src/routes/production/shots/setSegment.ts
+async function rebalanceTracks(projectId, trackIds) {
+  for (const trackId of trackIds) {
+    const rest = await utils_default.db("o_storyboard").where("trackId", trackId).select("duration");
+    if (!rest.length) continue;
+    await utils_default.db("o_videoTrack").where("id", trackId).update({ duration: rest.reduce((sum, s) => sum + Number(s.duration ?? 0), 0), kind: rest.length > 1 ? "segment" : "shot" });
+  }
+  await cleanupEmptyTracks(projectId, trackIds);
+}
+async function cleanupEmptyTracks(projectId, trackIds) {
+  for (const trackId of trackIds) {
+    const shots = await utils_default.db("o_storyboard").where("trackId", trackId).count("id as n").first();
+    if (Number(shots?.n ?? 0) > 0) continue;
+    const videos = await utils_default.db("o_video").where("videoTrackId", trackId).count("id as n").first();
+    if (Number(videos?.n ?? 0) > 0) continue;
+    await utils_default.db("o_canvasEdge").where({ projectId, targetKey: trackKey(trackId) }).del();
+    await utils_default.db("o_image").where("videoTrackId", trackId).del();
+    await utils_default.db("o_videoTrack").where("id", trackId).del();
+  }
+}
+var import_express85, router85, setSegment_default;
+var init_setSegment = __esm({
+  "src/routes/production/shots/setSegment.ts"() {
+    "use strict";
+    import_express85 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_db();
+    init_responseFormat();
+    init_middleware();
+    init_canvas();
+    router85 = import_express85.default.Router();
+    setSegment_default = router85.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        scriptId: external_exports.number(),
+        action: external_exports.enum(["merge", "split"]),
+        shotIds: external_exports.array(external_exports.number()).min(1)
+      }),
+      async (req, res) => {
+        const { projectId, scriptId, action, shotIds } = req.body;
+        try {
+          const all3 = await utils_default.db("o_storyboard").where({ projectId, scriptId }).orderBy([{ column: "index" }, { column: "id" }]).select("id", "index", "duration", "trackId");
+          const picked = all3.filter((s) => shotIds.includes(s.id));
+          if (picked.length !== shotIds.length) return res.status(400).send(error50("\u6709\u955C\u5934\u4E0D\u5C5E\u4E8E\u8FD9\u4E00\u96C6"));
+          const touchedTracks = new Set(picked.map((s) => s.trackId).filter(Boolean));
+          if (action === "merge") {
+            if (picked.length < 2) return res.status(400).send(error50("\u81F3\u5C11\u9009\u4E24\u4E2A\u955C\u5934\u624D\u80FD\u5408\u5E76"));
+            const positions = picked.map((s) => all3.findIndex((a) => a.id === s.id)).sort((a, b) => a - b);
+            if (positions.some((p3, i) => i > 0 && p3 !== positions[i - 1] + 1)) return res.status(400).send(error50("\u53EA\u80FD\u5408\u5E76\u8FDE\u7EED\u7684\u955C\u5934"));
+            const duration4 = picked.reduce((sum, s) => sum + Number(s.duration ?? 0), 0);
+            let newId = 0;
+            await db.transaction(async (trx) => {
+              [newId] = await trx("o_videoTrack").insert({ projectId, scriptId, duration: duration4, kind: "segment" });
+              await trx("o_storyboard").whereIn("id", shotIds).update({ trackId: newId });
+            });
+            await rebalanceTracks(projectId, [...touchedTracks]);
+            return res.status(200).send(success3({ trackId: newId, kind: "segment", duration: duration4 }));
+          }
+          const created = [];
+          for (const shot of picked) {
+            const [newId] = await utils_default.db("o_videoTrack").insert({ projectId, scriptId, duration: Number(shot.duration ?? 0), kind: "shot" });
+            await utils_default.db("o_storyboard").where("id", shot.id).update({ trackId: newId });
+            created.push(newId);
+          }
+          await rebalanceTracks(projectId, [...touchedTracks]);
+          res.status(200).send(success3({ trackIds: created }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
+// src/routes/production/shots/trackRefs.ts
+var import_express86, router86, trackRefs_default;
+var init_trackRefs = __esm({
+  "src/routes/production/shots/trackRefs.ts"() {
+    "use strict";
+    import_express86 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_trackVideo();
+    router86 = import_express86.default.Router();
+    trackRefs_default = router86.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number(),
+        trackId: external_exports.number(),
+        action: external_exports.enum(["take", "reset"])
+      }),
+      async (req, res) => {
+        const { projectId, trackId, action } = req.body;
+        try {
+          const track = await utils_default.db("o_videoTrack").where({ id: trackId, projectId }).first();
+          if (!track) return res.status(404).send(error50("\u7247\u6BB5\u4E0D\u5B58\u5728"));
+          if (action === "take") await materializeTrackRefs(projectId, trackId);
+          else await resetTrackRefs(projectId, trackId);
+          res.status(200).send(success3({ overridden: await trackRefsOverridden(projectId, trackId), refs: await deriveTrackRefs(projectId, trackId) }));
+        } catch (e) {
+          res.status(400).send(error50(utils_default.error(e).message));
+        }
+      }
+    );
+  }
+});
+
 // src/routes/production/storyboard/addStoryboard.ts
-var import_express65, router65, addStoryboard_default;
+var import_express87, router87, addStoryboard_default;
 var init_addStoryboard = __esm({
   "src/routes/production/storyboard/addStoryboard.ts"() {
     "use strict";
-    import_express65 = __toESM(require_express2());
+    import_express87 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router65 = import_express65.default.Router();
-    addStoryboard_default = router65.post(
+    router87 = import_express87.default.Router();
+    addStoryboard_default = router87.post(
       "/",
       validateFields({
         prompt: external_exports.string(),
@@ -240661,11 +243889,10 @@ var init_addStoryboard = __esm({
       }),
       async (req, res) => {
         const { prompt, duration: duration4, state, src, scriptId, projectId, videoDesc, shouldGenerateImage } = req.body;
-        const trackId = Date.now();
-        await utils_default.db("o_videoTrack").insert({
-          id: trackId,
+        const [trackId] = await utils_default.db("o_videoTrack").insert({
           scriptId,
-          projectId
+          projectId,
+          kind: "shot"
         });
         const [id] = await utils_default.db("o_storyboard").insert({
           prompt,
@@ -240685,17 +243912,18 @@ var init_addStoryboard = __esm({
 });
 
 // src/routes/production/storyboard/batchAddStoryboardInfo.ts
-var import_express66, router66, batchAddStoryboardInfo_default;
+var import_express88, router88, batchAddStoryboardInfo_default;
 var init_batchAddStoryboardInfo = __esm({
   "src/routes/production/storyboard/batchAddStoryboardInfo.ts"() {
     "use strict";
-    import_express66 = __toESM(require_express2());
+    import_express88 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router66 = import_express66.default.Router();
-    batchAddStoryboardInfo_default = router66.post(
+    init_storyboardImage();
+    router88 = import_express88.default.Router();
+    batchAddStoryboardInfo_default = router88.post(
       "/",
       validateFields({
         data: external_exports.array(
@@ -240738,34 +243966,38 @@ var init_batchAddStoryboardInfo = __esm({
           }
           item.id = id;
         }
-        const lastStoryboard = await utils_default.db("o_storyboard").where("scriptId", scriptId);
+        await seedStoryboardEdges(
+          projectId,
+          data.map((item) => item.id)
+        );
+        const lastStoryboard = await utils_default.db("o_storyboard").where("scriptId", scriptId).orderBy([{ column: "index" }, { column: "id" }]);
         if (!lastStoryboard || !lastStoryboard.length) return res.status(400).send(error50("\u672A\u67E5\u5230\u5206\u955C\u6570\u636E"));
-        const storyboardGroupByTrack = {};
-        lastStoryboard.forEach((item) => {
-          if (!storyboardGroupByTrack[item.track]) {
-            storyboardGroupByTrack[item.track] = [];
-          }
-          storyboardGroupByTrack[item.track].push(item.id);
-        });
-        for (const track in storyboardGroupByTrack) {
-          const storyboardIds = storyboardGroupByTrack[track] ?? [];
-          const trackDuration = lastStoryboard.filter((item) => item.track == track).reduce((sum, item) => sum + Number(item.duration), 0);
-          const existingStoryboard = await utils_default.db("o_storyboard").where({ scriptId, track }).whereNotNull("trackId").first();
-          let trackId;
-          if (existingStoryboard?.trackId) {
-            trackId = existingStoryboard.trackId;
-            await utils_default.db("o_videoTrack").where("id", trackId).update({ duration: trackDuration });
+        const groups = [];
+        for (const item of lastStoryboard) {
+          const last = groups[groups.length - 1];
+          if (last && last.track === String(item.track ?? "")) {
+            last.ids.push(item.id);
+            last.duration += Number(item.duration ?? 0);
           } else {
-            const newTrackId = Date.now();
-            await utils_default.db("o_videoTrack").insert({
-              id: newTrackId,
+            groups.push({ track: String(item.track ?? ""), ids: [item.id], duration: Number(item.duration ?? 0) });
+          }
+        }
+        for (const group of groups) {
+          const assigned = await utils_default.db("o_storyboard").whereIn("id", group.ids).whereNotNull("trackId").first();
+          let trackId;
+          if (assigned?.trackId) {
+            trackId = assigned.trackId;
+            await utils_default.db("o_videoTrack").where("id", trackId).update({ duration: group.duration, kind: group.ids.length > 1 ? "segment" : "shot" });
+          } else {
+            const [newTrackId] = await utils_default.db("o_videoTrack").insert({
               scriptId,
               projectId,
-              duration: trackDuration
+              duration: group.duration,
+              kind: group.ids.length > 1 ? "segment" : "shot"
             });
             trackId = newTrackId;
           }
-          await utils_default.db("o_storyboard").whereIn("id", storyboardIds).update({ trackId });
+          await utils_default.db("o_storyboard").whereIn("id", group.ids).update({ trackId });
         }
         const storyboardData = await Promise.all(
           lastStoryboard.map(async (i) => {
@@ -240790,33 +244022,32 @@ var init_batchAddStoryboardInfo = __esm({
 });
 
 // src/routes/production/storyboard/batchDelete.ts
-var import_express67, router67, batchDelete_default2;
+var import_express89, router89, batchDelete_default2;
 var init_batchDelete2 = __esm({
   "src/routes/production/storyboard/batchDelete.ts"() {
     "use strict";
-    import_express67 = __toESM(require_express2());
+    import_express89 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router67 = import_express67.default.Router();
-    batchDelete_default2 = router67.post(
+    init_storyboardImage();
+    router89 = import_express89.default.Router();
+    batchDelete_default2 = router89.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number()),
         projectId: external_exports.number()
       }),
       async (req, res) => {
-        const { ids, projectId } = req.body;
-        if (!ids.length) return res.status(400).send(error50("\u8BF7\u5148\u9009\u62E9\u5206\u955C"));
-        const storyboardDataList = await utils_default.db("o_storyboard").whereIn("id", ids).where("projectId", projectId).select("id", "track", "trackId", "flowId");
+        const { ids: ids2, projectId } = req.body;
+        if (!ids2.length) return res.status(400).send(error50("\u8BF7\u5148\u9009\u62E9\u5206\u955C"));
+        const storyboardDataList = await utils_default.db("o_storyboard").whereIn("id", ids2).where("projectId", projectId).select("id", "track", "trackId", "flowId");
         if (!storyboardDataList.length) return res.status(400).send(error50("\u5F53\u524D\u9009\u62E9\u5206\u955C\u4E0D\u5B58\u5728"));
-        const flowIds = storyboardDataList.map((i) => i.flowId);
         const storyBoardIds = storyboardDataList.map((i) => i.id);
-        if (flowIds.length)
-          await utils_default.db("o_imageFlow").whereIn("id", flowIds).delete();
         await utils_default.db("o_storyboard").whereIn("id", storyBoardIds).delete();
         await utils_default.db("o_assets2Storyboard").whereIn("storyboardId", storyBoardIds).delete();
+        await cleanupStoryboards(storyBoardIds);
         res.status(200).send(success3({ message: "\u89C6\u9891\u5220\u9664\u6210\u529F" }));
       }
     );
@@ -240824,39 +244055,35 @@ var init_batchDelete2 = __esm({
 });
 
 // src/routes/production/storyboard/batchGenerateImage.ts
-async function getAssetsImageBase64(imageIds) {
-  if (!imageIds.length) return [];
-  const imagePaths = await utils_default.db("o_image").whereIn("o_image.id", imageIds).select("o_image.id", "o_image.filePath");
-  const id2Path = /* @__PURE__ */ new Map();
-  for (const row of imagePaths) {
-    id2Path.set(row.id, row.filePath);
+async function associatedAssets(storyIds) {
+  const links = await utils_default.db("o_assets2Storyboard").whereIn("storyboardId", storyIds).orderBy("rowid").select("storyboardId", "assetId");
+  if (!links.length) return {};
+  const assets = await utils_default.db("o_assets").whereIn(
+    "id",
+    links.map((l) => l.assetId)
+  ).select("id", "imageId");
+  const imageOf = new Map(assets.map((a) => [a.id, a.imageId]));
+  const record3 = {};
+  for (const link of links) {
+    const imageId = imageOf.get(link.assetId);
+    if (imageId == null) continue;
+    (record3[link.storyboardId] ??= []).push(imageId);
   }
-  const imageUrls = await Promise.all(
-    imageIds.map(async (id) => {
-      const filePath = id2Path.get(id);
-      if (filePath) {
-        try {
-          return await utils_default.oss.getImageBase64(filePath);
-        } catch {
-          return null;
-        }
-      }
-      return null;
-    })
-  );
-  return imageUrls.filter(Boolean).map((url4) => ({ type: "image", base64: url4 }));
+  return record3;
 }
-var import_express68, router68, batchGenerateImage_default;
+var import_express90, router90, batchGenerateImage_default;
 var init_batchGenerateImage = __esm({
   "src/routes/production/storyboard/batchGenerateImage.ts"() {
     "use strict";
-    import_express68 = __toESM(require_express2());
+    import_express90 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router68 = import_express68.default.Router();
-    batchGenerateImage_default = router68.post(
+    init_canvas();
+    init_storyboardImage();
+    router90 = import_express90.default.Router();
+    batchGenerateImage_default = router90.post(
       "/",
       validateFields({
         storyboardIds: external_exports.array(external_exports.number()),
@@ -240866,100 +244093,67 @@ var init_batchGenerateImage = __esm({
         compulsory: external_exports.boolean().optional()
       }),
       async (req, res) => {
-        const {
-          storyboardIds,
-          projectId,
-          scriptId,
-          concurrentCount = 5,
-          compulsory = false
-        } = req.body;
-        if (!storyboardIds || storyboardIds.length === 0) return res.status(400).send(error50("storyboardIds\u4E0D\u80FD\u4E3A\u7A7A"));
-        let finalStoryboardIds = storyboardIds || [];
-        const storyboardData = await utils_default.db("o_storyboard").where("scriptId", scriptId).where("projectId", projectId).whereIn("id", finalStoryboardIds);
+        const { storyboardIds, projectId, scriptId, concurrentCount = 5, compulsory = false } = req.body;
+        if (!storyboardIds?.length) return res.status(400).send(error50("storyboardIds\u4E0D\u80FD\u4E3A\u7A7A"));
+        const storyboardData = await utils_default.db("o_storyboard").where({ scriptId, projectId }).whereIn("id", storyboardIds);
         if (!storyboardData.length) return res.status(500).send(error50("\u672A\u67E5\u5230\u5206\u955C\u6570\u636E"));
         const storyIds = storyboardData.map((i) => i.id);
         if (compulsory) {
-          await utils_default.db("o_storyboard").whereIn("id", storyIds).where("scriptId", scriptId).update({ state: "\u751F\u6210\u4E2D", shouldGenerateImage: 1 });
+          await utils_default.db("o_storyboard").whereIn("id", storyIds).update({ shouldGenerateImage: 1 });
         } else {
-          await utils_default.db("o_storyboard").whereIn("id", storyIds).where("scriptId", scriptId).where("shouldGenerateImage", 0).update({ state: "\u672A\u751F\u6210" });
-          await utils_default.db("o_storyboard").whereIn("id", storyIds).where("scriptId", scriptId).where("shouldGenerateImage", 1).update({ state: "\u751F\u6210\u4E2D" });
+          await utils_default.db("o_storyboard").whereIn("id", storyIds).where("shouldGenerateImage", 0).update({ state: "\u672A\u751F\u6210" });
         }
-        const projectSettingData = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality", "artStyle", "videoRatio").first();
-        const assets2StoryboardRows = await utils_default.db("o_assets2Storyboard").whereIn("storyboardId", storyIds).orderBy("rowid").select("storyboardId", "assetId");
-        const allAssetIds = [...new Set(assets2StoryboardRows.map((r) => r.assetId))];
-        const assetImageMap = {};
-        if (allAssetIds.length > 0) {
-          const assetRows = await utils_default.db("o_assets").whereIn("id", allAssetIds).select("id", "imageId");
-          assetRows.forEach((row) => {
-            assetImageMap[row.id] = row.imageId;
-          });
+        await ensureStoryboardEdges(projectId, storyIds);
+        const project = await utils_default.db("o_project").where("id", projectId).select("imageModel", "imageQuality", "videoRatio").first();
+        const model = project?.imageModel;
+        if (!model || !model.includes(":")) return res.status(400).send(error50("\u9879\u76EE\u672A\u914D\u7F6E\u5206\u955C\u56FE\u6A21\u578B"));
+        const generateList = compulsory ? storyboardData : storyboardData.filter((item) => item.shouldGenerateImage !== 0);
+        const jobs = [];
+        const failed = /* @__PURE__ */ new Map();
+        for (const item of generateList) {
+          try {
+            const edgeKeys = (await incomingEdges(projectId, storyboardKey(item.id))).map((e) => e.sourceKey);
+            const orderedKeys = isSceneFirstModel(model) ? await sceneFirst(projectId, edgeKeys) : edgeKeys;
+            const refs = (await resolveRefs(projectId, orderedKeys)).filter((r) => r.kind === "image");
+            const originalImageKeys = (await resolveRefs(projectId, edgeKeys)).filter((r) => r.kind === "image").map((r) => r.key);
+            const sentPrompt = remapRefTokens(item.prompt ?? "", originalImageKeys, refs.map((r) => r.key));
+            const stage = await prepareStoryboardImage({
+              projectId,
+              scriptId,
+              storyboardId: item.id,
+              model,
+              size: project?.imageQuality || "1K",
+              aspectRatio: project?.videoRatio || "16:9",
+              prompt: sentPrompt,
+              referenceBase64: refs.map((r) => r.base64),
+              refKeys: orderedKeys
+            });
+            jobs.push({ id: item.id, stage });
+          } catch (e) {
+            const message = utils_default.error(e).message;
+            failed.set(item.id, message);
+            await utils_default.db("o_storyboard").where("id", item.id).update({ state: "\u751F\u6210\u5931\u8D25", reason: message });
+          }
         }
-        const assetRecord = {};
-        assets2StoryboardRows.forEach((item) => {
-          if (!assetRecord[item.storyboardId]) {
-            assetRecord[item.storyboardId] = [];
-          }
-          const imageId = assetImageMap[item.assetId];
-          if (imageId != null) {
-            assetRecord[item.storyboardId].push(imageId);
-          }
-        });
-        const realStoryData = await utils_default.db("o_storyboard").where("scriptId", scriptId).where("projectId", projectId).whereIn("id", storyIds);
+        const assetRecord = await associatedAssets(storyIds);
+        const current = await utils_default.db("o_storyboard").where({ scriptId, projectId }).whereIn("id", storyIds);
         res.status(200).send(
           success3(
-            realStoryData.map((i) => ({
+            current.map((i) => ({
               id: i.id,
               prompt: i.prompt,
-              associateAssetsIds: assetRecord[i.id],
+              associateAssetsIds: assetRecord[i.id] ?? [],
               src: null,
-              state: i.state,
+              state: failed.has(i.id) ? "\u751F\u6210\u5931\u8D25" : i.state,
+              reason: failed.get(i.id) ?? i.reason,
+              imageId: jobs.find((j) => j.id === i.id)?.stage.imageId ?? i.imageId,
               videoDesc: i.videoDesc,
               shouldGenerateImage: i.shouldGenerateImage
             }))
           )
         );
-        const generateTask = async (item) => {
-          const repeloadObj = {
-            prompt: item.prompt,
-            size: projectSettingData?.imageQuality,
-            aspectRatio: projectSettingData?.videoRatio
-          };
-          try {
-            const imageCls = await utils_default.Ai.Image(projectSettingData?.imageModel).run(
-              {
-                referenceList: await getAssetsImageBase64(assetRecord[item.id] || []),
-                ...repeloadObj
-              },
-              {
-                taskClass: "\u751F\u6210\u5206\u955C\u56FE\u7247",
-                describe: "\u5206\u955C\u56FE\u7247\u751F\u6210",
-                relatedObjects: JSON.stringify(repeloadObj),
-                projectId
-              }
-            );
-            const savePath = `/${projectId}/assets/${scriptId}/${utils_default.uuid()}.jpg`;
-            await imageCls.save(savePath);
-            await utils_default.db("o_storyboard").where("id", item.id).update({
-              filePath: savePath,
-              state: "\u5DF2\u5B8C\u6210"
-            });
-          } catch (e) {
-            utils_default.db("o_storyboard").where("id", item.id).update({
-              filePath: "",
-              reason: utils_default.error(e).message,
-              state: "\u751F\u6210\u5931\u8D25"
-            });
-          }
-        };
-        let generateList = [];
-        if (compulsory) {
-          generateList = storyboardData;
-        } else {
-          generateList = storyboardData.filter((item) => item.shouldGenerateImage !== 0);
-        }
-        for (let i = 0; i < generateList.length; i += concurrentCount) {
-          const batch = generateList.slice(i, i + concurrentCount);
-          await Promise.all(batch.map(generateTask));
+        for (let i = 0; i < jobs.length; i += concurrentCount) {
+          await Promise.all(jobs.slice(i, i + concurrentCount).map((j) => j.stage.run()));
         }
       }
     );
@@ -240967,17 +244161,17 @@ var init_batchGenerateImage = __esm({
 });
 
 // src/routes/production/storyboard/downPreviewImage.ts
-var import_express69, import_sharp3, router69, downPreviewImage_default;
+var import_express91, import_sharp3, router91, downPreviewImage_default;
 var init_downPreviewImage = __esm({
   "src/routes/production/storyboard/downPreviewImage.ts"() {
     "use strict";
-    import_express69 = __toESM(require_express2());
+    import_express91 = __toESM(require_express2());
     init_utils3();
     init_zod();
     import_sharp3 = __toESM(require("sharp"));
     init_middleware();
-    router69 = import_express69.default.Router();
-    downPreviewImage_default = router69.post(
+    router91 = import_express91.default.Router();
+    downPreviewImage_default = router91.post(
       "/",
       validateFields({
         storyboardIds: external_exports.array(external_exports.number())
@@ -241063,17 +244257,17 @@ var init_downPreviewImage = __esm({
 });
 
 // src/routes/production/storyboard/editStoryboardInfo.ts
-var import_express70, router70, editStoryboardInfo_default;
+var import_express92, router92, editStoryboardInfo_default;
 var init_editStoryboardInfo = __esm({
   "src/routes/production/storyboard/editStoryboardInfo.ts"() {
     "use strict";
-    import_express70 = __toESM(require_express2());
+    import_express92 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router70 = import_express70.default.Router();
-    editStoryboardInfo_default = router70.post(
+    router92 = import_express92.default.Router();
+    editStoryboardInfo_default = router92.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -241093,17 +244287,17 @@ var init_editStoryboardInfo = __esm({
 });
 
 // src/routes/production/storyboard/getStoryboardData.ts
-var import_express71, router71, getStoryboardData_default2;
+var import_express93, router93, getStoryboardData_default2;
 var init_getStoryboardData2 = __esm({
   "src/routes/production/storyboard/getStoryboardData.ts"() {
     "use strict";
-    import_express71 = __toESM(require_express2());
+    import_express93 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router71 = import_express71.default.Router();
-    getStoryboardData_default2 = router71.post(
+    router93 = import_express93.default.Router();
+    getStoryboardData_default2 = router93.post(
       "/",
       validateFields({
         scriptId: external_exports.number(),
@@ -241141,24 +244335,24 @@ var init_getStoryboardData2 = __esm({
 });
 
 // src/routes/production/storyboard/pollingImage.ts
-var import_express72, router72, pollingImage_default2;
+var import_express94, router94, pollingImage_default2;
 var init_pollingImage2 = __esm({
   "src/routes/production/storyboard/pollingImage.ts"() {
     "use strict";
-    import_express72 = __toESM(require_express2());
+    import_express94 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router72 = import_express72.default.Router();
-    pollingImage_default2 = router72.post(
+    router94 = import_express94.default.Router();
+    pollingImage_default2 = router94.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_storyboard").whereIn("id", ids).whereNot("state", "\u751F\u6210\u4E2D").select("id", "state", "reason", "filePath", "prompt");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_storyboard").whereIn("id", ids2).whereNot("state", "\u751F\u6210\u4E2D").select("id", "state", "reason", "filePath", "prompt");
         const result = await Promise.all(
           data.map(async (item) => ({
             ...item,
@@ -241172,18 +244366,18 @@ var init_pollingImage2 = __esm({
 });
 
 // src/routes/production/storyboard/previewImage.ts
-var import_express73, import_sharp4, router73, previewImage_default;
+var import_express95, import_sharp4, router95, previewImage_default;
 var init_previewImage = __esm({
   "src/routes/production/storyboard/previewImage.ts"() {
     "use strict";
-    import_express73 = __toESM(require_express2());
+    import_express95 = __toESM(require_express2());
     init_utils3();
     init_zod();
     import_sharp4 = __toESM(require("sharp"));
     init_responseFormat();
     init_middleware();
-    router73 = import_express73.default.Router();
-    previewImage_default = router73.post(
+    router95 = import_express95.default.Router();
+    previewImage_default = router95.post(
       "/",
       validateFields({
         storyboardIds: external_exports.array(external_exports.number())
@@ -241280,17 +244474,18 @@ var init_previewImage = __esm({
 });
 
 // src/routes/production/storyboard/removeFrame.ts
-var import_express74, router74, removeFrame_default;
+var import_express96, router96, removeFrame_default;
 var init_removeFrame = __esm({
   "src/routes/production/storyboard/removeFrame.ts"() {
     "use strict";
-    import_express74 = __toESM(require_express2());
+    import_express96 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router74 = import_express74.default.Router();
-    removeFrame_default = router74.post(
+    init_storyboardImage();
+    router96 = import_express96.default.Router();
+    removeFrame_default = router96.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -241299,61 +244494,29 @@ var init_removeFrame = __esm({
         const { id } = req.body;
         const storyboardData = await utils_default.db("o_storyboard").where("id", id).select("id", "track", "trackId", "flowId").first();
         if (!storyboardData) return res.status(400).send(error50("\u672A\u627E\u5230\u8BE5\u5206\u955C"));
-        if (storyboardData?.flowId) await utils_default.db("o_imageFlow").where("id", storyboardData?.flowId).delete();
         const trackData = await utils_default.db("o_storyboard").where("track", storyboardData.track).select("id");
         if (trackData.length == 1) await utils_default.db("o_videoTrack").where("id", storyboardData.trackId).delete();
         await utils_default.db("o_storyboard").where("id", id).delete();
         await utils_default.db("o_assets2Storyboard").where("storyboardId", id).delete();
+        await cleanupStoryboards([id]);
         res.status(200).send(success3({ message: "\u89C6\u9891\u5220\u9664\u6210\u529F" }));
       }
     );
   }
 });
 
-// src/routes/production/storyboard/updateStoryboardUrl.ts
-var import_express75, router75, updateStoryboardUrl_default;
-var init_updateStoryboardUrl = __esm({
-  "src/routes/production/storyboard/updateStoryboardUrl.ts"() {
-    "use strict";
-    import_express75 = __toESM(require_express2());
-    init_utils3();
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router75 = import_express75.default.Router();
-    updateStoryboardUrl_default = router75.post(
-      "/",
-      validateFields({
-        id: external_exports.number(),
-        url: external_exports.string(),
-        flowId: external_exports.number()
-      }),
-      async (req, res) => {
-        const { id, url: url4, flowId } = req.body;
-        await utils_default.db("o_storyboard").where({ id }).update({
-          filePath: utils_default.replaceUrl(url4),
-          flowId,
-          state: "\u5DF2\u5B8C\u6210",
-          shouldGenerateImage: url4 ? 1 : 0
-        });
-        res.status(200).send(success3({ message: "\u66F4\u65B0\u5206\u955C\u6210\u529F" }));
-      }
-    );
-  }
-});
-
 // src/routes/production/workbench/addTrack.ts
-var import_express76, router76, addTrack_default;
+var import_express97, router97, addTrack_default;
 var init_addTrack = __esm({
   "src/routes/production/workbench/addTrack.ts"() {
     "use strict";
-    import_express76 = __toESM(require_express2());
+    import_express97 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router76 = import_express76.default.Router();
-    addTrack_default = router76.post(
+    router97 = import_express97.default.Router();
+    addTrack_default = router97.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -241365,12 +244528,11 @@ var init_addTrack = __esm({
         const data = await utils_default.db("o_project").where("id", projectId).first();
         const video = data?.videoModel?.split(":");
         const vemdor = await utils_default.vendor.getModelList(video?.[0]);
-        const trackId = Date.now();
-        await utils_default.db("o_videoTrack").insert({
-          id: trackId,
+        const [trackId] = await utils_default.db("o_videoTrack").insert({
           projectId,
           scriptId,
-          duration: duration4
+          duration: duration4,
+          kind: "shot"
         });
         res.status(200).send(success3(trackId));
       }
@@ -241379,20 +244541,19 @@ var init_addTrack = __esm({
 });
 
 // src/routes/production/workbench/batchGeneratePrompt.ts
-var import_express77, import_promises5, import_path12, router77, batchGeneratePrompt_default;
+var import_express98, router98, batchGeneratePrompt_default;
 var init_batchGeneratePrompt = __esm({
   "src/routes/production/workbench/batchGeneratePrompt.ts"() {
     "use strict";
-    import_express77 = __toESM(require_express2());
+    import_express98 = __toESM(require_express2());
     init_utils3();
     init_p_limit();
     init_zod();
     init_responseFormat();
     init_middleware();
-    import_promises5 = __toESM(require("fs/promises"));
-    import_path12 = __toESM(require("path"));
-    router77 = import_express77.default.Router();
-    batchGeneratePrompt_default = router77.post(
+    init_trackVideo();
+    router98 = import_express98.default.Router();
+    batchGeneratePrompt_default = router98.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -241410,143 +244571,27 @@ var init_batchGeneratePrompt = __esm({
         mode: external_exports.string(),
         model: external_exports.string(),
         concurrentCount: external_exports.number().optional()
-        //并发数
       }),
       async (req, res) => {
-        const { trackData, projectId, mode, model, concurrentCount = 5 } = req.body;
+        const { trackData, projectId, model, concurrentCount = 5 } = req.body;
         try {
-          const [id, modelData] = model.split(/:(.+)/);
-          const projectData = await utils_default.db("o_project").select("*").where({ id: projectId }).first();
-          const videoPrompt = await utils_default.db("o_prompt").where("type", "videoPromptGeneration").first();
-          let videoPromptGeneration = "";
-          const modelPromptData = await utils_default.db("o_modelPrompt").where("vendorId", id).where("model", modelData).first();
-          if (modelPromptData) {
-            const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-            try {
-              const fullPath = import_path12.default.join(modelPromptRoot, modelPromptData?.path);
-              const content = await import_promises5.default.readFile(fullPath, "utf-8");
-              videoPromptGeneration = content ?? "";
-            } catch {
-            }
-          }
-          if (!videoPromptGeneration) {
-            const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-            const videoPromptDir = import_path12.default.join(modelPromptRoot, "video");
-            const modelLower = (modelData ?? "").toLowerCase();
-            let fileName = null;
-            if (modelLower.includes("wan") && modelLower.includes("2.6")) {
-              fileName = "wan2.6Single-imageFirstFrameMode.md";
-            } else if (/seedance.*2[.\-]0/i.test(modelLower)) {
-              fileName = "seedance2Multi-parameterMode.md";
-            } else if (mode === "startEndRequired" || mode === "endFrameOptional" || mode === "startFrameOptional") {
-              fileName = "universalFirstAndLastFrameMode.md";
-            } else if (typeof mode === "string" && mode.startsWith('["') && mode.endsWith('"]')) {
-              fileName = "universalMulti-parameterMode.md";
-            }
-            if (fileName) {
-              try {
-                const fullPath = import_path12.default.join(videoPromptDir, fileName);
-                videoPromptGeneration = await import_promises5.default.readFile(fullPath, "utf-8");
-              } catch {
-              }
-            }
-          }
-          if (!videoPromptGeneration) {
-            if (videoPrompt && videoPrompt.useData) {
-              videoPromptGeneration = videoPrompt.useData;
-            } else {
-              videoPromptGeneration = videoPrompt?.data ?? void 0;
-            }
-          }
-          const artStyle = projectData?.artStyle || "\u65E0";
-          const visualManual = utils_default.getArtPrompt(artStyle, "art_skills", "art_storyboard_video");
           await utils_default.db("o_videoTrack").whereIn(
             "id",
             trackData.map((t) => t.trackId)
-          ).update({ state: "\u751F\u6210\u4E2D" });
-          const limit = pLimit(concurrentCount ?? 5);
-          const tasks = trackData.map(
-            (track) => limit(async () => {
-              const images = await Promise.all(
-                track.info.map(async (item) => {
-                  if (item.sources === "storyboard") {
-                    const storyboard2 = await utils_default.db("o_storyboard").where("o_storyboard.id", item.id).select("videoDesc", "prompt", "track", "duration", "shouldGenerateImage").first();
-                    const assetRows = await utils_default.db("o_assets2Storyboard").where("storyboardId", item.id).orderBy("rowid").select("assetId");
-                    const associateAssetsIds = assetRows.map((row) => row.assetId);
-                    return {
-                      ...storyboard2,
-                      associateAssetsIds,
-                      _type: "storyboard"
-                    };
-                  }
-                  if (item.sources === "assets") {
-                    const assetsData = await utils_default.db("o_assets").leftJoin("o_image", "o_image.id", "o_assets.imageId").where("o_assets.id", item.id).select("o_assets.id", "o_assets.type", "o_assets.name", "o_image.filePath").first();
-                    return {
-                      ...assetsData,
-                      _type: "assets"
-                    };
-                  }
-                })
-              );
-              const assets = [];
-              const storyboard = [];
-              for (const item of images) {
-                if (!item) continue;
-                if (item._type === "assets")
-                  assets.push({
-                    id: item.id,
-                    type: item.type,
-                    name: item.name,
-                    filePath: item.filePath
-                  });
-                if (item._type === "storyboard")
-                  storyboard.push({
-                    videoDesc: item.videoDesc,
-                    prompt: item.prompt,
-                    track: item.track,
-                    duration: item.duration,
-                    associateAssetsIds: item.associateAssetsIds,
-                    shouldGenerateImage: item.shouldGenerateImage
-                  });
-              }
-              const content = `
-          **\u6A21\u578B\u540D\u79F0**\uFF1A${modelData},
-          **\u8D44\u4EA7\u4FE1\u606F**\uFF08\u89D2\u8272\u3001\u573A\u666F\u3001\u9053\u5177\u3001\u97F3\u9891):${assets.filter((i) => i.filePath).map((i) => `[${i.id},${i.type},${i.name}]`).join("\uFF0C")},
-          **\u5206\u955C\u4FE1\u606F**\uFF1A${storyboard.map(
-                (i) => `<storyboardItem
-  videoDesc='${i.videoDesc}'
-  duration='${i.duration}'
-></storyboardItem>`
-              )},
-          `;
-              try {
-                const { text: text2 } = await utils_default.Ai.Text("universalAi").invoke({
-                  system: videoPromptGeneration,
-                  messages: [
-                    {
-                      role: "assistant",
-                      content: `${visualManual}`
-                    },
-                    {
-                      role: "user",
-                      content
-                    }
-                  ]
-                });
-                await utils_default.db("o_videoTrack").where({ id: track.trackId }).update({
-                  prompt: text2,
-                  state: "\u5DF2\u5B8C\u6210"
-                });
-                return { trackId: track.trackId, text: text2 };
-              } catch (e) {
-                await utils_default.db("o_videoTrack").where({ id: track.trackId }).update({ state: "\u751F\u6210\u5931\u8D25", reason: utils_default.error(e).message });
-              }
-            })
-          );
-          Promise.all(tasks);
+          ).update({ state: "\u751F\u6210\u4E2D", reason: null });
           res.status(200).send(success3("\u5F00\u59CB\u751F\u6210\u63D0\u793A\u8BCD"));
+          const limit = pLimit(concurrentCount);
+          await Promise.all(
+            trackData.map(
+              (track) => limit(
+                () => generateTrackPrompt({ projectId, trackId: track.trackId, model, info: track.info }).catch(
+                  (e) => console.warn("[\u6279\u91CF\u89C6\u9891\u63D0\u793A\u8BCD]", track.trackId, utils_default.error(e).message)
+                )
+              )
+            )
+          );
         } catch (e) {
-          res.status(400).send(error50(utils_default.error(e).message));
+          if (!res.headersSent) res.status(400).send(error50(utils_default.error(e).message));
         }
       }
     );
@@ -241554,18 +244599,18 @@ var init_batchGeneratePrompt = __esm({
 });
 
 // src/routes/production/workbench/batchGenerateVideo.ts
-var import_express78, router78, batchGenerateVideo_default;
+var import_express99, router99, batchGenerateVideo_default;
 var init_batchGenerateVideo = __esm({
   "src/routes/production/workbench/batchGenerateVideo.ts"() {
     "use strict";
-    import_express78 = __toESM(require_express2());
+    import_express99 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_dist_node();
     init_responseFormat();
     init_middleware();
-    router78 = import_express78.default.Router();
-    batchGenerateVideo_default = router78.post(
+    router99 = import_express99.default.Router();
+    batchGenerateVideo_default = router99.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -241665,17 +244710,17 @@ var init_batchGenerateVideo = __esm({
 });
 
 // src/routes/production/workbench/checkVideoPrompt.ts
-var import_express79, router79, checkVideoPrompt_default;
+var import_express100, router100, checkVideoPrompt_default;
 var init_checkVideoPrompt = __esm({
   "src/routes/production/workbench/checkVideoPrompt.ts"() {
     "use strict";
-    import_express79 = __toESM(require_express2());
+    import_express100 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router79 = import_express79.default.Router();
-    checkVideoPrompt_default = router79.post(
+    router100 = import_express100.default.Router();
+    checkVideoPrompt_default = router100.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -241692,17 +244737,17 @@ var init_checkVideoPrompt = __esm({
 });
 
 // src/routes/production/workbench/checkVideoStateList.ts
-var import_express80, router80, checkVideoStateList_default;
+var import_express101, router101, checkVideoStateList_default;
 var init_checkVideoStateList = __esm({
   "src/routes/production/workbench/checkVideoStateList.ts"() {
     "use strict";
-    import_express80 = __toESM(require_express2());
+    import_express101 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router80 = import_express80.default.Router();
-    checkVideoStateList_default = router80.post(
+    router101 = import_express101.default.Router();
+    checkVideoStateList_default = router101.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -241728,17 +244773,17 @@ var init_checkVideoStateList = __esm({
 });
 
 // src/routes/production/workbench/deleteTrack.ts
-var import_express81, router81, deleteTrack_default;
+var import_express102, router102, deleteTrack_default;
 var init_deleteTrack = __esm({
   "src/routes/production/workbench/deleteTrack.ts"() {
     "use strict";
-    import_express81 = __toESM(require_express2());
+    import_express102 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router81 = import_express81.default.Router();
-    deleteTrack_default = router81.post(
+    router102 = import_express102.default.Router();
+    deleteTrack_default = router102.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -241756,17 +244801,17 @@ var init_deleteTrack = __esm({
 });
 
 // src/routes/production/workbench/delVideo.ts
-var import_express82, router82, delVideo_default;
+var import_express103, router103, delVideo_default;
 var init_delVideo = __esm({
   "src/routes/production/workbench/delVideo.ts"() {
     "use strict";
-    import_express82 = __toESM(require_express2());
+    import_express103 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router82 = import_express82.default.Router();
-    delVideo_default = router82.post(
+    router103 = import_express103.default.Router();
+    delVideo_default = router103.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -241784,18 +244829,18 @@ var init_delVideo = __esm({
 });
 
 // src/routes/production/workbench/generateVideo.ts
-var import_express83, router83, generateVideo_default;
-var init_generateVideo = __esm({
+var import_express104, router104, generateVideo_default2;
+var init_generateVideo2 = __esm({
   "src/routes/production/workbench/generateVideo.ts"() {
     "use strict";
-    import_express83 = __toESM(require_express2());
+    import_express104 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_dist_node();
     init_responseFormat();
     init_middleware();
-    router83 = import_express83.default.Router();
-    generateVideo_default = router83.post(
+    router104 = import_express104.default.Router();
+    generateVideo_default2 = router104.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -241888,19 +244933,18 @@ var init_generateVideo = __esm({
 });
 
 // src/routes/production/workbench/generateVideoPrompt.ts
-var import_express84, import_promises6, import_path13, router84, generateVideoPrompt_default;
+var import_express105, router105, generateVideoPrompt_default;
 var init_generateVideoPrompt = __esm({
   "src/routes/production/workbench/generateVideoPrompt.ts"() {
     "use strict";
-    import_express84 = __toESM(require_express2());
+    import_express105 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    import_promises6 = __toESM(require("fs/promises"));
-    import_path13 = __toESM(require("path"));
-    router84 = import_express84.default.Router();
-    generateVideoPrompt_default = router84.post(
+    init_trackVideo();
+    router105 = import_express105.default.Router();
+    generateVideoPrompt_default = router105.post(
       "/",
       validateFields({
         trackId: external_exports.number(),
@@ -241915,140 +244959,11 @@ var init_generateVideoPrompt = __esm({
         mode: external_exports.string()
       }),
       async (req, res) => {
-        const { trackId, projectId, info, model, mode } = req.body;
-        await utils_default.db("o_videoTrack").where({ id: trackId }).update({
-          state: "\u751F\u6210\u4E2D"
-        });
-        const images = await Promise.all(
-          info.map(async (item) => {
-            if (item.sources === "storyboard") {
-              const storyboard2 = await utils_default.db("o_storyboard").where("o_storyboard.id", item.id).select("videoDesc", "prompt", "track", "duration", "shouldGenerateImage").first();
-              const assetRows = await utils_default.db("o_assets2Storyboard").where("storyboardId", item.id).orderBy("rowid").select("assetId");
-              const associateAssetsIds = assetRows.map((row) => row.assetId);
-              return {
-                ...storyboard2,
-                associateAssetsIds,
-                _type: "storyboard"
-                // 标记类型，便于后续区分
-              };
-            }
-            if (item.sources === "assets") {
-              const assetsData = await utils_default.db("o_assets").leftJoin("o_image", "o_image.id", "o_assets.imageId").where("o_assets.id", item.id).select("o_assets.id", "o_assets.type", "o_assets.name", "o_image.filePath").first();
-              return {
-                ...assetsData,
-                _type: "assets"
-                // 标记类型
-              };
-            }
-          })
-        );
-        const assets = [];
-        const storyboard = [];
-        for (const item of images) {
-          if (!item) continue;
-          if (item._type === "assets")
-            assets.push({
-              id: item.id,
-              type: item.type,
-              name: item.name,
-              filePath: item.filePath
-            });
-          if (item._type === "storyboard")
-            storyboard.push({
-              videoDesc: item.videoDesc,
-              prompt: item.prompt,
-              track: item.track,
-              duration: item.duration,
-              associateAssetsIds: item.associateAssetsIds,
-              shouldGenerateImage: item.shouldGenerateImage
-            });
-        }
-        const assetsNotAudioIds = assets.filter((i) => i.type == "audio").map((i) => i.id);
-        const assets2Audio = await utils_default.db("o_assets").whereIn("o_assets.id", assetsNotAudioIds).join("o_assetsRole2Audio", "o_assetsRole2Audio.assetsAudioId", "o_assets.assetsId").select("o_assets.assetsId", "o_assets.id", "o_assetsRole2Audio.assetsAudioId", "o_assetsRole2Audio.assetsRoleId");
-        const assetsAudioRecord = {};
-        assets2Audio.forEach((i) => {
-          assetsAudioRecord[i.assetsRoleId] = i.id;
-        });
-        const [id, modelData] = model.split(/:(.+)/);
-        const projectData = await utils_default.db("o_project").select("*").where({ id: projectId }).first();
-        const videoPrompt = await utils_default.db("o_prompt").where("type", "videoPromptGeneration").first();
-        let videoPromptGeneration = "";
-        const modelPromptData = await utils_default.db("o_modelPrompt").where("vendorId", id).where("model", modelData).first();
-        if (modelPromptData) {
-          const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-          try {
-            const fullPath = import_path13.default.join(modelPromptRoot, modelPromptData?.path);
-            const content2 = await import_promises6.default.readFile(fullPath, "utf-8");
-            videoPromptGeneration = content2 ?? "";
-          } catch {
-          }
-        }
-        if (!videoPromptGeneration) {
-          const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-          const videoPromptDir = import_path13.default.join(modelPromptRoot, "video");
-          const modelLower = (modelData ?? "").toLowerCase();
-          let fileName = null;
-          if (modelLower.includes("wan") && modelLower.includes("2.6")) {
-            fileName = "wan2.6Single-imageFirstFrameMode.md";
-          } else if (/seedance.*2[.\-]0/i.test(modelData)) {
-            fileName = "seedance2Multi-parameterMode.md";
-          } else if (mode === "startEndRequired" || mode === "endFrameOptional" || mode === "startFrameOptional") {
-            fileName = "universalFirstAndLastFrameMode.md";
-          } else if (typeof mode === "string" && mode.startsWith('["') && mode.endsWith('"]')) {
-            fileName = "universalMulti-parameterMode.md";
-          }
-          if (fileName) {
-            try {
-              const fullPath = import_path13.default.join(videoPromptDir, fileName);
-              videoPromptGeneration = await import_promises6.default.readFile(fullPath, "utf-8");
-            } catch {
-            }
-          }
-        }
-        if (!videoPromptGeneration) {
-          if (videoPrompt && videoPrompt.useData) {
-            videoPromptGeneration = videoPrompt.useData;
-          } else {
-            videoPromptGeneration = videoPrompt?.data ?? void 0;
-          }
-        }
-        const artStyle = projectData?.artStyle || "\u65E0";
-        const visualManual = utils_default.getArtPrompt(artStyle, "art_skills", "art_storyboard_video");
-        const content = `
-          **\u6A21\u578B\u540D\u79F0**\uFF1A${modelData},
-
-          **\u8D44\u4EA7\u4FE1\u606F**\uFF08\u89D2\u8272\u3001\u573A\u666F\u3001\u9053\u5177\u3001\u97F3\u9891):${assets.filter((i) => i.filePath).map((i) => `[${i.id},${i.type},${i.name} ${assetsAudioRecord[i.id] ? `audio:${assetsAudioRecord[i.id]}` : ""} ] `).join("\uFF0C")},
-          **\u5206\u955C\u4FE1\u606F**\uFF1A${storyboard.map(
-          (i) => `<storyboardItem
-  videoDesc='${i.videoDesc}'
-  duration='${i.duration}'
-></storyboardItem>`
-        )},
-          `;
+        const { trackId, projectId, info, model } = req.body;
         try {
-          const { text: text2 } = await utils_default.Ai.Text("universalAi").invoke({
-            system: videoPromptGeneration,
-            messages: [
-              {
-                role: "assistant",
-                content: `${visualManual}`
-              },
-              {
-                role: "user",
-                content
-              }
-            ]
-          });
-          await utils_default.db("o_videoTrack").where({ id: trackId }).update({
-            state: "\u5DF2\u5B8C\u6210",
-            prompt: text2
-          });
+          const text2 = await generateTrackPrompt({ projectId, trackId, model, info });
           res.status(200).send(success3(text2));
         } catch (e) {
-          await utils_default.db("o_videoTrack").where({ id: trackId }).update({
-            state: "\u751F\u6210\u5931\u8D25",
-            reason: utils_default.error(e).message
-          });
           res.status(400).send(error50(utils_default.error(e).message));
         }
       }
@@ -242057,17 +244972,17 @@ var init_generateVideoPrompt = __esm({
 });
 
 // src/routes/production/workbench/getAudioBindAssetsList.ts
-var import_express85, router85, getAudioBindAssetsList_default;
+var import_express106, router106, getAudioBindAssetsList_default;
 var init_getAudioBindAssetsList = __esm({
   "src/routes/production/workbench/getAudioBindAssetsList.ts"() {
     "use strict";
-    import_express85 = __toESM(require_express2());
+    import_express106 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router85 = import_express85.default.Router();
-    getAudioBindAssetsList_default = router85.post(
+    router106 = import_express106.default.Router();
+    getAudioBindAssetsList_default = router106.post(
       "/",
       validateFields({
         assetsIds: external_exports.array(external_exports.number())
@@ -242101,17 +245016,17 @@ var init_getAudioBindAssetsList = __esm({
 });
 
 // src/routes/production/workbench/getFileUrl.ts
-var import_express86, router86, getFileUrl_default;
+var import_express107, router107, getFileUrl_default;
 var init_getFileUrl = __esm({
   "src/routes/production/workbench/getFileUrl.ts"() {
     "use strict";
-    import_express86 = __toESM(require_express2());
+    import_express107 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router86 = import_express86.default.Router();
-    getFileUrl_default = router86.post(
+    router107 = import_express107.default.Router();
+    getFileUrl_default = router107.post(
       "/",
       validateFields({
         items: external_exports.array(external_exports.object({
@@ -242145,17 +245060,17 @@ var init_getFileUrl = __esm({
 });
 
 // src/routes/production/workbench/getGenerateData.ts
-var import_express87, router87, getGenerateData_default;
+var import_express108, router108, getGenerateData_default;
 var init_getGenerateData = __esm({
   "src/routes/production/workbench/getGenerateData.ts"() {
     "use strict";
-    import_express87 = __toESM(require_express2());
+    import_express108 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router87 = import_express87.default.Router();
-    getGenerateData_default = router87.post(
+    router108 = import_express108.default.Router();
+    getGenerateData_default = router108.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -242324,17 +245239,17 @@ var init_getGenerateData = __esm({
 });
 
 // src/routes/production/workbench/getVideoList.ts
-var import_express88, router88, getVideoList_default;
+var import_express109, router109, getVideoList_default;
 var init_getVideoList = __esm({
   "src/routes/production/workbench/getVideoList.ts"() {
     "use strict";
-    import_express88 = __toESM(require_express2());
+    import_express109 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router88 = import_express88.default.Router();
-    getVideoList_default = router88.post(
+    router109 = import_express109.default.Router();
+    getVideoList_default = router109.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -242363,17 +245278,17 @@ var init_getVideoList = __esm({
 });
 
 // src/routes/production/workbench/selectVideo.ts
-var import_express89, router89, selectVideo_default;
+var import_express110, router110, selectVideo_default;
 var init_selectVideo = __esm({
   "src/routes/production/workbench/selectVideo.ts"() {
     "use strict";
-    import_express89 = __toESM(require_express2());
+    import_express110 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router89 = import_express89.default.Router();
-    selectVideo_default = router89.post(
+    router110 = import_express110.default.Router();
+    selectVideo_default = router110.post(
       "/",
       validateFields({
         trackId: external_exports.number(),
@@ -242391,17 +245306,17 @@ var init_selectVideo = __esm({
 });
 
 // src/routes/production/workbench/updateVideoDuration.ts
-var import_express90, router90, updateVideoDuration_default;
+var import_express111, router111, updateVideoDuration_default;
 var init_updateVideoDuration = __esm({
   "src/routes/production/workbench/updateVideoDuration.ts"() {
     "use strict";
-    import_express90 = __toESM(require_express2());
+    import_express111 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router90 = import_express90.default.Router();
-    updateVideoDuration_default = router90.post(
+    router111 = import_express111.default.Router();
+    updateVideoDuration_default = router111.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -242419,17 +245334,17 @@ var init_updateVideoDuration = __esm({
 });
 
 // src/routes/production/workbench/updateVideoPrompt.ts
-var import_express91, router91, updateVideoPrompt_default;
+var import_express112, router112, updateVideoPrompt_default;
 var init_updateVideoPrompt = __esm({
   "src/routes/production/workbench/updateVideoPrompt.ts"() {
     "use strict";
-    import_express91 = __toESM(require_express2());
+    import_express112 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router91 = import_express91.default.Router();
-    updateVideoPrompt_default = router91.post(
+    router112 = import_express112.default.Router();
+    updateVideoPrompt_default = router112.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -242447,19 +245362,19 @@ var init_updateVideoPrompt = __esm({
 });
 
 // src/routes/project/addDirectorManual.ts
-var import_express92, import_fs8, import_path14, router92, addDirectorManual_default;
+var import_express113, import_fs11, import_path18, router113, addDirectorManual_default;
 var init_addDirectorManual = __esm({
   "src/routes/project/addDirectorManual.ts"() {
     "use strict";
-    import_express92 = __toESM(require_express2());
+    import_express113 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    import_fs8 = __toESM(require("fs"));
-    import_path14 = __toESM(require("path"));
+    import_fs11 = __toESM(require("fs"));
+    import_path18 = __toESM(require("path"));
     init_middleware();
     init_zod();
-    router92 = import_express92.default.Router();
-    addDirectorManual_default = router92.post(
+    router113 = import_express113.default.Router();
+    addDirectorManual_default = router113.post(
       "/",
       validateFields({
         name: external_exports.string(),
@@ -242481,7 +245396,7 @@ var init_addDirectorManual = __esm({
             return;
           }
           const mainPath = utils_default.getPath(["skills", "story_skills", directorManual]);
-          if (import_fs8.default.existsSync(mainPath)) {
+          if (import_fs11.default.existsSync(mainPath)) {
             return res.status(400).send(error50("\u8BF7\u52FF\u586B\u5199\u91CD\u590D\u540D\u79F0\u7684\u89C6\u89C9\u624B\u518C"));
           }
           const DATA_MAP3 = [
@@ -242496,35 +245411,35 @@ var init_addDirectorManual = __esm({
             const subDir = SUB_DIR_MAP.get(item.value);
             const dirArr = subDir ? [mainPath, subDir] : [mainPath];
             const filePath = utils_default.getPath([...dirArr, `${item.value}.md`]);
-            const fileDir = import_path14.default.dirname(filePath);
-            if (!import_fs8.default.existsSync(fileDir)) {
-              import_fs8.default.mkdirSync(fileDir, { recursive: true });
+            const fileDir = import_path18.default.dirname(filePath);
+            if (!import_fs11.default.existsSync(fileDir)) {
+              import_fs11.default.mkdirSync(fileDir, { recursive: true });
             }
-            import_fs8.default.writeFileSync(filePath, item.data, "utf-8");
+            import_fs11.default.writeFileSync(filePath, item.data, "utf-8");
           }
-          const imagesDir = import_path14.default.join(mainPath, "images");
+          const imagesDir = import_path18.default.join(mainPath, "images");
           let existingFiles = [];
           try {
-            const allFiles = import_fs8.default.readdirSync(imagesDir);
+            const allFiles = import_fs11.default.readdirSync(imagesDir);
             existingFiles = allFiles.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f));
           } catch {
           }
-          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path14.default.basename(new URL(url4).pathname)));
+          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path18.default.basename(new URL(url4).pathname)));
           for (const file3 of existingFiles) {
             if (!retainedFileNames.has(file3)) {
-              const filePath = import_path14.default.join(imagesDir, file3);
-              if (import_fs8.default.existsSync(filePath)) import_fs8.default.unlinkSync(filePath);
+              const filePath = import_path18.default.join(imagesDir, file3);
+              if (import_fs11.default.existsSync(filePath)) import_fs11.default.unlinkSync(filePath);
             }
           }
-          if (!import_fs8.default.existsSync(imagesDir)) {
-            import_fs8.default.mkdirSync(imagesDir, { recursive: true });
+          if (!import_fs11.default.existsSync(imagesDir)) {
+            import_fs11.default.mkdirSync(imagesDir, { recursive: true });
           }
           for (const item of images) {
             if (!item.startsWith("http")) {
               const fileName = `${utils_default.uuid()}.jpg`;
-              const targetPath = import_path14.default.join(imagesDir, fileName);
+              const targetPath = import_path18.default.join(imagesDir, fileName);
               const buffer = Buffer.from(item.replace(/^data:[^;]+;base64,/, ""), "base64");
-              import_fs8.default.writeFileSync(targetPath, buffer);
+              import_fs11.default.writeFileSync(targetPath, buffer);
             }
           }
           res.status(200).send(success3());
@@ -242537,33 +245452,40 @@ var init_addDirectorManual = __esm({
 });
 
 // src/routes/project/addProject.ts
-var import_express93, router93, addProject_default;
+var import_express114, router114, addProject_default;
 var init_addProject = __esm({
   "src/routes/project/addProject.ts"() {
     "use strict";
-    import_express93 = __toESM(require_express2());
+    import_express114 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router93 = import_express93.default.Router();
-    addProject_default = router93.post(
+    router114 = import_express114.default.Router();
+    addProject_default = router114.post(
       "/",
       validateFields({
-        projectType: external_exports.string(),
-        name: external_exports.string(),
-        intro: external_exports.string(),
-        type: external_exports.string(),
-        artStyle: external_exports.string(),
-        directorManual: external_exports.string(),
+        // novel / script 是短剧流水线的两个子形态，canvas 是无限画布
+        projectType: external_exports.enum(["novel", "script", "canvas"]),
+        name: external_exports.string().min(1),
+        intro: external_exports.string().optional().default(""),
+        type: external_exports.string().optional().default(""),
+        artStyle: external_exports.string().optional().default(""),
+        directorManual: external_exports.string().optional().default(""),
         videoRatio: external_exports.string(),
         imageModel: external_exports.string(),
         videoModel: external_exports.string(),
-        imageQuality: external_exports.string(),
-        mode: external_exports.string()
+        imageQuality: external_exports.string().optional().default(""),
+        mode: external_exports.string().optional().default("")
       }),
       async (req, res) => {
-        const { projectType, name: name28, intro, type, directorManual, artStyle, videoRatio, imageModel, videoModel, imageQuality, mode } = req.body;
+        const { projectType, name: name28, videoRatio, imageModel, videoModel } = req.body;
+        const intro = req.body.intro ?? "";
+        const type = req.body.type ?? "";
+        const artStyle = req.body.artStyle ?? "";
+        const directorManual = req.body.directorManual ?? "";
+        const imageQuality = req.body.imageQuality ?? "";
+        const mode = req.body.mode ?? "";
         await utils_default.db("o_project").insert({
           id: Date.now(),
           projectType,
@@ -242587,19 +245509,19 @@ var init_addProject = __esm({
 });
 
 // src/routes/project/addVisualManual.ts
-var import_express94, import_fs9, import_path15, router94, addVisualManual_default;
+var import_express115, import_fs12, import_path19, router115, addVisualManual_default;
 var init_addVisualManual = __esm({
   "src/routes/project/addVisualManual.ts"() {
     "use strict";
-    import_express94 = __toESM(require_express2());
+    import_express115 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    import_fs9 = __toESM(require("fs"));
-    import_path15 = __toESM(require("path"));
+    import_fs12 = __toESM(require("fs"));
+    import_path19 = __toESM(require("path"));
     init_middleware();
     init_zod();
-    router94 = import_express94.default.Router();
-    addVisualManual_default = router94.post(
+    router115 = import_express115.default.Router();
+    addVisualManual_default = router115.post(
       "/",
       validateFields({
         name: external_exports.string(),
@@ -242621,7 +245543,7 @@ var init_addVisualManual = __esm({
             return;
           }
           const mainPath = utils_default.getPath(["skills", "art_skills", stylePath]);
-          if (import_fs9.default.existsSync(mainPath)) {
+          if (import_fs12.default.existsSync(mainPath)) {
             return res.status(400).send(error50("\u8BF7\u52FF\u586B\u5199\u91CD\u590D\u540D\u79F0\u7684\u89C6\u89C9\u624B\u518C"));
           }
           const DATA_MAP3 = [
@@ -242645,35 +245567,35 @@ var init_addVisualManual = __esm({
             const subDir = SUB_DIR_MAP.get(item.value);
             const dirArr = subDir ? [mainPath, subDir] : [mainPath];
             const filePath = utils_default.getPath([...dirArr, `${item.value}.md`]);
-            const fileDir = import_path15.default.dirname(filePath);
-            if (!import_fs9.default.existsSync(fileDir)) {
-              import_fs9.default.mkdirSync(fileDir, { recursive: true });
+            const fileDir = import_path19.default.dirname(filePath);
+            if (!import_fs12.default.existsSync(fileDir)) {
+              import_fs12.default.mkdirSync(fileDir, { recursive: true });
             }
-            import_fs9.default.writeFileSync(filePath, item.data, "utf-8");
+            import_fs12.default.writeFileSync(filePath, item.data, "utf-8");
           }
-          const imagesDir = import_path15.default.join(mainPath, "images");
+          const imagesDir = import_path19.default.join(mainPath, "images");
           let existingFiles = [];
           try {
-            const allFiles = import_fs9.default.readdirSync(imagesDir);
+            const allFiles = import_fs12.default.readdirSync(imagesDir);
             existingFiles = allFiles.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f));
           } catch {
           }
-          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path15.default.basename(new URL(url4).pathname)));
+          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path19.default.basename(new URL(url4).pathname)));
           for (const file3 of existingFiles) {
             if (!retainedFileNames.has(file3)) {
-              const filePath = import_path15.default.join(imagesDir, file3);
-              if (import_fs9.default.existsSync(filePath)) import_fs9.default.unlinkSync(filePath);
+              const filePath = import_path19.default.join(imagesDir, file3);
+              if (import_fs12.default.existsSync(filePath)) import_fs12.default.unlinkSync(filePath);
             }
           }
-          if (!import_fs9.default.existsSync(imagesDir)) {
-            import_fs9.default.mkdirSync(imagesDir, { recursive: true });
+          if (!import_fs12.default.existsSync(imagesDir)) {
+            import_fs12.default.mkdirSync(imagesDir, { recursive: true });
           }
           for (const item of images) {
             if (!item.startsWith("http")) {
               const fileName = `${utils_default.uuid()}.jpg`;
-              const targetPath = import_path15.default.join(imagesDir, fileName);
+              const targetPath = import_path19.default.join(imagesDir, fileName);
               const buffer = Buffer.from(item.replace(/^data:[^;]+;base64,/, ""), "base64");
-              import_fs9.default.writeFileSync(targetPath, buffer);
+              import_fs12.default.writeFileSync(targetPath, buffer);
             }
           }
           res.status(200).send(success3());
@@ -242686,18 +245608,18 @@ var init_addVisualManual = __esm({
 });
 
 // src/routes/project/deleteDirectorManual.ts
-var import_express95, import_promises7, router95, deleteDirectorManual_default;
+var import_express116, import_promises8, router116, deleteDirectorManual_default;
 var init_deleteDirectorManual = __esm({
   "src/routes/project/deleteDirectorManual.ts"() {
     "use strict";
-    import_express95 = __toESM(require_express2());
+    import_express116 = __toESM(require_express2());
     init_utils3();
-    import_promises7 = __toESM(require("node:fs/promises"));
+    import_promises8 = __toESM(require("node:fs/promises"));
     init_zod();
     init_responseFormat();
     init_middleware();
-    router95 = import_express95.default.Router();
-    deleteDirectorManual_default = router95.post(
+    router116 = import_express116.default.Router();
+    deleteDirectorManual_default = router116.post(
       "/",
       validateFields({
         name: external_exports.string()
@@ -242710,49 +245632,6 @@ var init_deleteDirectorManual = __esm({
             return;
           }
           const artPromptsDir = utils_default.getPath(["skills", "story_skills", name28]);
-          try {
-            const stat = await import_promises7.default.stat(artPromptsDir);
-            if (!stat.isDirectory()) {
-              throw new Error(`${artPromptsDir} \u4E0D\u662F\u6587\u4EF6\u5939`);
-            }
-            await import_promises7.default.rm(artPromptsDir, { recursive: true, force: true });
-          } catch (e) {
-            console.error("[\u5220\u9664\u89C6\u89C9\u624B\u518C] \u5220\u9664\u5931\u8D25:", artPromptsDir, e);
-          }
-          res.status(200).send(success3({ message: "\u5220\u9664\u6210\u529F" }));
-        } catch (err) {
-          res.status(500).send(error50(utils_default.error(err).message || "\u5220\u9664\u5931\u8D25"));
-        }
-      }
-    );
-  }
-});
-
-// src/routes/project/deleteVisualManual.ts
-var import_express96, import_promises8, router96, deleteVisualManual_default;
-var init_deleteVisualManual = __esm({
-  "src/routes/project/deleteVisualManual.ts"() {
-    "use strict";
-    import_express96 = __toESM(require_express2());
-    init_utils3();
-    import_promises8 = __toESM(require("node:fs/promises"));
-    init_zod();
-    init_responseFormat();
-    init_middleware();
-    router96 = import_express96.default.Router();
-    deleteVisualManual_default = router96.post(
-      "/",
-      validateFields({
-        name: external_exports.string()
-      }),
-      async (req, res) => {
-        try {
-          const { name: name28 } = req.body;
-          if (name28.includes("/") || name28.includes("\\") || name28 === "." || name28 === ".." || /^\d+$/.test(name28)) {
-            res.status(400).send(error50("\u540D\u79F0\u4E0D\u80FD\u5305\u542B\u8DEF\u5F84\u5206\u9694\u7B26\u6216\u4E3A\u7EAF\u6570\u5B57"));
-            return;
-          }
-          const artPromptsDir = utils_default.getPath(["skills", "art_skills", name28]);
           try {
             const stat = await import_promises8.default.stat(artPromptsDir);
             if (!stat.isDirectory()) {
@@ -242771,18 +245650,61 @@ var init_deleteVisualManual = __esm({
   }
 });
 
+// src/routes/project/deleteVisualManual.ts
+var import_express117, import_promises9, router117, deleteVisualManual_default;
+var init_deleteVisualManual = __esm({
+  "src/routes/project/deleteVisualManual.ts"() {
+    "use strict";
+    import_express117 = __toESM(require_express2());
+    init_utils3();
+    import_promises9 = __toESM(require("node:fs/promises"));
+    init_zod();
+    init_responseFormat();
+    init_middleware();
+    router117 = import_express117.default.Router();
+    deleteVisualManual_default = router117.post(
+      "/",
+      validateFields({
+        name: external_exports.string()
+      }),
+      async (req, res) => {
+        try {
+          const { name: name28 } = req.body;
+          if (name28.includes("/") || name28.includes("\\") || name28 === "." || name28 === ".." || /^\d+$/.test(name28)) {
+            res.status(400).send(error50("\u540D\u79F0\u4E0D\u80FD\u5305\u542B\u8DEF\u5F84\u5206\u9694\u7B26\u6216\u4E3A\u7EAF\u6570\u5B57"));
+            return;
+          }
+          const artPromptsDir = utils_default.getPath(["skills", "art_skills", name28]);
+          try {
+            const stat = await import_promises9.default.stat(artPromptsDir);
+            if (!stat.isDirectory()) {
+              throw new Error(`${artPromptsDir} \u4E0D\u662F\u6587\u4EF6\u5939`);
+            }
+            await import_promises9.default.rm(artPromptsDir, { recursive: true, force: true });
+          } catch (e) {
+            console.error("[\u5220\u9664\u89C6\u89C9\u624B\u518C] \u5220\u9664\u5931\u8D25:", artPromptsDir, e);
+          }
+          res.status(200).send(success3({ message: "\u5220\u9664\u6210\u529F" }));
+        } catch (err) {
+          res.status(500).send(error50(utils_default.error(err).message || "\u5220\u9664\u5931\u8D25"));
+        }
+      }
+    );
+  }
+});
+
 // src/routes/project/delProject.ts
-var import_express97, router97, delProject_default;
+var import_express118, router118, delProject_default;
 var init_delProject = __esm({
   "src/routes/project/delProject.ts"() {
     "use strict";
-    import_express97 = __toESM(require_express2());
+    import_express118 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router97 = import_express97.default.Router();
-    delProject_default = router97.post(
+    router118 = import_express118.default.Router();
+    delProject_default = router118.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -242812,8 +245734,18 @@ var init_delProject = __esm({
           await utils_default.db("o_image").whereIn("assetsId", assetsIds).delete();
         }
         await utils_default.db("o_assets").where("projectId", id).delete();
+        const trackIds = (await utils_default.db("o_videoTrack").where("projectId", id).select("id")).map((t) => t.id);
         await utils_default.db("o_videoTrack").where("projectId", id).delete();
         await utils_default.db("o_video").where("projectId", id).delete();
+        const nodeIds = (await utils_default.db("o_canvasNode").where("projectId", id).select("id")).map((n) => n.id);
+        if (nodeIds.length > 0) await utils_default.db("o_canvasNode").whereIn("id", nodeIds).update({ imageId: null });
+        await utils_default.db("o_image").where((qb) => {
+          qb.whereIn("canvasNodeId", nodeIds.length ? nodeIds : [-1]).orWhereIn("storyboardId", storyboardIds.length ? storyboardIds : [-1]).orWhereIn("videoTrackId", trackIds.length ? trackIds : [-1]);
+        }).delete();
+        await utils_default.db("o_canvasEdge").where("projectId", id).delete();
+        await utils_default.db("o_canvasNode").where("projectId", id).delete();
+        await utils_default.db("o_canvasTrash").where("projectId", id).delete();
+        await utils_default.db("o_canvas").where("projectId", id).delete();
         await utils_default.db("memories").where("isolationKey", "like", `${id}:%`).delete();
         try {
           await utils_default.oss.deleteDirectory(`${id}/`);
@@ -242828,19 +245760,19 @@ var init_delProject = __esm({
 });
 
 // src/routes/project/editDirectorlManual.ts
-var import_express98, import_fs10, import_path16, router98, editDirectorlManual_default;
+var import_express119, import_fs13, import_path20, router119, editDirectorlManual_default;
 var init_editDirectorlManual = __esm({
   "src/routes/project/editDirectorlManual.ts"() {
     "use strict";
-    import_express98 = __toESM(require_express2());
+    import_express119 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    import_fs10 = __toESM(require("fs"));
-    import_path16 = __toESM(require("path"));
+    import_fs13 = __toESM(require("fs"));
+    import_path20 = __toESM(require("path"));
     init_middleware();
     init_zod();
-    router98 = import_express98.default.Router();
-    editDirectorlManual_default = router98.post(
+    router119 = import_express119.default.Router();
+    editDirectorlManual_default = router119.post(
       "/",
       validateFields({
         name: external_exports.string(),
@@ -242862,7 +245794,7 @@ var init_editDirectorlManual = __esm({
             return;
           }
           const mainPath = utils_default.getPath(["skills", "story_skills", directorManual]);
-          if (!import_fs10.default.existsSync(mainPath)) {
+          if (!import_fs13.default.existsSync(mainPath)) {
             return res.status(400).send(error50("\u5BFC\u6F14\u624B\u518C\u4E0D\u5B58\u5728"));
           }
           const DATA_MAP3 = [
@@ -242877,37 +245809,37 @@ var init_editDirectorlManual = __esm({
             const subDir = SUB_DIR_MAP.get(item.value);
             const dirArr = subDir ? [mainPath, subDir] : [mainPath];
             const filePath = utils_default.getPath([...dirArr, `${item.value}.md`]);
-            const fileDir = import_path16.default.dirname(filePath);
-            if (!import_fs10.default.existsSync(fileDir)) {
-              import_fs10.default.mkdirSync(fileDir, { recursive: true });
+            const fileDir = import_path20.default.dirname(filePath);
+            if (!import_fs13.default.existsSync(fileDir)) {
+              import_fs13.default.mkdirSync(fileDir, { recursive: true });
             }
             const content = item.value === "README" ? `${name28}
 ${item.data}` : item.data;
-            import_fs10.default.writeFileSync(filePath, content, "utf-8");
+            import_fs13.default.writeFileSync(filePath, content, "utf-8");
           }
-          const imagesDir = import_path16.default.join(mainPath, "images");
+          const imagesDir = import_path20.default.join(mainPath, "images");
           let existingFiles = [];
           try {
-            const allFiles = import_fs10.default.readdirSync(imagesDir);
+            const allFiles = import_fs13.default.readdirSync(imagesDir);
             existingFiles = allFiles.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f));
           } catch {
           }
-          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path16.default.basename(new URL(url4).pathname)));
+          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path20.default.basename(new URL(url4).pathname)));
           for (const file3 of existingFiles) {
             if (!retainedFileNames.has(file3)) {
-              const filePath = import_path16.default.join(imagesDir, file3);
-              if (import_fs10.default.existsSync(filePath)) import_fs10.default.unlinkSync(filePath);
+              const filePath = import_path20.default.join(imagesDir, file3);
+              if (import_fs13.default.existsSync(filePath)) import_fs13.default.unlinkSync(filePath);
             }
           }
-          if (!import_fs10.default.existsSync(imagesDir)) {
-            import_fs10.default.mkdirSync(imagesDir, { recursive: true });
+          if (!import_fs13.default.existsSync(imagesDir)) {
+            import_fs13.default.mkdirSync(imagesDir, { recursive: true });
           }
           for (const item of images) {
             if (!item.startsWith("http")) {
               const fileName = `${utils_default.uuid()}.jpg`;
-              const targetPath = import_path16.default.join(imagesDir, fileName);
+              const targetPath = import_path20.default.join(imagesDir, fileName);
               const buffer = Buffer.from(item.replace(/^data:[^;]+;base64,/, ""), "base64");
-              import_fs10.default.writeFileSync(targetPath, buffer);
+              import_fs13.default.writeFileSync(targetPath, buffer);
             }
           }
           res.status(200).send(success3());
@@ -242920,34 +245852,40 @@ ${item.data}` : item.data;
 });
 
 // src/routes/project/editProject.ts
-var import_express99, router99, editProject_default;
+var import_express120, router120, editProject_default;
 var init_editProject = __esm({
   "src/routes/project/editProject.ts"() {
     "use strict";
-    import_express99 = __toESM(require_express2());
+    import_express120 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router99 = import_express99.default.Router();
-    editProject_default = router99.post(
+    router120 = import_express120.default.Router();
+    editProject_default = router120.post(
       "/",
       validateFields({
         id: external_exports.number(),
-        name: external_exports.string(),
-        intro: external_exports.string(),
-        type: external_exports.string(),
-        artStyle: external_exports.string(),
-        directorManual: external_exports.string(),
+        name: external_exports.string().min(1),
+        intro: external_exports.string().optional().default(""),
+        type: external_exports.string().optional().default(""),
+        artStyle: external_exports.string().optional().default(""),
+        directorManual: external_exports.string().optional().default(""),
         videoRatio: external_exports.string(),
         imageModel: external_exports.string(),
         videoModel: external_exports.string(),
-        projectType: external_exports.string(),
-        imageQuality: external_exports.string(),
-        mode: external_exports.string()
+        projectType: external_exports.enum(["novel", "script", "canvas"]),
+        imageQuality: external_exports.string().optional().default(""),
+        mode: external_exports.string().optional().default("")
       }),
       async (req, res) => {
-        const { id, name: name28, intro, type, artStyle, videoRatio, directorManual, imageModel, videoModel, imageQuality, projectType, mode } = req.body;
+        const { id, name: name28, videoRatio, imageModel, videoModel, projectType } = req.body;
+        const intro = req.body.intro ?? "";
+        const type = req.body.type ?? "";
+        const artStyle = req.body.artStyle ?? "";
+        const directorManual = req.body.directorManual ?? "";
+        const imageQuality = req.body.imageQuality ?? "";
+        const mode = req.body.mode ?? "";
         await utils_default.db("o_project").where("id", id).update({
           name: name28,
           intro,
@@ -242968,19 +245906,19 @@ var init_editProject = __esm({
 });
 
 // src/routes/project/editVisualManual.ts
-var import_express100, import_fs11, import_path17, router100, editVisualManual_default;
+var import_express121, import_fs14, import_path21, router121, editVisualManual_default;
 var init_editVisualManual = __esm({
   "src/routes/project/editVisualManual.ts"() {
     "use strict";
-    import_express100 = __toESM(require_express2());
+    import_express121 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    import_fs11 = __toESM(require("fs"));
-    import_path17 = __toESM(require("path"));
+    import_fs14 = __toESM(require("fs"));
+    import_path21 = __toESM(require("path"));
     init_middleware();
     init_zod();
-    router100 = import_express100.default.Router();
-    editVisualManual_default = router100.post(
+    router121 = import_express121.default.Router();
+    editVisualManual_default = router121.post(
       "/",
       validateFields({
         name: external_exports.string(),
@@ -243002,7 +245940,7 @@ var init_editVisualManual = __esm({
             return;
           }
           const mainPath = utils_default.getPath(["skills", "art_skills", stylePath]);
-          if (!import_fs11.default.existsSync(mainPath)) {
+          if (!import_fs14.default.existsSync(mainPath)) {
             return res.status(400).send(error50("\u89C6\u89C9\u624B\u518C\u4E0D\u5B58\u5728"));
           }
           const DATA_MAP3 = [
@@ -243026,37 +245964,37 @@ var init_editVisualManual = __esm({
             const subDir = SUB_DIR_MAP.get(item.value);
             const dirArr = subDir ? [mainPath, subDir] : [mainPath];
             const filePath = utils_default.getPath([...dirArr, `${item.value}.md`]);
-            const fileDir = import_path17.default.dirname(filePath);
-            if (!import_fs11.default.existsSync(fileDir)) {
-              import_fs11.default.mkdirSync(fileDir, { recursive: true });
+            const fileDir = import_path21.default.dirname(filePath);
+            if (!import_fs14.default.existsSync(fileDir)) {
+              import_fs14.default.mkdirSync(fileDir, { recursive: true });
             }
             const content = item.value === "README" ? `${name28}
 ${item.data}` : item.data;
-            import_fs11.default.writeFileSync(filePath, content, "utf-8");
+            import_fs14.default.writeFileSync(filePath, content, "utf-8");
           }
-          const imagesDir = import_path17.default.join(mainPath, "images");
+          const imagesDir = import_path21.default.join(mainPath, "images");
           let existingFiles = [];
           try {
-            const allFiles = import_fs11.default.readdirSync(imagesDir);
+            const allFiles = import_fs14.default.readdirSync(imagesDir);
             existingFiles = allFiles.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f));
           } catch {
           }
-          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path17.default.basename(new URL(url4).pathname)));
+          const retainedFileNames = new Set(images.filter((item) => item.startsWith("http")).map((url4) => import_path21.default.basename(new URL(url4).pathname)));
           for (const file3 of existingFiles) {
             if (!retainedFileNames.has(file3)) {
-              const filePath = import_path17.default.join(imagesDir, file3);
-              if (import_fs11.default.existsSync(filePath)) import_fs11.default.unlinkSync(filePath);
+              const filePath = import_path21.default.join(imagesDir, file3);
+              if (import_fs14.default.existsSync(filePath)) import_fs14.default.unlinkSync(filePath);
             }
           }
-          if (!import_fs11.default.existsSync(imagesDir)) {
-            import_fs11.default.mkdirSync(imagesDir, { recursive: true });
+          if (!import_fs14.default.existsSync(imagesDir)) {
+            import_fs14.default.mkdirSync(imagesDir, { recursive: true });
           }
           for (const item of images) {
             if (!item.startsWith("http")) {
               const fileName = `${utils_default.uuid()}.jpg`;
-              const targetPath = import_path17.default.join(imagesDir, fileName);
+              const targetPath = import_path21.default.join(imagesDir, fileName);
               const buffer = Buffer.from(item.replace(/^data:[^;]+;base64,/, ""), "base64");
-              import_fs11.default.writeFileSync(targetPath, buffer);
+              import_fs14.default.writeFileSync(targetPath, buffer);
             }
           }
           res.status(200).send(success3());
@@ -243069,17 +246007,17 @@ ${item.data}` : item.data;
 });
 
 // src/routes/project/getModelDetails.ts
-var import_express101, router101, getModelDetails_default;
+var import_express122, router122, getModelDetails_default;
 var init_getModelDetails = __esm({
   "src/routes/project/getModelDetails.ts"() {
     "use strict";
-    import_express101 = __toESM(require_express2());
+    import_express122 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router101 = import_express101.default.Router();
-    getModelDetails_default = router101.post(
+    router122 = import_express122.default.Router();
+    getModelDetails_default = router122.post(
       "/",
       validateFields({
         key: external_exports.enum(["scriptAgent", "productionAgent"])
@@ -243098,15 +246036,15 @@ var init_getModelDetails = __esm({
 });
 
 // src/routes/project/getProject.ts
-var import_express102, router102, getProject_default;
+var import_express123, router123, getProject_default;
 var init_getProject = __esm({
   "src/routes/project/getProject.ts"() {
     "use strict";
-    import_express102 = __toESM(require_express2());
+    import_express123 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    router102 = import_express102.default.Router();
-    getProject_default = router102.post("/", async (req, res) => {
+    router123 = import_express123.default.Router();
+    getProject_default = router123.post("/", async (req, res) => {
       const data = await utils_default.db("o_project").select("*");
       res.status(200).send(success3(data));
     });
@@ -243116,16 +246054,16 @@ var init_getProject = __esm({
 // src/routes/project/getVisualManual.ts
 function readMd(filePath) {
   try {
-    return import_fs12.default.readFileSync(filePath, "utf-8");
+    return import_fs15.default.readFileSync(filePath, "utf-8");
   } catch {
     return "";
   }
 }
 async function readAllImages(imagesDir) {
   try {
-    const ossPath = utils_default.getPath(import_path18.default.join("skills", "art_skills", imagesDir, "images"));
-    const files = import_fs12.default.readdirSync(ossPath);
-    const images = files.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f)).map((f) => import_path18.default.join("art_skills", imagesDir, "images", f));
+    const ossPath = utils_default.getPath(import_path22.default.join("skills", "art_skills", imagesDir, "images"));
+    const files = import_fs15.default.readdirSync(ossPath);
+    const images = files.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f)).map((f) => import_path22.default.join("art_skills", imagesDir, "images", f));
     if (images.length) {
       return Promise.all(images.map(async (i) => await utils_default.oss.getFileUrl(i, "skills")));
     } else {
@@ -243135,16 +246073,16 @@ async function readAllImages(imagesDir) {
     return [];
   }
 }
-var import_express103, import_fs12, import_path18, router103, DATA_MAP, getVisualManual_default;
+var import_express124, import_fs15, import_path22, router124, DATA_MAP, getVisualManual_default;
 var init_getVisualManual = __esm({
   "src/routes/project/getVisualManual.ts"() {
     "use strict";
-    import_express103 = __toESM(require_express2());
+    import_express124 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    import_fs12 = __toESM(require("fs"));
-    import_path18 = __toESM(require("path"));
-    router103 = import_express103.default.Router();
+    import_fs15 = __toESM(require("fs"));
+    import_path22 = __toESM(require("path"));
+    router124 = import_express124.default.Router();
     DATA_MAP = [
       { label: "README", value: "README" },
       { label: "\u524D\u7F00", value: "prefix" },
@@ -243159,23 +246097,23 @@ var init_getVisualManual = __esm({
       { label: "\u6280\u6CD5-\u5BFC\u6F14\u89C4\u5212", value: "director_planning_style", subDir: "driector_skills" },
       { label: "\u6280\u6CD5-\u5206\u955C\u8868\u8BBE\u8BA1", value: "director_storyboard_table_style", subDir: "driector_skills" }
     ];
-    getVisualManual_default = router103.post("/", async (req, res) => {
+    getVisualManual_default = router124.post("/", async (req, res) => {
       try {
         const artPromptsDir = utils_default.getPath(["skills", "art_skills"]);
-        const styleDirs = import_fs12.default.readdirSync(artPromptsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+        const styleDirs = import_fs15.default.readdirSync(artPromptsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
         const result = await Promise.all(
-          styleDirs.map(async (styleName) => {
-            const styleDir = import_path18.default.join(artPromptsDir, styleName);
-            const images = await readAllImages(styleName);
-            const readmePath = import_path18.default.join(styleDir, "README.md");
-            const readmeContent = import_fs12.default.readFileSync(readmePath, "utf-8");
+          styleDirs.map(async (styleName2) => {
+            const styleDir = import_path22.default.join(artPromptsDir, styleName2);
+            const images = await readAllImages(styleName2);
+            const readmePath = import_path22.default.join(styleDir, "README.md");
+            const readmeContent = import_fs15.default.readFileSync(readmePath, "utf-8");
             const firstLine = readmeContent.split("\n")[0].replace(/--/g, "");
             const data = DATA_MAP.map(({ label, value, subDir }) => {
               let mdPath;
               if (subDir) {
-                mdPath = import_path18.default.join(styleDir, subDir, `${value}.md`);
+                mdPath = import_path22.default.join(styleDir, subDir, `${value}.md`);
               } else {
-                mdPath = import_path18.default.join(styleDir, `${value}.md`);
+                mdPath = import_path22.default.join(styleDir, `${value}.md`);
               }
               return {
                 label,
@@ -243186,7 +246124,7 @@ var init_getVisualManual = __esm({
             return {
               name: firstLine,
               image: images,
-              stylePath: styleName,
+              stylePath: styleName2,
               data
             };
           })
@@ -243202,16 +246140,16 @@ var init_getVisualManual = __esm({
 // src/routes/project/queryDirectorManual.ts
 function readMd2(filePath) {
   try {
-    return import_fs13.default.readFileSync(filePath, "utf-8");
+    return import_fs16.default.readFileSync(filePath, "utf-8");
   } catch {
     return "";
   }
 }
 async function readAllImages2(imagesDir) {
   try {
-    const ossPath = utils_default.getPath(import_path19.default.join("skills", "story_skills", imagesDir, "images"));
-    const files = import_fs13.default.readdirSync(ossPath);
-    const images = files.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f)).map((f) => import_path19.default.join("story_skills", imagesDir, "images", f));
+    const ossPath = utils_default.getPath(import_path23.default.join("skills", "story_skills", imagesDir, "images"));
+    const files = import_fs16.default.readdirSync(ossPath);
+    const images = files.filter((f) => /\.(png|jpe?g|gif|webp|svg)$/i.test(f)).map((f) => import_path23.default.join("story_skills", imagesDir, "images", f));
     if (images.length) {
       return Promise.all(images.map(async (i) => await utils_default.oss.getFileUrl(i, "skills")));
     } else {
@@ -243221,38 +246159,38 @@ async function readAllImages2(imagesDir) {
     return [];
   }
 }
-var import_express104, import_fs13, import_path19, router104, DATA_MAP2, queryDirectorManual_default;
+var import_express125, import_fs16, import_path23, router125, DATA_MAP2, queryDirectorManual_default;
 var init_queryDirectorManual = __esm({
   "src/routes/project/queryDirectorManual.ts"() {
     "use strict";
-    import_express104 = __toESM(require_express2());
+    import_express125 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    import_fs13 = __toESM(require("fs"));
-    import_path19 = __toESM(require("path"));
-    router104 = import_express104.default.Router();
+    import_fs16 = __toESM(require("fs"));
+    import_path23 = __toESM(require("path"));
+    router125 = import_express125.default.Router();
     DATA_MAP2 = [
       { label: "README", value: "README" },
       { label: "\u5BFC\u6F14\u89C4\u5212", value: "director_planning_narrative", subDir: "driector_skills" },
       { label: "\u5206\u955C\u8868", value: "director_storyboard_table_narrative", subDir: "driector_skills" }
     ];
-    queryDirectorManual_default = router104.post("/", async (req, res) => {
+    queryDirectorManual_default = router125.post("/", async (req, res) => {
       try {
         const artPromptsDir = utils_default.getPath(["skills", "story_skills"]);
-        const styleDirs = import_fs13.default.readdirSync(artPromptsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+        const styleDirs = import_fs16.default.readdirSync(artPromptsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
         const result = await Promise.all(
           styleDirs.map(async (directorManual) => {
-            const styleDir = import_path19.default.join(artPromptsDir, directorManual);
+            const styleDir = import_path23.default.join(artPromptsDir, directorManual);
             const images = await readAllImages2(directorManual);
-            const readmePath = import_path19.default.join(styleDir, "README.md");
-            const readmeContent = import_fs13.default.readFileSync(readmePath, "utf-8");
+            const readmePath = import_path23.default.join(styleDir, "README.md");
+            const readmeContent = import_fs16.default.readFileSync(readmePath, "utf-8");
             const firstLine = readmeContent.split("\n")[0].replace(/--/g, "");
             const data = DATA_MAP2.map(({ label, value, subDir }) => {
               let mdPath;
               if (subDir) {
-                mdPath = import_path19.default.join(styleDir, subDir, `${value}.md`);
+                mdPath = import_path23.default.join(styleDir, subDir, `${value}.md`);
               } else {
-                mdPath = import_path19.default.join(styleDir, `${value}.md`);
+                mdPath = import_path23.default.join(styleDir, `${value}.md`);
               }
               return {
                 label,
@@ -243277,19 +246215,19 @@ var init_queryDirectorManual = __esm({
 });
 
 // src/routes/project/visualManual.ts
-var import_express105, import_fs14, import_path20, router105, visualManual_default;
+var import_express126, import_fs17, import_path24, router126, visualManual_default;
 var init_visualManual = __esm({
   "src/routes/project/visualManual.ts"() {
     "use strict";
-    import_express105 = __toESM(require_express2());
+    import_express126 = __toESM(require_express2());
     init_zod();
     init_responseFormat();
     init_middleware();
     init_getPath();
-    import_fs14 = __toESM(require("fs"));
-    import_path20 = __toESM(require("path"));
-    router105 = import_express105.default.Router();
-    visualManual_default = router105.post(
+    import_fs17 = __toESM(require("fs"));
+    import_path24 = __toESM(require("path"));
+    router126 = import_express126.default.Router();
+    visualManual_default = router126.post(
       "/",
       validateFields({
         type: external_exports.string()
@@ -243298,9 +246236,9 @@ var init_visualManual = __esm({
         const { type } = req.body;
         const basePath = getPath_default(["skills", "art_skills", "chinese_sweet_romance"]);
         const findFile = (dir, target) => {
-          const entries = import_fs14.default.readdirSync(dir, { withFileTypes: true });
+          const entries = import_fs17.default.readdirSync(dir, { withFileTypes: true });
           for (const entry of entries) {
-            const fullPath = import_path20.default.join(dir, entry.name);
+            const fullPath = import_path24.default.join(dir, entry.name);
             if (entry.isDirectory()) {
               const found = findFile(fullPath, target);
               if (found) return found;
@@ -243315,7 +246253,7 @@ var init_visualManual = __esm({
           res.status(404).json({ error: `\u672A\u627E\u5230\u5BF9\u5E94\u7684\u6587\u4EF6: ${type}.md` });
           return;
         }
-        const content = import_fs14.default.readFileSync(filePath, "utf-8");
+        const content = import_fs17.default.readFileSync(filePath, "utf-8");
         res.status(200).send(success3(content));
       }
     );
@@ -243323,17 +246261,17 @@ var init_visualManual = __esm({
 });
 
 // src/routes/script/addScript.ts
-var import_express106, router106, addScript_default;
+var import_express127, router127, addScript_default;
 var init_addScript = __esm({
   "src/routes/script/addScript.ts"() {
     "use strict";
-    import_express106 = __toESM(require_express2());
+    import_express127 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router106 = import_express106.default.Router();
-    addScript_default = router106.post(
+    router127 = import_express127.default.Router();
+    addScript_default = router127.post(
       "/",
       validateFields({
         name: external_exports.string(),
@@ -243369,17 +246307,17 @@ var init_addScript = __esm({
 });
 
 // src/routes/script/batchAddScript.ts
-var import_express107, router107, batchAddScript_default;
+var import_express128, router128, batchAddScript_default;
 var init_batchAddScript = __esm({
   "src/routes/script/batchAddScript.ts"() {
     "use strict";
-    import_express107 = __toESM(require_express2());
+    import_express128 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router107 = import_express107.default.Router();
-    batchAddScript_default = router107.post(
+    router128 = import_express128.default.Router();
+    batchAddScript_default = router128.post(
       "/",
       validateFields({
         data: external_exports.array(
@@ -243409,29 +246347,29 @@ var init_batchAddScript = __esm({
 });
 
 // src/routes/script/delScript.ts
-var import_express108, router108, delScript_default;
+var import_express129, router129, delScript_default;
 var init_delScript = __esm({
   "src/routes/script/delScript.ts"() {
     "use strict";
-    import_express108 = __toESM(require_express2());
+    import_express129 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router108 = import_express108.default.Router();
-    delScript_default = router108.post(
+    router129 = import_express129.default.Router();
+    delScript_default = router129.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const scriptData = await utils_default.db("o_script").whereIn("id", ids);
+        const { ids: ids2 } = req.body;
+        const scriptData = await utils_default.db("o_script").whereIn("id", ids2);
         if (scriptData && scriptData.length) {
           const scriptProjectId = new Set(scriptData.map((item) => item.projectId));
-          await utils_default.db("o_agentWorkData").whereIn("projectId", Array.from(scriptProjectId)).whereIn("episodesId", ids).delete();
+          await utils_default.db("o_agentWorkData").whereIn("projectId", Array.from(scriptProjectId)).whereIn("episodesId", ids2).delete();
         }
-        const storyboardData = await utils_default.db("o_storyboard").whereIn("scriptId", ids);
+        const storyboardData = await utils_default.db("o_storyboard").whereIn("scriptId", ids2);
         if (storyboardData.length) {
           await Promise.all(
             storyboardData.map(async (item) => {
@@ -243444,10 +246382,10 @@ var init_delScript = __esm({
           const storyboardIds = storyboardData.map((item) => item.id);
           await utils_default.db("o_assets2Storyboard").whereIn("storyboardId", storyboardIds).delete();
         }
-        await utils_default.db("o_scriptAssets").whereIn("scriptId", ids).delete();
-        await utils_default.db("o_script").whereIn("id", ids).delete();
-        await utils_default.db("o_storyboard").whereIn("scriptId", ids).delete();
-        await utils_default.db("o_video").whereIn("scriptId", ids).delete();
+        await utils_default.db("o_scriptAssets").whereIn("scriptId", ids2).delete();
+        await utils_default.db("o_script").whereIn("id", ids2).delete();
+        await utils_default.db("o_storyboard").whereIn("scriptId", ids2).delete();
+        await utils_default.db("o_video").whereIn("scriptId", ids2).delete();
         res.status(200).send(success3({ message: "\u5220\u9664\u5267\u672C\u6210\u529F" }));
       }
     );
@@ -243458,13 +246396,13 @@ var init_delScript = __esm({
 var require_utils13 = __commonJS({
   "node_modules/compressing/lib/utils.js"(exports2) {
     "use strict";
-    var fs36 = require("fs");
-    var path34 = require("path");
-    var { pipeline: pump } = require("stream");
+    var fs40 = require("fs");
+    var path38 = require("path");
+    var { pipeline: pump2 } = require("stream");
     function isPathWithinParent(childPath, parentPath) {
-      const normalizedChild = path34.resolve(childPath);
-      const normalizedParent = path34.resolve(parentPath);
-      const parentWithSep = normalizedParent.endsWith(path34.sep) ? normalizedParent : normalizedParent + path34.sep;
+      const normalizedChild = path38.resolve(childPath);
+      const normalizedParent = path38.resolve(parentPath);
+      const parentWithSep = normalizedParent.endsWith(path38.sep) ? normalizedParent : normalizedParent + path38.sep;
       return normalizedChild === normalizedParent || normalizedChild.startsWith(parentWithSep);
     }
     exports2.sourceType = (source) => {
@@ -243508,14 +246446,14 @@ var require_utils13 = __commonJS({
       return (source, dest, opts) => {
         opts = opts || {};
         opts.source = source;
-        const destStream = destType(dest) === "path" ? fs36.createWriteStream(dest) : dest;
+        const destStream = destType(dest) === "path" ? fs40.createWriteStream(dest) : dest;
         const compressStream = new StreamClass(opts);
         return safePipe([compressStream, destStream]);
       };
     };
     exports2.makeCompressDirFn = (StreamClass) => {
       return (dir, dest, opts) => {
-        const destStream = destType(dest) === "path" ? fs36.createWriteStream(dest) : dest;
+        const destStream = destType(dest) === "path" ? fs40.createWriteStream(dest) : dest;
         const compressStream = new StreamClass();
         compressStream.addEntry(dir, opts);
         return safePipe([compressStream, destStream]);
@@ -243538,9 +246476,9 @@ var require_utils13 = __commonJS({
         const strip = opts.strip ? Number(opts.strip) : 0;
         delete opts.strip;
         return new Promise((resolve3, reject) => {
-          fs36.mkdir(destDir, { recursive: true }, (err) => {
+          fs40.mkdir(destDir, { recursive: true }, (err) => {
             if (err) return reject(err);
-            const resolvedDestDir = path34.resolve(destDir);
+            const resolvedDestDir = path38.resolve(destDir);
             let entryCount = 0;
             let successCount = 0;
             let isFinish = false;
@@ -243552,44 +246490,44 @@ var require_utils13 = __commonJS({
               done();
             }).on("error", reject).on("entry", (header, stream4, next) => {
               stream4.on("end", next);
-              const destFilePath = path34.join(resolvedDestDir, stripFileName(strip, header.name, header.type));
-              const resolvedDestPath = path34.resolve(destFilePath);
+              const destFilePath = path38.join(resolvedDestDir, stripFileName(strip, header.name, header.type));
+              const resolvedDestPath = path38.resolve(destFilePath);
               if (!isPathWithinParent(resolvedDestPath, resolvedDestDir)) {
                 console.warn(`[compressing] Skipping entry with path traversal: "${header.name}" -> "${resolvedDestPath}"`);
                 stream4.resume();
                 return;
               }
               if (header.type === "file") {
-                const dir = path34.dirname(destFilePath);
-                fs36.mkdir(dir, { recursive: true }, (err2) => {
+                const dir = path38.dirname(destFilePath);
+                fs40.mkdir(dir, { recursive: true }, (err2) => {
                   if (err2) return reject(err2);
                   entryCount++;
-                  pump(stream4, fs36.createWriteStream(destFilePath, { mode: opts.mode || header.mode }), (err3) => {
+                  pump2(stream4, fs40.createWriteStream(destFilePath, { mode: opts.mode || header.mode }), (err3) => {
                     if (err3) return reject(err3);
                     successCount++;
                     done();
                   });
                 });
               } else if (header.type === "symlink") {
-                const dir = path34.dirname(destFilePath);
-                const target = path34.resolve(dir, header.linkname);
+                const dir = path38.dirname(destFilePath);
+                const target = path38.resolve(dir, header.linkname);
                 if (!isPathWithinParent(target, resolvedDestDir)) {
                   console.warn(`[compressing] Skipping symlink "${header.name}": target "${target}" escapes extraction directory`);
                   stream4.resume();
                   return;
                 }
                 entryCount++;
-                fs36.mkdir(dir, { recursive: true }, (err2) => {
+                fs40.mkdir(dir, { recursive: true }, (err2) => {
                   if (err2) return reject(err2);
-                  const relativeTarget = path34.relative(dir, target);
-                  fs36.symlink(relativeTarget, destFilePath, (err3) => {
+                  const relativeTarget = path38.relative(dir, target);
+                  fs40.symlink(relativeTarget, destFilePath, (err3) => {
                     if (err3) return reject(err3);
                     successCount++;
                     stream4.resume();
                   });
                 });
               } else {
-                fs36.mkdir(destFilePath, { recursive: true }, (err2) => {
+                fs40.mkdir(destFilePath, { recursive: true }, (err2) => {
                   if (err2) return reject(err2);
                   stream4.resume();
                 });
@@ -243610,7 +246548,7 @@ var require_utils13 = __commonJS({
     };
     function safePipe(streams) {
       return new Promise((resolve3, reject) => {
-        pump(streams[0], streams[1], (err) => {
+        pump2(streams[0], streams[1], (err) => {
           if (err) return reject(err);
           resolve3();
         });
@@ -243618,7 +246556,7 @@ var require_utils13 = __commonJS({
     }
     exports2.safePipe = safePipe;
     function normalizePath(fileName) {
-      fileName = path34.normalize(fileName);
+      fileName = path38.normalize(fileName);
       if (process.platform === "win32") fileName = fileName.replace(/\\+/g, "/");
       return fileName;
     }
@@ -243956,7 +246894,7 @@ var require_buffer_crc32 = __commonJS({
 var require_yazl = __commonJS({
   "node_modules/yazl/index.js"(exports2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var Transform = require("stream").Transform;
     var PassThrough = require("stream").PassThrough;
     var zlib2 = require("zlib");
@@ -243980,14 +246918,14 @@ var require_yazl = __commonJS({
       if (options == null) options = {};
       var entry = new Entry(metadataPath, false, options);
       self2.entries.push(entry);
-      fs36.stat(realPath, function(err, stats) {
+      fs40.stat(realPath, function(err, stats) {
         if (err) return self2.emit("error", err);
         if (!stats.isFile()) return self2.emit("error", new Error("not a file: " + realPath));
         entry.uncompressedSize = stats.size;
         if (options.mtime == null) entry.setLastModDate(stats.mtime);
         if (options.mode == null) entry.setFileAttributesMode(stats.mode);
         entry.setFileDataPumpFunction(function() {
-          var readStream2 = fs36.createReadStream(realPath);
+          var readStream2 = fs40.createReadStream(realPath);
           entry.state = Entry.FILE_DATA_IN_PROGRESS;
           readStream2.on("error", function(err2) {
             self2.emit("error", err2);
@@ -248310,8 +251248,8 @@ var require_base_stream = __commonJS({
 var require_stream9 = __commonJS({
   "node_modules/compressing/lib/tar/stream.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
-    var path34 = require("path");
+    var fs40 = require("fs");
+    var path38 = require("path");
     var stream4 = require("stream");
     var tar = require_tar_stream();
     var utils = require_utils13();
@@ -248346,7 +251284,7 @@ var require_stream9 = __commonJS({
         }
       }
       _addFileOrDirEntry(entry, opts) {
-        fs36.stat(entry, (err, stat) => {
+        fs40.stat(entry, (err, stat) => {
           if (err) return this.emit("error", err);
           if (stat.isDirectory()) return this._addDirEntry(entry, opts);
           if (stat.isFile()) return this._addFileEntry(entry, opts);
@@ -248356,27 +251294,27 @@ var require_stream9 = __commonJS({
         });
       }
       _addFileEntry(entry, opts) {
-        fs36.stat(entry, (err, stat) => {
+        fs40.stat(entry, (err, stat) => {
           if (err) return this.emit("error", err);
-          const entryStream = this._pack.entry({ name: opts.relativePath || path34.basename(entry), size: stat.size, mode: stat.mode & 511 }, this._onEntryFinish.bind(this));
-          const stream5 = fs36.createReadStream(entry, opts.fs);
+          const entryStream = this._pack.entry({ name: opts.relativePath || path38.basename(entry), size: stat.size, mode: stat.mode & 511 }, this._onEntryFinish.bind(this));
+          const stream5 = fs40.createReadStream(entry, opts.fs);
           stream5.on("error", (err2) => this.emit("error", err2));
           stream5.pipe(entryStream);
         });
       }
       _addDirEntry(entry, opts) {
-        fs36.readdir(entry, (err, files) => {
+        fs40.readdir(entry, (err, files) => {
           if (err) return this.emit("error", err);
           const relativePath = opts.relativePath || "";
           files.forEach((fileOrDir) => {
             const newOpts = utils.clone(opts);
             if (opts.ignoreBase) {
-              newOpts.relativePath = path34.posix.join(relativePath, fileOrDir);
+              newOpts.relativePath = path38.posix.join(relativePath, fileOrDir);
             } else {
-              newOpts.relativePath = path34.posix.join(relativePath, path34.basename(entry), fileOrDir);
+              newOpts.relativePath = path38.posix.join(relativePath, path38.basename(entry), fileOrDir);
             }
             newOpts.ignoreBase = true;
-            this.addEntry(path34.posix.join(entry, fileOrDir), newOpts);
+            this.addEntry(path38.posix.join(entry, fileOrDir), newOpts);
           });
           this._onEntryFinish();
         });
@@ -248433,7 +251371,7 @@ var require_stream9 = __commonJS({
 var require_stream10 = __commonJS({
   "node_modules/compressing/lib/zip/stream.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var yazl = require_yazl();
     var TarStream = require_stream9();
     var ZipStream = class extends TarStream {
@@ -248445,7 +251383,7 @@ var require_stream10 = __commonJS({
         stream4.on("error", (err) => this.emit("error", err));
       }
       _addFileEntry(entry, opts) {
-        this._zipfile.addFile(entry, opts.relativePath || path34.basename(entry), opts);
+        this._zipfile.addFile(entry, opts.relativePath || path38.basename(entry), opts);
         this._onEntryFinish();
       }
       _addBufferEntry(entry, opts) {
@@ -248504,7 +251442,7 @@ var require_get_ready = __commonJS({
 var require_file_stream = __commonJS({
   "node_modules/compressing/lib/zip/file_stream.js"(exports2, module2) {
     "use strict";
-    var path34 = require("path");
+    var path38 = require("path");
     var yazl = require_yazl();
     var assert3 = require("assert");
     var stream4 = require("stream");
@@ -248526,7 +251464,7 @@ var require_file_stream = __commonJS({
           this.end();
         }
         if (sourceType === "file") {
-          zipfile.addFile(opts.source, opts.relativePath || path34.basename(opts.source), opts.yazl);
+          zipfile.addFile(opts.source, opts.relativePath || path38.basename(opts.source), opts.yazl);
         } else if (sourceType === "buffer") {
           zipfile.addBuffer(opts.source, opts.relativePath, opts.yazl);
         } else if (sourceType === "stream") {
@@ -248612,7 +251550,7 @@ var require_pend = __commonJS({
 var require_fd_slicer2 = __commonJS({
   "node_modules/fd-slicer2/index.js"(exports2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var { Readable: Readable2, Writable, PassThrough } = require("stream");
     var Pend = require_pend();
     var { EventEmitter: EventEmitter3 } = require("events");
@@ -248627,7 +251565,7 @@ var require_fd_slicer2 = __commonJS({
       }
       read(buffer, offset, length, position, callback) {
         this.pend.go((cb) => {
-          fs36.read(this.fd, buffer, offset, length, position, (err, bytesRead, buffer2) => {
+          fs40.read(this.fd, buffer, offset, length, position, (err, bytesRead, buffer2) => {
             cb();
             callback(err, bytesRead, buffer2);
           });
@@ -248635,7 +251573,7 @@ var require_fd_slicer2 = __commonJS({
       }
       write(buffer, offset, length, position, callback) {
         this.pend.go((cb) => {
-          fs36.write(this.fd, buffer, offset, length, position, (err, written, buffer2) => {
+          fs40.write(this.fd, buffer, offset, length, position, (err, written, buffer2) => {
             cb();
             callback(err, written, buffer2);
           });
@@ -248655,7 +251593,7 @@ var require_fd_slicer2 = __commonJS({
         if (this.refCount > 0) return;
         if (this.refCount < 0) throw new Error("invalid unref");
         if (this.autoClose) {
-          fs36.close(this.fd, (err) => {
+          fs40.close(this.fd, (err) => {
             if (err) {
               this.emit("error", err);
             } else {
@@ -248690,7 +251628,7 @@ var require_fd_slicer2 = __commonJS({
         this.context.pend.go((cb) => {
           if (this.destroyed) return cb();
           const buffer = Buffer.alloc(toRead);
-          fs36.read(this.context.fd, buffer, 0, toRead, this.pos, (err, bytesRead) => {
+          fs40.read(this.context.fd, buffer, 0, toRead, this.pos, (err, bytesRead) => {
             if (err) {
               this.destroy(err);
             } else if (bytesRead === 0) {
@@ -248736,7 +251674,7 @@ var require_fd_slicer2 = __commonJS({
         }
         this.context.pend.go((cb) => {
           if (this.destroyed) return cb();
-          fs36.write(this.context.fd, buffer, 0, buffer.length, this.pos, (err, bytes) => {
+          fs40.write(this.context.fd, buffer, 0, buffer.length, this.pos, (err, bytes) => {
             if (err) {
               this.destroy();
               cb();
@@ -248863,7 +251801,7 @@ var require_fd_slicer2 = __commonJS({
 var require_yauzl = __commonJS({
   "node_modules/@eggjs/yauzl/index.js"(exports2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var zlib2 = require("zlib");
     var fd_slicer = require_fd_slicer2();
     var crc32 = require_buffer_crc32();
@@ -248881,7 +251819,7 @@ var require_yauzl = __commonJS({
     exports2.ZipFile = ZipFile;
     exports2.Entry = Entry;
     exports2.RandomAccessReader = RandomAccessReader;
-    function open(path34, options, callback) {
+    function open(path38, options, callback) {
       if (typeof options === "function") {
         callback = options;
         options = null;
@@ -248893,10 +251831,10 @@ var require_yauzl = __commonJS({
       if (options.validateEntrySizes == null) options.validateEntrySizes = true;
       if (options.strictFileNames == null) options.strictFileNames = false;
       if (callback == null) callback = defaultCallback;
-      fs36.open(path34, "r", function(err, fd) {
+      fs40.open(path38, "r", function(err, fd) {
         if (err) return callback(err);
         fromFd(fd, options, function(err2, zipfile) {
-          if (err2) fs36.close(fd, defaultCallback);
+          if (err2) fs40.close(fd, defaultCallback);
           callback(err2, zipfile);
         });
       });
@@ -248913,7 +251851,7 @@ var require_yauzl = __commonJS({
       if (options.validateEntrySizes == null) options.validateEntrySizes = true;
       if (options.strictFileNames == null) options.strictFileNames = false;
       if (callback == null) callback = defaultCallback;
-      fs36.fstat(fd, function(err, stats) {
+      fs40.fstat(fd, function(err, stats) {
         if (err) return callback(err);
         var reader = fd_slicer.createFromFd(fd, { autoClose: true });
         fromRandomAccessReader(reader, stats.size, options, callback);
@@ -253233,7 +256171,7 @@ var require_lib8 = __commonJS({
 var require_file_stream2 = __commonJS({
   "node_modules/compressing/lib/gzip/file_stream.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var zlib2 = require("zlib");
     var utils = require_utils13();
     var streamifier = require_lib8();
@@ -253243,7 +256181,7 @@ var require_file_stream2 = __commonJS({
         super(opts.zlib);
         const sourceType = utils.sourceType(opts.source);
         if (sourceType === "file") {
-          const stream4 = fs36.createReadStream(opts.source, opts.fs);
+          const stream4 = fs40.createReadStream(opts.source, opts.fs);
           stream4.on("error", (err) => this.emit("error", err));
           stream4.pipe(this);
           return;
@@ -253268,7 +256206,7 @@ var require_file_stream2 = __commonJS({
 var require_uncompress_stream2 = __commonJS({
   "node_modules/compressing/lib/gzip/uncompress_stream.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var zlib2 = require("zlib");
     var utils = require_utils13();
     var streamifier = require_lib8();
@@ -253278,7 +256216,7 @@ var require_uncompress_stream2 = __commonJS({
         super(opts.zlib);
         const sourceType = utils.sourceType(opts.source);
         if (sourceType === "file") {
-          const stream4 = fs36.createReadStream(opts.source, opts.fs);
+          const stream4 = fs40.createReadStream(opts.source, opts.fs);
           stream4.on("error", (err) => this.emit("error", err));
           stream4.pipe(this);
           return;
@@ -253318,8 +256256,8 @@ var require_gzip = __commonJS({
 var require_file_stream3 = __commonJS({
   "node_modules/compressing/lib/tar/file_stream.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
-    var path34 = require("path");
+    var fs40 = require("fs");
+    var path38 = require("path");
     var stream4 = require("stream");
     var tar = require_tar_stream();
     var utils = require_utils13();
@@ -253332,13 +256270,13 @@ var require_file_stream3 = __commonJS({
         pack.on("end", () => this.ready(true));
         const sourceType = utils.sourceType(opts.source);
         if (sourceType === "file") {
-          fs36.stat(opts.source, (err, stat) => {
+          fs40.stat(opts.source, (err, stat) => {
             if (err) return this.emit("error", err);
-            this.entry = pack.entry({ name: opts.relativePath || path34.basename(opts.source), size: stat.size, mode: stat.mode & 511 }, (err2) => {
+            this.entry = pack.entry({ name: opts.relativePath || path38.basename(opts.source), size: stat.size, mode: stat.mode & 511 }, (err2) => {
               if (err2) return this.emit("error", err2);
               pack.finalize();
             });
-            const stream5 = fs36.createReadStream(opts.source, opts.fs);
+            const stream5 = fs40.createReadStream(opts.source, opts.fs);
             stream5.on("error", (err2) => this.emit("error", err2));
             stream5.pipe(this);
           });
@@ -253397,7 +256335,7 @@ var require_file_stream3 = __commonJS({
 var require_uncompress_stream3 = __commonJS({
   "node_modules/compressing/lib/tar/uncompress_stream.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var tar = require_tar_stream();
     var utils = require_utils13();
     var streamifier = require_lib8();
@@ -253407,7 +256345,7 @@ var require_uncompress_stream3 = __commonJS({
         super(opts);
         const sourceType = utils.sourceType(opts.source);
         if (sourceType === "file") {
-          const stream4 = fs36.createReadStream(opts.source, opts.fs);
+          const stream4 = fs40.createReadStream(opts.source, opts.fs);
           stream4.on("error", (err) => this.emit("error", err));
           stream4.pipe(this);
           return;
@@ -253480,7 +256418,7 @@ var require_file_stream4 = __commonJS({
     var gzip = require_gzip();
     var utils = require_utils13();
     var stream4 = require("stream");
-    var { pipeline: pump } = require("stream");
+    var { pipeline: pump2 } = require("stream");
     var ready = require_get_ready();
     var TgzFileStream = class extends stream4.Transform {
       constructor(opts) {
@@ -253495,7 +256433,7 @@ var require_file_stream4 = __commonJS({
           this.push(chunk);
         });
         gzipStream.on("end", () => this.ready(true));
-        pump(tarStream, gzipStream, (err) => {
+        pump2(tarStream, gzipStream, (err) => {
           err && this.emit("error", err);
         });
         if (sourceType !== "stream" && sourceType !== void 0) {
@@ -253549,7 +256487,7 @@ var require_FlushWritable = __commonJS({
 var require_uncompress_stream4 = __commonJS({
   "node_modules/compressing/lib/tgz/uncompress_stream.js"(exports2, module2) {
     "use strict";
-    var fs36 = require("fs");
+    var fs40 = require("fs");
     var utils = require_utils13();
     var ready = require_get_ready();
     var streamifier = require_lib8();
@@ -253567,7 +256505,7 @@ var require_uncompress_stream4 = __commonJS({
         this._gzipStream.pipe(tarStream);
         const sourceType = utils.sourceType(opts.source);
         if (sourceType === "file") {
-          const stream4 = fs36.createReadStream(opts.source, opts.fs);
+          const stream4 = fs40.createReadStream(opts.source, opts.fs);
           stream4.on("error", (err) => this.emit("error", err));
           stream4.pipe(this);
           return;
@@ -253626,17 +256564,17 @@ var require_compressing = __commonJS({
 });
 
 // src/routes/script/exportScript.ts
-var import_express109, import_compressing, router109, exportScript_default;
+var import_express130, import_compressing, router130, exportScript_default;
 var init_exportScript = __esm({
   "src/routes/script/exportScript.ts"() {
     "use strict";
-    import_express109 = __toESM(require_express2());
+    import_express130 = __toESM(require_express2());
     init_utils3();
     init_zod();
     import_compressing = __toESM(require_compressing());
     init_middleware();
-    router109 = import_express109.default.Router();
-    exportScript_default = router109.post(
+    router130 = import_express130.default.Router();
+    exportScript_default = router130.post(
       "/",
       validateFields({
         id: external_exports.array(external_exports.number())
@@ -253669,17 +256607,17 @@ function chunkArray(arr, groupSize) {
   }
   return groupChunks;
 }
-var import_express110, router110, NewAssetSchema, ExistingAssetRefSchema, AssetSchema, extractAssets_default;
+var import_express131, router131, NewAssetSchema, ExistingAssetRefSchema, AssetSchema, extractAssets_default;
 var init_extractAssets = __esm({
   "src/routes/script/extractAssets.ts"() {
     "use strict";
-    import_express110 = __toESM(require_express2());
+    import_express131 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
     init_dist22();
-    router110 = import_express110.default.Router();
+    router131 = import_express131.default.Router();
     NewAssetSchema = external_exports.object({
       name: external_exports.string().describe("\u8D44\u4EA7\u540D\u79F0,\u4EC5\u4E3A\u540D\u79F0\u4E0D\u505A\u5176\u4ED6\u4EFB\u4F55\u8868\u8FF0"),
       desc: external_exports.string().describe("\u8D44\u4EA7\u63CF\u8FF0"),
@@ -253695,7 +256633,7 @@ var init_extractAssets = __esm({
       desc: external_exports.string().describe("\u8D44\u4EA7\u63CF\u8FF0"),
       type: external_exports.enum(["role", "tool", "scene"]).describe("\u8D44\u4EA7\u7C7B\u578B")
     });
-    extractAssets_default = router110.post(
+    extractAssets_default = router131.post(
       "/",
       validateFields({
         scriptIds: external_exports.array(external_exports.number()),
@@ -253862,17 +256800,17 @@ ${scriptsContent}`
 });
 
 // src/routes/script/getAiRegex.ts
-var import_express111, router111, getAiRegex_default;
+var import_express132, router132, getAiRegex_default;
 var init_getAiRegex = __esm({
   "src/routes/script/getAiRegex.ts"() {
     "use strict";
-    import_express111 = __toESM(require_express2());
+    import_express132 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router111 = import_express111.default.Router();
-    getAiRegex_default = router111.post(
+    router132 = import_express132.default.Router();
+    getAiRegex_default = router132.post(
       "/",
       validateFields({
         content: external_exports.string()
@@ -253904,17 +256842,17 @@ var init_getAiRegex = __esm({
 });
 
 // src/routes/script/getScrptApi.ts
-var import_express112, router112, getScrptApi_default;
+var import_express133, router133, getScrptApi_default;
 var init_getScrptApi = __esm({
   "src/routes/script/getScrptApi.ts"() {
     "use strict";
-    import_express112 = __toESM(require_express2());
+    import_express133 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router112 = import_express112.default.Router();
-    getScrptApi_default = router112.post(
+    router133 = import_express133.default.Router();
+    getScrptApi_default = router133.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -253955,24 +256893,24 @@ var init_getScrptApi = __esm({
 });
 
 // src/routes/script/pollScriptAssets.ts
-var import_express113, router113, pollScriptAssets_default;
+var import_express134, router134, pollScriptAssets_default;
 var init_pollScriptAssets = __esm({
   "src/routes/script/pollScriptAssets.ts"() {
     "use strict";
-    import_express113 = __toESM(require_express2());
+    import_express134 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router113 = import_express113.default.Router();
-    pollScriptAssets_default = router113.post(
+    router134 = import_express134.default.Router();
+    pollScriptAssets_default = router134.post(
       "/",
       validateFields({
         ids: external_exports.array(external_exports.number())
       }),
       async (req, res) => {
-        const { ids } = req.body;
-        const data = await utils_default.db("o_script").whereIn("id", ids).whereNot("extractState", "\u751F\u6210\u4E2D").select("id", "extractState", "errorReason");
+        const { ids: ids2 } = req.body;
+        const data = await utils_default.db("o_script").whereIn("id", ids2).whereNot("extractState", "\u751F\u6210\u4E2D").select("id", "extractState", "errorReason");
         res.status(200).send(success3(data));
       }
     );
@@ -253980,17 +256918,17 @@ var init_pollScriptAssets = __esm({
 });
 
 // src/routes/script/updateScript.ts
-var import_express114, router114, updateScript_default;
+var import_express135, router135, updateScript_default;
 var init_updateScript = __esm({
   "src/routes/script/updateScript.ts"() {
     "use strict";
-    import_express114 = __toESM(require_express2());
+    import_express135 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router114 = import_express114.default.Router();
-    updateScript_default = router114.post(
+    router135 = import_express135.default.Router();
+    updateScript_default = router135.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -254024,17 +256962,17 @@ var init_updateScript = __esm({
 });
 
 // src/routes/scriptAgent/getPlanData.ts
-var import_express115, router115, getPlanData_default;
+var import_express136, router136, getPlanData_default;
 var init_getPlanData = __esm({
   "src/routes/scriptAgent/getPlanData.ts"() {
     "use strict";
-    import_express115 = __toESM(require_express2());
+    import_express136 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router115 = import_express115.default.Router();
-    getPlanData_default = router115.post(
+    router136 = import_express136.default.Router();
+    getPlanData_default = router136.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -254071,17 +257009,17 @@ var init_getPlanData = __esm({
 });
 
 // src/routes/scriptAgent/setPlanData.ts
-var import_express116, router116, setPlanData_default;
+var import_express137, router137, setPlanData_default;
 var init_setPlanData = __esm({
   "src/routes/scriptAgent/setPlanData.ts"() {
     "use strict";
-    import_express116 = __toESM(require_express2());
+    import_express137 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router116 = import_express116.default.Router();
-    setPlanData_default = router116.post(
+    router137 = import_express137.default.Router();
+    setPlanData_default = router137.post(
       "/",
       validateFields({
         projectId: external_exports.number(),
@@ -254114,17 +257052,17 @@ var init_setPlanData = __esm({
 });
 
 // src/routes/scriptAgent/updateData.ts
-var import_express117, router117, updateData_default;
+var import_express138, router138, updateData_default;
 var init_updateData = __esm({
   "src/routes/scriptAgent/updateData.ts"() {
     "use strict";
-    import_express117 = __toESM(require_express2());
+    import_express138 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router117 = import_express117.default.Router();
-    updateData_default = router117.post(
+    router138 = import_express138.default.Router();
+    updateData_default = router138.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -254151,26 +257089,26 @@ var init_updateData = __esm({
 });
 
 // src/routes/setting/about/checkUpdate.ts
-var import_express118, import_fs15, import_path21, router118, APP_VERSION2, checkUpdate_default;
+var import_express139, import_fs18, import_path25, router139, APP_VERSION2, checkUpdate_default;
 var init_checkUpdate = __esm({
   "src/routes/setting/about/checkUpdate.ts"() {
     "use strict";
-    import_express118 = __toESM(require_express2());
+    import_express139 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_zod();
-    import_fs15 = __toESM(require("fs"));
-    import_path21 = __toESM(require("path"));
-    router118 = import_express118.default.Router();
+    import_fs18 = __toESM(require("fs"));
+    import_path25 = __toESM(require("path"));
+    router139 = import_express139.default.Router();
     APP_VERSION2 = (() => {
       if (true) {
         return "1.1.8";
       }
-      const pkgPath = import_path21.default.resolve(process.cwd(), "package.json");
-      const pkg = JSON.parse(import_fs15.default.readFileSync(pkgPath, "utf8"));
+      const pkgPath = import_path25.default.resolve(process.cwd(), "package.json");
+      const pkg = JSON.parse(import_fs18.default.readFileSync(pkgPath, "utf8"));
       return pkg.version;
     })();
-    checkUpdate_default = router118.post(
+    checkUpdate_default = router139.post(
       "/",
       validateFields({
         source: external_exports.enum(["toonflow", "github", "gitee", "atomgit"]),
@@ -254212,20 +257150,20 @@ var init_checkUpdate = __esm({
 });
 
 // src/routes/setting/about/downloadApp.ts
-var import_express119, import_fs16, import_compressing2, router119, downloadApp_default;
+var import_express140, import_fs19, import_compressing2, router140, downloadApp_default;
 var init_downloadApp = __esm({
   "src/routes/setting/about/downloadApp.ts"() {
     "use strict";
-    import_express119 = __toESM(require_express2());
+    import_express140 = __toESM(require_express2());
     init_zod();
     init_middleware();
     init_utils3();
-    import_fs16 = __toESM(require("fs"));
+    import_fs19 = __toESM(require("fs"));
     init_axios2();
     import_compressing2 = __toESM(require_compressing());
     init_responseFormat();
-    router119 = import_express119.default.Router();
-    downloadApp_default = router119.post(
+    router140 = import_express140.default.Router();
+    downloadApp_default = router140.post(
       "/",
       validateFields({
         url: zod_default.url(),
@@ -254238,13 +257176,13 @@ var init_downloadApp = __esm({
           res.status(200).send(success3("\u8BF7\u5728\u6D4F\u89C8\u5668\u4E2D\u624B\u52A8\u4E0B\u8F7D\u5E76\u5B89\u88C5\u6700\u65B0\u7248\u672C"));
         } else {
           const rootDir = utils_default.getPath(["temp"]);
-          import_fs16.default.mkdirSync(rootDir, { recursive: true });
+          import_fs19.default.mkdirSync(rootDir, { recursive: true });
           const zip = await axios_default.get(url4, { responseType: "arraybuffer" }).then((res2) => res2.data);
-          import_fs16.default.writeFileSync(`${rootDir}/latest.zip`, zip);
+          import_fs19.default.writeFileSync(`${rootDir}/latest.zip`, zip);
           await import_compressing2.default.zip.uncompress(`${rootDir}/latest.zip`, rootDir);
           const dataDir = utils_default.getPath();
-          import_fs16.default.cpSync(rootDir, dataDir, { recursive: true, force: true });
-          import_fs16.default.rmSync(rootDir, { recursive: true, force: true });
+          import_fs19.default.cpSync(rootDir, dataDir, { recursive: true, force: true });
+          import_fs19.default.rmSync(rootDir, { recursive: true, force: true });
           res.status(200).send(success3(`\u66F4\u65B0${version3}\u6210\u529F\uFF0C5\u79D2\u540E\u91CD\u542F`));
         }
       }
@@ -254253,17 +257191,17 @@ var init_downloadApp = __esm({
 });
 
 // src/routes/setting/agentDeploy/agentSetKey.ts
-var import_express120, router120, agentSetKey_default;
+var import_express141, router141, agentSetKey_default;
 var init_agentSetKey = __esm({
   "src/routes/setting/agentDeploy/agentSetKey.ts"() {
     "use strict";
-    import_express120 = __toESM(require_express2());
+    import_express141 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router120 = import_express120.default.Router();
-    agentSetKey_default = router120.post(
+    router141 = import_express141.default.Router();
+    agentSetKey_default = router141.post(
       "/",
       validateFields({
         key: external_exports.string().optional()
@@ -254312,17 +257250,17 @@ var init_agentSetKey = __esm({
 });
 
 // src/routes/setting/agentDeploy/deployAgentModel.ts
-var import_express121, router121, deployAgentModel_default;
+var import_express142, router142, deployAgentModel_default;
 var init_deployAgentModel = __esm({
   "src/routes/setting/agentDeploy/deployAgentModel.ts"() {
     "use strict";
-    import_express121 = __toESM(require_express2());
+    import_express142 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router121 = import_express121.default.Router();
-    deployAgentModel_default = router121.post(
+    router142 = import_express142.default.Router();
+    deployAgentModel_default = router142.post(
       "/",
       validateFields({
         items: external_exports.array(
@@ -254351,15 +257289,15 @@ var init_deployAgentModel = __esm({
 });
 
 // src/routes/setting/agentDeploy/getAgentDeploy.ts
-var import_express122, router122, getAgentDeploy_default;
+var import_express143, router143, getAgentDeploy_default;
 var init_getAgentDeploy = __esm({
   "src/routes/setting/agentDeploy/getAgentDeploy.ts"() {
     "use strict";
-    import_express122 = __toESM(require_express2());
+    import_express143 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
-    router122 = import_express122.default.Router();
-    getAgentDeploy_default = router122.post("/", async (req, res) => {
+    router143 = import_express143.default.Router();
+    getAgentDeploy_default = router143.post("/", async (req, res) => {
       const allData = await utils_default.db("o_agentDeploy").leftJoin("o_vendorConfig", "o_vendorConfig.id", "o_agentDeploy.vendorId").select("o_agentDeploy.*");
       const qrdinaryData = allData.filter((item) => !item.key?.includes(":"));
       const advancedData = allData.filter((item) => item.key?.includes(":") || item.key == "universalAi");
@@ -254369,15 +257307,15 @@ var init_getAgentDeploy = __esm({
 });
 
 // src/routes/setting/agentDeploy/getAgentUseMode.ts
-var import_express123, router123, getAgentUseMode_default;
+var import_express144, router144, getAgentUseMode_default;
 var init_getAgentUseMode = __esm({
   "src/routes/setting/agentDeploy/getAgentUseMode.ts"() {
     "use strict";
-    import_express123 = __toESM(require_express2());
+    import_express144 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
-    router123 = import_express123.default.Router();
-    getAgentUseMode_default = router123.get("/", async (req, res) => {
+    router144 = import_express144.default.Router();
+    getAgentUseMode_default = router144.get("/", async (req, res) => {
       const useMode = await utils_default.db("o_setting").where("key", "agentUseMode").first();
       console.log("%c Line:9 \u{1F353} useMode", "background:#33a5ff", useMode);
       res.status(200).send(success3(useMode?.value || "0"));
@@ -254386,17 +257324,17 @@ var init_getAgentUseMode = __esm({
 });
 
 // src/routes/setting/agentDeploy/updateAgentModel.ts
-var import_express124, router124, updateAgentModel_default;
+var import_express145, router145, updateAgentModel_default;
 var init_updateAgentModel = __esm({
   "src/routes/setting/agentDeploy/updateAgentModel.ts"() {
     "use strict";
-    import_express124 = __toESM(require_express2());
+    import_express145 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router124 = import_express124.default.Router();
-    updateAgentModel_default = router124.post(
+    router145 = import_express145.default.Router();
+    updateAgentModel_default = router145.post(
       "/",
       validateFields({
         id: external_exports.number(),
@@ -254418,17 +257356,17 @@ var init_updateAgentModel = __esm({
 });
 
 // src/routes/setting/agentDeploy/updateUseMode.ts
-var import_express125, router125, updateUseMode_default;
+var import_express146, router146, updateUseMode_default;
 var init_updateUseMode = __esm({
   "src/routes/setting/agentDeploy/updateUseMode.ts"() {
     "use strict";
-    import_express125 = __toESM(require_express2());
+    import_express146 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router125 = import_express125.default.Router();
-    updateUseMode_default = router125.post(
+    router146 = import_express146.default.Router();
+    updateUseMode_default = router146.post(
       "/",
       validateFields({
         agentUseMode: external_exports.string()
@@ -254444,17 +257382,91 @@ var init_updateUseMode = __esm({
   }
 });
 
+// src/routes/setting/assetModels/getAssetModels.ts
+var import_express147, router147, getAssetModels_default;
+var init_getAssetModels = __esm({
+  "src/routes/setting/assetModels/getAssetModels.ts"() {
+    "use strict";
+    import_express147 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_assetGen();
+    router147 = import_express147.default.Router();
+    getAssetModels_default = router147.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number().optional().nullable()
+      }),
+      async (req, res) => {
+        const { projectId } = req.body;
+        const globalModels = await getGlobalAssetModels();
+        if (!projectId) return res.status(200).send(success3({ global: globalModels }));
+        const project = await utils_default.db("o_project").where("id", projectId).select("assetModels").first();
+        let override = {};
+        try {
+          override = project?.assetModels ? JSON.parse(project.assetModels) : {};
+        } catch {
+          override = {};
+        }
+        return res.status(200).send(success3({ global: globalModels, project: override, effective: await getAssetModels(projectId) }));
+      }
+    );
+  }
+});
+
+// src/routes/setting/assetModels/setAssetModels.ts
+var import_express148, router148, bindingSchema, bindingsSchema, setAssetModels_default;
+var init_setAssetModels = __esm({
+  "src/routes/setting/assetModels/setAssetModels.ts"() {
+    "use strict";
+    import_express148 = __toESM(require_express2());
+    init_zod();
+    init_utils3();
+    init_responseFormat();
+    init_middleware();
+    init_assetGen();
+    router148 = import_express148.default.Router();
+    bindingSchema = external_exports.object({
+      model: external_exports.string().refine((v) => v === "" || /^[^:]+:.+$/.test(v), "\u6A21\u578B\u683C\u5F0F\u5E94\u4E3A vendorId:modelName"),
+      aspectRatio: external_exports.string().regex(/^\d+:\d+$/, "\u6BD4\u4F8B\u683C\u5F0F\u5E94\u4E3A W:H")
+    });
+    bindingsSchema = external_exports.object(Object.fromEntries(ASSET_MODEL_KEYS.map((key) => [key, bindingSchema.optional()]))).strict();
+    setAssetModels_default = router148.post(
+      "/",
+      validateFields({
+        projectId: external_exports.number().optional().nullable(),
+        models: bindingsSchema
+      }),
+      async (req, res) => {
+        const { projectId, models } = req.body;
+        const value = JSON.stringify(models);
+        if (!projectId) {
+          const exists = await utils_default.db("o_setting").where("key", GLOBAL_DEFAULT_SETTING_KEY).first();
+          if (exists) await utils_default.db("o_setting").where("key", GLOBAL_DEFAULT_SETTING_KEY).update({ value });
+          else await utils_default.db("o_setting").insert({ key: GLOBAL_DEFAULT_SETTING_KEY, value });
+          return res.status(200).send(success3({ global: await getGlobalAssetModels() }));
+        }
+        const updated = await utils_default.db("o_project").where("id", projectId).update({ assetModels: value });
+        if (!updated) return res.status(404).send(error50("\u9879\u76EE\u4E0D\u5B58\u5728"));
+        return res.status(200).send(success3({ effective: await getAssetModels(projectId) }));
+      }
+    );
+  }
+});
+
 // src/routes/setting/dbConfig/clearData.ts
-var import_express126, router126, clearData_default;
+var import_express149, router149, clearData_default;
 var init_clearData = __esm({
   "src/routes/setting/dbConfig/clearData.ts"() {
     "use strict";
-    import_express126 = __toESM(require_express2());
+    import_express149 = __toESM(require_express2());
     init_responseFormat();
     init_db();
     init_initDB();
-    router126 = import_express126.default.Router();
-    clearData_default = router126.get("/", async (req, res) => {
+    router149 = import_express149.default.Router();
+    clearData_default = router149.get("/", async (req, res) => {
       try {
         const tables = await db.raw(
           `SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'knex_%'`
@@ -254474,15 +257486,15 @@ var init_clearData = __esm({
 });
 
 // src/routes/setting/dbConfig/clearTable.ts
-var import_express127, router127, clearTable_default;
+var import_express150, router150, clearTable_default;
 var init_clearTable = __esm({
   "src/routes/setting/dbConfig/clearTable.ts"() {
     "use strict";
-    import_express127 = __toESM(require_express2());
+    import_express150 = __toESM(require_express2());
     init_responseFormat();
     init_db();
-    router127 = import_express127.default.Router();
-    clearTable_default = router127.post("/", async (req, res) => {
+    router150 = import_express150.default.Router();
+    clearTable_default = router150.post("/", async (req, res) => {
       try {
         const { tableName } = req.body;
         if (!tableName || typeof tableName !== "string") {
@@ -254505,15 +257517,15 @@ var init_clearTable = __esm({
 });
 
 // src/routes/setting/dbConfig/dbInfo.ts
-var import_express128, router128, dbInfo_default;
+var import_express151, router151, dbInfo_default;
 var init_dbInfo = __esm({
   "src/routes/setting/dbConfig/dbInfo.ts"() {
     "use strict";
-    import_express128 = __toESM(require_express2());
+    import_express151 = __toESM(require_express2());
     init_responseFormat();
     init_db();
-    router128 = import_express128.default.Router();
-    dbInfo_default = router128.get("/", async (req, res) => {
+    router151 = import_express151.default.Router();
+    dbInfo_default = router151.get("/", async (req, res) => {
       try {
         const tables = await db.raw(
           `SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'knex_%'`
@@ -254535,15 +257547,15 @@ var init_dbInfo = __esm({
 });
 
 // src/routes/setting/dbConfig/exportData.ts
-var import_express129, router129, exportData_default;
+var import_express152, router152, exportData_default;
 var init_exportData = __esm({
   "src/routes/setting/dbConfig/exportData.ts"() {
     "use strict";
-    import_express129 = __toESM(require_express2());
+    import_express152 = __toESM(require_express2());
     init_responseFormat();
     init_db();
-    router129 = import_express129.default.Router();
-    exportData_default = router129.get("/", async (req, res) => {
+    router152 = import_express152.default.Router();
+    exportData_default = router152.get("/", async (req, res) => {
       try {
         const tables = await db.raw(
           `SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'knex_%'`
@@ -254567,16 +257579,16 @@ var init_exportData = __esm({
 });
 
 // src/routes/setting/dbConfig/importData.ts
-var import_express130, router130, importData_default;
+var import_express153, router153, importData_default;
 var init_importData = __esm({
   "src/routes/setting/dbConfig/importData.ts"() {
     "use strict";
-    import_express130 = __toESM(require_express2());
+    import_express153 = __toESM(require_express2());
     init_responseFormat();
     init_db();
     init_initDB();
-    router130 = import_express130.default.Router();
-    importData_default = router130.post("/", async (req, res) => {
+    router153 = import_express153.default.Router();
+    importData_default = router153.post("/", async (req, res) => {
       try {
         const { tables: importTables } = req.body;
         if (!importTables || typeof importTables !== "object") {
@@ -254615,15 +257627,15 @@ var init_importData = __esm({
 });
 
 // src/routes/setting/dev/getSwitchAiDevTool.ts
-var import_express131, router131, getSwitchAiDevTool_default;
+var import_express154, router154, getSwitchAiDevTool_default;
 var init_getSwitchAiDevTool = __esm({
   "src/routes/setting/dev/getSwitchAiDevTool.ts"() {
     "use strict";
-    import_express131 = __toESM(require_express2());
+    import_express154 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
-    router131 = import_express131.default.Router();
-    getSwitchAiDevTool_default = router131.get("/", async (req, res) => {
+    router154 = import_express154.default.Router();
+    getSwitchAiDevTool_default = router154.get("/", async (req, res) => {
       const switchAiDevTool = await utils_default.db("o_setting").where("key", "switchAiDevTool").first();
       res.status(200).send(success3(switchAiDevTool?.value || "0"));
     });
@@ -254631,17 +257643,17 @@ var init_getSwitchAiDevTool = __esm({
 });
 
 // src/routes/setting/dev/updateSwitchAiDevTool.ts
-var import_express132, router132, updateSwitchAiDevTool_default;
+var import_express155, router155, updateSwitchAiDevTool_default;
 var init_updateSwitchAiDevTool = __esm({
   "src/routes/setting/dev/updateSwitchAiDevTool.ts"() {
     "use strict";
-    import_express132 = __toESM(require_express2());
+    import_express155 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router132 = import_express132.default.Router();
-    updateSwitchAiDevTool_default = router132.post(
+    router155 = import_express155.default.Router();
+    updateSwitchAiDevTool_default = router155.post(
       "/",
       validateFields({
         switchAiDevTool: external_exports.string()
@@ -254658,19 +257670,19 @@ var init_updateSwitchAiDevTool = __esm({
 });
 
 // src/routes/setting/fileManagement/openFolder.ts
-var import_express133, import_child_process, router133, openFolder_default;
+var import_express156, import_child_process, router156, openFolder_default;
 var init_openFolder = __esm({
   "src/routes/setting/fileManagement/openFolder.ts"() {
     "use strict";
-    import_express133 = __toESM(require_express2());
+    import_express156 = __toESM(require_express2());
     init_zod();
     import_child_process = require("child_process");
     init_responseFormat();
     init_middleware();
     init_getPath();
     init_utils3();
-    router133 = import_express133.default.Router();
-    openFolder_default = router133.post(
+    router156 = import_express156.default.Router();
+    openFolder_default = router156.post(
       "/",
       validateFields({
         path: external_exports.string()
@@ -254695,14 +257707,14 @@ var init_openFolder = __esm({
 });
 
 // src/routes/setting/getTextModel.ts
-var import_express134, router134, getTextModel_default;
+var import_express157, router157, getTextModel_default;
 var init_getTextModel = __esm({
   "src/routes/setting/getTextModel.ts"() {
     "use strict";
-    import_express134 = __toESM(require_express2());
+    import_express157 = __toESM(require_express2());
     init_responseFormat();
-    router134 = import_express134.default.Router();
-    getTextModel_default = router134.post(
+    router157 = import_express157.default.Router();
+    getTextModel_default = router157.post(
       "/",
       async (req, res) => {
         res.status(200).send(success3("123"));
@@ -254712,15 +257724,15 @@ var init_getTextModel = __esm({
 });
 
 // src/routes/setting/loginConfig/getUser.ts
-var import_express135, router135, getUser_default;
+var import_express158, router158, getUser_default;
 var init_getUser = __esm({
   "src/routes/setting/loginConfig/getUser.ts"() {
     "use strict";
-    import_express135 = __toESM(require_express2());
+    import_express158 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    router135 = import_express135.default.Router();
-    getUser_default = router135.get("/", async (req, res) => {
+    router158 = import_express158.default.Router();
+    getUser_default = router158.get("/", async (req, res) => {
       const data = await utils_default.db("o_user").select("*").first();
       res.status(200).send(success3(data));
     });
@@ -254728,17 +257740,17 @@ var init_getUser = __esm({
 });
 
 // src/routes/setting/loginConfig/updateUserPwd.ts
-var import_express136, router136, updateUserPwd_default;
+var import_express159, router159, updateUserPwd_default;
 var init_updateUserPwd = __esm({
   "src/routes/setting/loginConfig/updateUserPwd.ts"() {
     "use strict";
-    import_express136 = __toESM(require_express2());
+    import_express159 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router136 = import_express136.default.Router();
-    updateUserPwd_default = router136.post(
+    router159 = import_express159.default.Router();
+    updateUserPwd_default = router159.post(
       "/",
       validateFields({
         name: external_exports.string(),
@@ -254758,15 +257770,15 @@ var init_updateUserPwd = __esm({
 });
 
 // src/routes/setting/memoryConfig/delAllMemory.ts
-var import_express137, router137, delAllMemory_default;
+var import_express160, router160, delAllMemory_default;
 var init_delAllMemory = __esm({
   "src/routes/setting/memoryConfig/delAllMemory.ts"() {
     "use strict";
-    import_express137 = __toESM(require_express2());
+    import_express160 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
-    router137 = import_express137.default.Router();
-    delAllMemory_default = router137.post("/", async (req, res) => {
+    router160 = import_express160.default.Router();
+    delAllMemory_default = router160.post("/", async (req, res) => {
       await utils_default.db("memories").del();
       res.status(200).send(success3(true));
     });
@@ -254774,15 +257786,15 @@ var init_delAllMemory = __esm({
 });
 
 // src/routes/setting/memoryConfig/getMemory.ts
-var import_express138, router138, getMemory_default2;
+var import_express161, router161, getMemory_default2;
 var init_getMemory2 = __esm({
   "src/routes/setting/memoryConfig/getMemory.ts"() {
     "use strict";
-    import_express138 = __toESM(require_express2());
+    import_express161 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
-    router138 = import_express138.default.Router();
-    getMemory_default2 = router138.get("/", async (req, res) => {
+    router161 = import_express161.default.Router();
+    getMemory_default2 = router161.get("/", async (req, res) => {
       const settingData = await utils_default.db("o_setting").whereIn("key", [
         "messagesPerSummary",
         "shortTermLimit",
@@ -254812,17 +257824,17 @@ var init_getMemory2 = __esm({
 });
 
 // src/routes/setting/memoryConfig/sureMemory.ts
-var import_express139, router139, sureMemory_default;
+var import_express162, router162, sureMemory_default;
 var init_sureMemory = __esm({
   "src/routes/setting/memoryConfig/sureMemory.ts"() {
     "use strict";
-    import_express139 = __toESM(require_express2());
+    import_express162 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router139 = import_express139.default.Router();
-    sureMemory_default = router139.post(
+    router162 = import_express162.default.Router();
+    sureMemory_default = router162.post(
       "/",
       validateFields({
         messagesPerSummary: external_exports.number(),
@@ -254859,17 +257871,17 @@ var init_sureMemory = __esm({
 });
 
 // src/routes/setting/modelMap/bindingPrompt.ts
-var import_express140, router140, bindingPrompt_default;
+var import_express163, router163, bindingPrompt_default;
 var init_bindingPrompt = __esm({
   "src/routes/setting/modelMap/bindingPrompt.ts"() {
     "use strict";
-    import_express140 = __toESM(require_express2());
+    import_express163 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    router140 = import_express140.default.Router();
-    bindingPrompt_default = router140.post(
+    router163 = import_express163.default.Router();
+    bindingPrompt_default = router163.post(
       "/",
       validateFields({
         vendorId: external_exports.string(),
@@ -254878,13 +257890,13 @@ var init_bindingPrompt = __esm({
         fileName: external_exports.string()
       }),
       async (req, res) => {
-        const { vendorId, model, path: path34, fileName } = req.body;
+        const { vendorId, model, path: path38, fileName } = req.body;
         const data = await utils_default.db("o_modelPrompt").where("model", model).andWhere("vendorId", vendorId).select("*").first();
         if (data) {
-          await utils_default.db("o_modelPrompt").where("model", model).andWhere("vendorId", vendorId).update({ fileName, path: path34 });
+          await utils_default.db("o_modelPrompt").where("model", model).andWhere("vendorId", vendorId).update({ fileName, path: path38 });
           res.status(200).send(success3("\u7ED1\u5B9A\u6210\u529F"));
         } else {
-          await utils_default.db("o_modelPrompt").insert({ vendorId, model, path: path34, fileName });
+          await utils_default.db("o_modelPrompt").insert({ vendorId, model, path: path38, fileName });
           res.status(200).send(success3("\u7ED1\u5B9A\u6210\u529F"));
         }
       }
@@ -254893,19 +257905,19 @@ var init_bindingPrompt = __esm({
 });
 
 // src/routes/setting/modelMap/deletePrompt.ts
-var import_express141, import_promises9, import_path22, router141, deletePrompt_default;
+var import_express164, import_promises10, import_path26, router164, deletePrompt_default;
 var init_deletePrompt = __esm({
   "src/routes/setting/modelMap/deletePrompt.ts"() {
     "use strict";
-    import_express141 = __toESM(require_express2());
+    import_express164 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    import_promises9 = __toESM(require("fs/promises"));
-    import_path22 = __toESM(require("path"));
-    router141 = import_express141.default.Router();
-    deletePrompt_default = router141.post(
+    import_promises10 = __toESM(require("fs/promises"));
+    import_path26 = __toESM(require("path"));
+    router164 = import_express164.default.Router();
+    deletePrompt_default = router164.post(
       "/",
       validateFields({
         path: external_exports.string()
@@ -254913,17 +257925,17 @@ var init_deletePrompt = __esm({
       async (req, res) => {
         const { path: filePath } = req.body;
         const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-        const resolvedRoot = import_path22.default.resolve(modelPromptRoot);
-        const resolvedFile = import_path22.default.resolve(modelPromptRoot, filePath);
-        if (!resolvedFile.startsWith(resolvedRoot + import_path22.default.sep)) {
+        const resolvedRoot = import_path26.default.resolve(modelPromptRoot);
+        const resolvedFile = import_path26.default.resolve(modelPromptRoot, filePath);
+        if (!resolvedFile.startsWith(resolvedRoot + import_path26.default.sep)) {
           return res.status(400).send(error50("\u975E\u6CD5\u8DEF\u5F84"));
         }
         try {
-          await import_promises9.default.access(resolvedFile);
+          await import_promises10.default.access(resolvedFile);
         } catch {
           return res.status(404).send(error50("\u6587\u4EF6\u4E0D\u5B58\u5728"));
         }
-        await import_promises9.default.unlink(resolvedFile);
+        await import_promises10.default.unlink(resolvedFile);
         res.status(200).send(success3("\u5220\u9664\u6210\u529F"));
       }
     );
@@ -254931,15 +257943,15 @@ var init_deletePrompt = __esm({
 });
 
 // src/routes/setting/modelMap/getImageAndVideoModel.ts
-var import_express142, router142, getImageAndVideoModel_default;
+var import_express165, router165, getImageAndVideoModel_default;
 var init_getImageAndVideoModel = __esm({
   "src/routes/setting/modelMap/getImageAndVideoModel.ts"() {
     "use strict";
-    import_express142 = __toESM(require_express2());
+    import_express165 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    router142 = import_express142.default.Router();
-    getImageAndVideoModel_default = router142.post("/", async (req, res) => {
+    router165 = import_express165.default.Router();
+    getImageAndVideoModel_default = router165.post("/", async (req, res) => {
       const dataList = await utils_default.db("o_vendorConfig").select("id").where("enable", 1);
       if (!dataList || dataList.length === 0) {
         return res.status(404).send({ error: "\u6A21\u578B\u672A\u627E\u5230" });
@@ -254969,18 +257981,18 @@ var init_getImageAndVideoModel = __esm({
 });
 
 // src/routes/setting/modelMap/getPromptList.ts
-var import_express143, import_fast_glob3, import_promises10, import_path23, router143, getPromptList_default;
+var import_express166, import_fast_glob3, import_promises11, import_path27, router166, getPromptList_default;
 var init_getPromptList = __esm({
   "src/routes/setting/modelMap/getPromptList.ts"() {
     "use strict";
-    import_express143 = __toESM(require_express2());
+    import_express166 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     import_fast_glob3 = __toESM(require_out4());
-    import_promises10 = __toESM(require("fs/promises"));
-    import_path23 = __toESM(require("path"));
-    router143 = import_express143.default.Router();
-    getPromptList_default = router143.get("/", async (req, res) => {
+    import_promises11 = __toESM(require("fs/promises"));
+    import_path27 = __toESM(require("path"));
+    router166 = import_express166.default.Router();
+    getPromptList_default = router166.get("/", async (req, res) => {
       const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
       const entries = await (0, import_fast_glob3.default)("**/*.md", {
         cwd: modelPromptRoot.replace(/\\/g, "/"),
@@ -254988,9 +258000,9 @@ var init_getPromptList = __esm({
       });
       const result = await Promise.all(
         entries.map(async (entry) => {
-          const fullPath = import_path23.default.join(modelPromptRoot, entry);
-          const content = await import_promises10.default.readFile(fullPath, "utf-8");
-          const name28 = import_path23.default.basename(entry, ".md");
+          const fullPath = import_path27.default.join(modelPromptRoot, entry);
+          const content = await import_promises11.default.readFile(fullPath, "utf-8");
+          const name28 = import_path27.default.basename(entry, ".md");
           const type = entry.includes("/") ? entry.split("/")[0] : "";
           return { path: entry, name: name28, type, data: content };
         })
@@ -255001,19 +258013,19 @@ var init_getPromptList = __esm({
 });
 
 // src/routes/setting/modelMap/savePrompt.ts
-var import_express144, import_promises11, import_path24, router144, savePrompt_default;
+var import_express167, import_promises12, import_path28, router167, savePrompt_default;
 var init_savePrompt = __esm({
   "src/routes/setting/modelMap/savePrompt.ts"() {
     "use strict";
-    import_express144 = __toESM(require_express2());
+    import_express167 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    import_promises11 = __toESM(require("fs/promises"));
-    import_path24 = __toESM(require("path"));
-    router144 = import_express144.default.Router();
-    savePrompt_default = router144.post(
+    import_promises12 = __toESM(require("fs/promises"));
+    import_path28 = __toESM(require("path"));
+    router167 = import_express167.default.Router();
+    savePrompt_default = router167.post(
       "/",
       validateFields({
         name: external_exports.string().min(1),
@@ -255023,10 +258035,10 @@ var init_savePrompt = __esm({
       async (req, res) => {
         const { name: name28, data, type } = req.body;
         const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-        const dir = import_path24.default.join(modelPromptRoot, type);
-        await import_promises11.default.mkdir(dir, { recursive: true });
-        const filePath = import_path24.default.join(dir, `${name28}.md`);
-        await import_promises11.default.writeFile(filePath, data, "utf-8");
+        const dir = import_path28.default.join(modelPromptRoot, type);
+        await import_promises12.default.mkdir(dir, { recursive: true });
+        const filePath = import_path28.default.join(dir, `${name28}.md`);
+        await import_promises12.default.writeFile(filePath, data, "utf-8");
         res.status(200).send(success3("\u4FDD\u5B58\u6210\u529F"));
       }
     );
@@ -255034,19 +258046,19 @@ var init_savePrompt = __esm({
 });
 
 // src/routes/setting/modelMap/updatePrompt.ts
-var import_express145, import_promises12, import_path25, router145, updatePrompt_default;
+var import_express168, import_promises13, import_path29, router168, updatePrompt_default;
 var init_updatePrompt = __esm({
   "src/routes/setting/modelMap/updatePrompt.ts"() {
     "use strict";
-    import_express145 = __toESM(require_express2());
+    import_express168 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
     init_zod();
     init_middleware();
-    import_promises12 = __toESM(require("fs/promises"));
-    import_path25 = __toESM(require("path"));
-    router145 = import_express145.default.Router();
-    updatePrompt_default = router145.post(
+    import_promises13 = __toESM(require("fs/promises"));
+    import_path29 = __toESM(require("path"));
+    router168 = import_express168.default.Router();
+    updatePrompt_default = router168.post(
       "/",
       validateFields({
         name: external_exports.string().min(1),
@@ -255056,18 +258068,18 @@ var init_updatePrompt = __esm({
       async (req, res) => {
         const { name: name28, data, type } = req.body;
         const modelPromptRoot = utils_default.getPath(["modelPrompt"]);
-        const filePath = import_path25.default.join(modelPromptRoot, type, `${name28}.md`);
-        const resolvedRoot = import_path25.default.resolve(modelPromptRoot);
-        const resolvedFile = import_path25.default.resolve(filePath);
-        if (!resolvedFile.startsWith(resolvedRoot + import_path25.default.sep)) {
+        const filePath = import_path29.default.join(modelPromptRoot, type, `${name28}.md`);
+        const resolvedRoot = import_path29.default.resolve(modelPromptRoot);
+        const resolvedFile = import_path29.default.resolve(filePath);
+        if (!resolvedFile.startsWith(resolvedRoot + import_path29.default.sep)) {
           return res.status(400).send(error50("\u975E\u6CD5\u8DEF\u5F84"));
         }
         try {
-          await import_promises12.default.access(resolvedFile);
+          await import_promises13.default.access(resolvedFile);
         } catch {
           return res.status(404).send(error50("\u6587\u4EF6\u4E0D\u5B58\u5728"));
         }
-        await import_promises12.default.writeFile(resolvedFile, data, "utf-8");
+        await import_promises13.default.writeFile(resolvedFile, data, "utf-8");
         res.status(200).send(success3("\u66F4\u65B0\u6210\u529F"));
       }
     );
@@ -255075,15 +258087,15 @@ var init_updatePrompt = __esm({
 });
 
 // src/routes/setting/promptManage/getPrompt.ts
-var import_express146, router146, getPrompt_default;
+var import_express169, router169, getPrompt_default;
 var init_getPrompt = __esm({
   "src/routes/setting/promptManage/getPrompt.ts"() {
     "use strict";
-    import_express146 = __toESM(require_express2());
+    import_express169 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    router146 = import_express146.default.Router();
-    getPrompt_default = router146.post("/", async (req, res) => {
+    router169 = import_express169.default.Router();
+    getPrompt_default = router169.post("/", async (req, res) => {
       const list2 = await utils_default.db("o_prompt").select("*");
       const data = await Promise.all(
         list2.map(async (item) => {
@@ -255099,17 +258111,17 @@ var init_getPrompt = __esm({
 });
 
 // src/routes/setting/promptManage/updatePrompt.ts
-var import_express147, router147, updatePrompt_default2;
+var import_express170, router170, updatePrompt_default2;
 var init_updatePrompt2 = __esm({
   "src/routes/setting/promptManage/updatePrompt.ts"() {
     "use strict";
-    import_express147 = __toESM(require_express2());
+    import_express170 = __toESM(require_express2());
     init_utils3();
     init_zod();
     init_responseFormat();
     init_middleware();
-    router147 = import_express147.default.Router();
-    updatePrompt_default2 = router147.post(
+    router170 = import_express170.default.Router();
+    updatePrompt_default2 = router170.post(
       "/",
       validateFields({
         id: external_exports.number()
@@ -255126,32 +258138,32 @@ var init_updatePrompt2 = __esm({
 });
 
 // src/routes/setting/skillManagement/getSkillContent.ts
-var import_express148, import_path26, fs31, router148, getSkillContent_default;
+var import_express171, import_path30, fs35, router171, getSkillContent_default;
 var init_getSkillContent = __esm({
   "src/routes/setting/skillManagement/getSkillContent.ts"() {
     "use strict";
-    import_express148 = __toESM(require_express2());
+    import_express171 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_zod();
     init_is_path_inside();
     init_utils3();
-    import_path26 = __toESM(require("path"));
-    fs31 = __toESM(require("fs"));
-    router148 = import_express148.default.Router();
-    getSkillContent_default = router148.post(
+    import_path30 = __toESM(require("path"));
+    fs35 = __toESM(require("fs"));
+    router171 = import_express171.default.Router();
+    getSkillContent_default = router171.post(
       "/",
       validateFields({
         path: external_exports.string()
       }),
       async (req, res) => {
-        const { path: path34 } = req.body;
+        const { path: path38 } = req.body;
         const skillsRoot = utils_default.getPath(["skills"]);
-        const filePath = import_path26.default.join(skillsRoot, path34);
+        const filePath = import_path30.default.join(skillsRoot, path38);
         if (!isPathInside(filePath, skillsRoot)) {
           return res.status(400).send(error50("\u65E0\u6548\u7684\u8DEF\u5F84"));
         }
-        const raw = await fs31.promises.readFile(filePath, "utf-8");
+        const raw = await fs35.promises.readFile(filePath, "utf-8");
         res.status(200).send(success3(raw));
       }
     );
@@ -255159,16 +258171,16 @@ var init_getSkillContent = __esm({
 });
 
 // src/routes/setting/skillManagement/getSkillList.ts
-var import_express149, import_fast_glob4, router149, getSkillList_default;
+var import_express172, import_fast_glob4, router172, getSkillList_default;
 var init_getSkillList = __esm({
   "src/routes/setting/skillManagement/getSkillList.ts"() {
     "use strict";
-    import_express149 = __toESM(require_express2());
+    import_express172 = __toESM(require_express2());
     init_responseFormat();
     import_fast_glob4 = __toESM(require_out4());
     init_utils3();
-    router149 = import_express149.default.Router();
-    getSkillList_default = router149.post("/", async (req, res) => {
+    router172 = import_express172.default.Router();
+    getSkillList_default = router172.post("/", async (req, res) => {
       const skillsRoot = utils_default.getPath(["skills"]);
       const entries = await (0, import_fast_glob4.default)("**/*.md", {
         cwd: skillsRoot.replace(/\\/g, "/"),
@@ -255180,36 +258192,36 @@ var init_getSkillList = __esm({
 });
 
 // src/routes/setting/skillManagement/saveSkillContent.ts
-var import_express150, import_path27, fs32, router150, saveSkillContent_default;
+var import_express173, import_path31, fs36, router173, saveSkillContent_default;
 var init_saveSkillContent = __esm({
   "src/routes/setting/skillManagement/saveSkillContent.ts"() {
     "use strict";
-    import_express150 = __toESM(require_express2());
+    import_express173 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_zod();
     init_is_path_inside();
     init_utils3();
-    import_path27 = __toESM(require("path"));
-    fs32 = __toESM(require("fs"));
-    router150 = import_express150.default.Router();
-    saveSkillContent_default = router150.post(
+    import_path31 = __toESM(require("path"));
+    fs36 = __toESM(require("fs"));
+    router173 = import_express173.default.Router();
+    saveSkillContent_default = router173.post(
       "/",
       validateFields({
         path: external_exports.string(),
         content: external_exports.string()
       }),
       async (req, res) => {
-        const { path: path34, content } = req.body;
+        const { path: path38, content } = req.body;
         const skillsRoot = utils_default.getPath(["skills"]);
-        const filePath = import_path27.default.join(skillsRoot, path34);
+        const filePath = import_path31.default.join(skillsRoot, path38);
         if (!isPathInside(filePath, skillsRoot)) {
           return res.status(400).send(error50("\u65E0\u6548\u7684\u8DEF\u5F84"));
         }
-        if (!fs32.existsSync(filePath)) {
+        if (!fs36.existsSync(filePath)) {
           return res.status(400).send(error50("\u6587\u4EF6\u4E0D\u5B58\u5728"));
         }
-        const raw = await fs32.promises.writeFile(filePath, content, "utf-8");
+        const raw = await fs36.promises.writeFile(filePath, content, "utf-8");
         res.status(200).send(success3(raw));
       }
     );
@@ -255217,17 +258229,17 @@ var init_saveSkillContent = __esm({
 });
 
 // src/routes/setting/vendorConfig/addVendor.ts
-var import_express151, import_sucrase4, router151, vendorConfigSchema, addVendor_default;
+var import_express174, import_sucrase4, router174, vendorConfigSchema, addVendor_default;
 var init_addVendor = __esm({
   "src/routes/setting/vendorConfig/addVendor.ts"() {
     "use strict";
-    import_express151 = __toESM(require_express2());
+    import_express174 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
     import_sucrase4 = __toESM(require_dist5());
-    router151 = import_express151.default.Router();
+    router174 = import_express174.default.Router();
     vendorConfigSchema = external_exports.object({
       id: external_exports.string(),
       author: external_exports.string(),
@@ -255279,7 +258291,7 @@ var init_addVendor = __esm({
         ])
       )
     });
-    addVendor_default = router151.post(
+    addVendor_default = router174.post(
       "/",
       validateFields({
         tsCode: external_exports.string()
@@ -255297,7 +258309,7 @@ var init_addVendor = __esm({
         const result = vendorConfigSchema.safeParse(vendor);
         if (!result.success) {
           const issueLines = result.error.issues.map((issue3, index) => {
-            const path34 = issue3.path.length ? issue3.path.join(".") : "root";
+            const path38 = issue3.path.length ? issue3.path.join(".") : "root";
             let detail = issue3.message;
             if (issue3.code === "invalid_union") {
               const unionDetails = [
@@ -255309,7 +258321,7 @@ var init_addVendor = __esm({
                 detail = `${issue3.message}\uFF08${unionDetails.join("\uFF1B")}\uFF09`;
               }
             }
-            return `${index + 1}. ${path34}: ${detail}`;
+            return `${index + 1}. ${path38}: ${detail}`;
           });
           return res.status(400).send(error50(`vendor\u914D\u7F6E\u6821\u9A8C\u5931\u8D25\uFF0C\u5171 ${issueLines.length} \u5904:
 ${issueLines.join("\n")}`));
@@ -255331,17 +258343,17 @@ ${issueLines.join("\n")}`));
 });
 
 // src/routes/setting/vendorConfig/addVendorModel.ts
-var import_express152, router152, addVendorModel_default;
+var import_express175, router175, addVendorModel_default;
 var init_addVendorModel = __esm({
   "src/routes/setting/vendorConfig/addVendorModel.ts"() {
     "use strict";
-    import_express152 = __toESM(require_express2());
+    import_express175 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router152 = import_express152.default.Router();
-    addVendorModel_default = router152.post(
+    router175 = import_express175.default.Router();
+    addVendorModel_default = router175.post(
       "/",
       validateFields({
         id: external_exports.string(),
@@ -255395,19 +258407,19 @@ var init_addVendorModel = __esm({
 });
 
 // src/routes/setting/vendorConfig/deleteVendor.ts
-var import_express153, import_path28, import_fs17, router153, deleteVendor_default;
+var import_express176, import_path32, import_fs20, router176, deleteVendor_default;
 var init_deleteVendor = __esm({
   "src/routes/setting/vendorConfig/deleteVendor.ts"() {
     "use strict";
-    import_express153 = __toESM(require_express2());
+    import_express176 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
-    import_path28 = __toESM(require("path"));
-    import_fs17 = __toESM(require("fs"));
+    import_path32 = __toESM(require("path"));
+    import_fs20 = __toESM(require("fs"));
     init_utils3();
     init_zod();
-    router153 = import_express153.default.Router();
-    deleteVendor_default = router153.post(
+    router176 = import_express176.default.Router();
+    deleteVendor_default = router176.post(
       "/",
       validateFields({
         id: external_exports.string()
@@ -255419,7 +258431,7 @@ var init_deleteVendor = __esm({
           model: null,
           vendorId: null
         });
-        import_fs17.default.rmSync(import_path28.default.join(utils_default.getPath("vendor"), `${id}.ts`), { recursive: true, force: true });
+        import_fs20.default.rmSync(import_path32.default.join(utils_default.getPath("vendor"), `${id}.ts`), { recursive: true, force: true });
         res.status(200).send(success3("\u5220\u9664\u6210\u529F"));
       }
     );
@@ -255427,17 +258439,17 @@ var init_deleteVendor = __esm({
 });
 
 // src/routes/setting/vendorConfig/delVendorModel.ts
-var import_express154, router154, delVendorModel_default;
+var import_express177, router177, delVendorModel_default;
 var init_delVendorModel = __esm({
   "src/routes/setting/vendorConfig/delVendorModel.ts"() {
     "use strict";
-    import_express154 = __toESM(require_express2());
+    import_express177 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router154 = import_express154.default.Router();
-    delVendorModel_default = router154.post(
+    router177 = import_express177.default.Router();
+    delVendorModel_default = router177.post(
       "/",
       validateFields({
         id: external_exports.string(),
@@ -255463,17 +258475,17 @@ var init_delVendorModel = __esm({
 });
 
 // src/routes/setting/vendorConfig/enableVendor.ts
-var import_express155, router155, enableVendor_default;
+var import_express178, router178, enableVendor_default;
 var init_enableVendor = __esm({
   "src/routes/setting/vendorConfig/enableVendor.ts"() {
     "use strict";
-    import_express155 = __toESM(require_express2());
+    import_express178 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router155 = import_express155.default.Router();
-    enableVendor_default = router155.post(
+    router178 = import_express178.default.Router();
+    enableVendor_default = router178.post(
       "/",
       validateFields({
         id: external_exports.string(),
@@ -255489,16 +258501,16 @@ var init_enableVendor = __esm({
 });
 
 // src/routes/setting/vendorConfig/getCodeByLink.ts
-var import_express156, router156, getCodeByLink_default;
+var import_express179, router179, getCodeByLink_default;
 var init_getCodeByLink = __esm({
   "src/routes/setting/vendorConfig/getCodeByLink.ts"() {
     "use strict";
-    import_express156 = __toESM(require_express2());
+    import_express179 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_zod();
-    router156 = import_express156.default.Router();
-    getCodeByLink_default = router156.post(
+    router179 = import_express179.default.Router();
+    getCodeByLink_default = router179.post(
       "/",
       validateFields({
         link: external_exports.string()
@@ -255513,15 +258525,15 @@ var init_getCodeByLink = __esm({
 });
 
 // src/routes/setting/vendorConfig/getVendorList.ts
-var import_express157, router157, getVendorList_default;
+var import_express180, router180, getVendorList_default;
 var init_getVendorList = __esm({
   "src/routes/setting/vendorConfig/getVendorList.ts"() {
     "use strict";
-    import_express157 = __toESM(require_express2());
+    import_express180 = __toESM(require_express2());
     init_responseFormat();
     init_utils3();
-    router157 = import_express157.default.Router();
-    getVendorList_default = router157.post("/", async (req, res) => {
+    router180 = import_express180.default.Router();
+    getVendorList_default = router180.post("/", async (req, res) => {
       const data = await utils_default.db("o_vendorConfig").select("*");
       const list2 = (await Promise.all(
         data.map(async (item) => {
@@ -255551,18 +258563,18 @@ var init_getVendorList = __esm({
 });
 
 // src/routes/setting/vendorConfig/modelTest.ts
-var import_express158, router158, modelTest_default;
+var import_express181, router181, modelTest_default;
 var init_modelTest = __esm({
   "src/routes/setting/vendorConfig/modelTest.ts"() {
     "use strict";
-    import_express158 = __toESM(require_express2());
+    import_express181 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
     init_dist22();
-    router158 = import_express158.default.Router();
-    modelTest_default = router158.post(
+    router181 = import_express181.default.Router();
+    modelTest_default = router181.post(
       "/",
       validateFields({
         modelName: external_exports.string(),
@@ -255655,17 +258667,17 @@ var init_modelTest = __esm({
 });
 
 // src/routes/setting/vendorConfig/modelTest/imageTest.ts
-var import_express159, router159, imageTest_default;
+var import_express182, router182, imageTest_default;
 var init_imageTest = __esm({
   "src/routes/setting/vendorConfig/modelTest/imageTest.ts"() {
     "use strict";
-    import_express159 = __toESM(require_express2());
+    import_express182 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router159 = import_express159.default.Router();
-    imageTest_default = router159.post(
+    router182 = import_express182.default.Router();
+    imageTest_default = router182.post(
       "/",
       validateFields({
         modelName: external_exports.string(),
@@ -255702,18 +258714,18 @@ var init_imageTest = __esm({
 });
 
 // src/routes/setting/vendorConfig/modelTest/textTest.ts
-var import_express160, router160, textTest_default;
+var import_express183, router183, textTest_default;
 var init_textTest = __esm({
   "src/routes/setting/vendorConfig/modelTest/textTest.ts"() {
     "use strict";
-    import_express160 = __toESM(require_express2());
+    import_express183 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
     init_dist22();
-    router160 = import_express160.default.Router();
-    textTest_default = router160.post(
+    router183 = import_express183.default.Router();
+    textTest_default = router183.post(
       "/",
       validateFields({
         modelName: external_exports.string(),
@@ -255765,17 +258777,17 @@ var init_textTest = __esm({
 });
 
 // src/routes/setting/vendorConfig/modelTest/videoTest.ts
-var import_express161, router161, videoTest_default;
+var import_express184, router184, videoTest_default;
 var init_videoTest = __esm({
   "src/routes/setting/vendorConfig/modelTest/videoTest.ts"() {
     "use strict";
-    import_express161 = __toESM(require_express2());
+    import_express184 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router161 = import_express161.default.Router();
-    videoTest_default = router161.post(
+    router184 = import_express184.default.Router();
+    videoTest_default = router184.post(
       "/",
       validateFields({
         modelName: external_exports.string(),
@@ -255841,18 +258853,18 @@ var init_videoTest = __esm({
 });
 
 // src/routes/setting/vendorConfig/updateCode.ts
-var import_express162, import_sucrase5, router162, vendorConfigSchema2, updateCode_default;
+var import_express185, import_sucrase5, router185, vendorConfigSchema2, updateCode_default;
 var init_updateCode = __esm({
   "src/routes/setting/vendorConfig/updateCode.ts"() {
     "use strict";
-    import_express162 = __toESM(require_express2());
+    import_express185 = __toESM(require_express2());
     init_serialize_error();
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
     import_sucrase5 = __toESM(require_dist5());
-    router162 = import_express162.default.Router();
+    router185 = import_express185.default.Router();
     vendorConfigSchema2 = external_exports.object({
       id: external_exports.string(),
       author: external_exports.string(),
@@ -255904,7 +258916,7 @@ var init_updateCode = __esm({
         ])
       )
     });
-    updateCode_default = router162.post(
+    updateCode_default = router185.post(
       "/",
       validateFields({
         id: external_exports.string(),
@@ -255941,17 +258953,17 @@ var init_updateCode = __esm({
 });
 
 // src/routes/setting/vendorConfig/updateVendorInputs.ts
-var import_express163, router163, updateVendorInputs_default;
+var import_express186, router186, updateVendorInputs_default;
 var init_updateVendorInputs = __esm({
   "src/routes/setting/vendorConfig/updateVendorInputs.ts"() {
     "use strict";
-    import_express163 = __toESM(require_express2());
+    import_express186 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router163 = import_express163.default.Router();
-    updateVendorInputs_default = router163.post(
+    router186 = import_express186.default.Router();
+    updateVendorInputs_default = router186.post(
       "/",
       validateFields({
         id: external_exports.string(),
@@ -255969,17 +258981,17 @@ var init_updateVendorInputs = __esm({
 });
 
 // src/routes/setting/vendorConfig/upVendorModel.ts
-var import_express164, router164, upVendorModel_default;
+var import_express187, router187, upVendorModel_default;
 var init_upVendorModel = __esm({
   "src/routes/setting/vendorConfig/upVendorModel.ts"() {
     "use strict";
-    import_express164 = __toESM(require_express2());
+    import_express187 = __toESM(require_express2());
     init_responseFormat();
     init_middleware();
     init_utils3();
     init_zod();
-    router164 = import_express164.default.Router();
-    upVendorModel_default = router164.post(
+    router187 = import_express187.default.Router();
+    upVendorModel_default = router187.post(
       "/",
       validateFields({
         id: external_exports.string(),
@@ -256038,15 +259050,15 @@ var init_upVendorModel = __esm({
 });
 
 // src/routes/task/getProject.ts
-var import_express165, router165, getProject_default2;
+var import_express188, router188, getProject_default2;
 var init_getProject2 = __esm({
   "src/routes/task/getProject.ts"() {
     "use strict";
-    import_express165 = __toESM(require_express2());
+    import_express188 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    router165 = import_express165.default.Router();
-    getProject_default2 = router165.post("/", async (req, res) => {
+    router188 = import_express188.default.Router();
+    getProject_default2 = router188.post("/", async (req, res) => {
       const list2 = await utils_default.db("o_project").select("id", "name").groupBy("name");
       const data = list2.filter((item) => item.name);
       res.status(200).send(success3(data));
@@ -256055,17 +259067,17 @@ var init_getProject2 = __esm({
 });
 
 // src/routes/task/getTaskApi.ts
-var import_express166, router166, getTaskApi_default;
+var import_express189, router189, getTaskApi_default;
 var init_getTaskApi = __esm({
   "src/routes/task/getTaskApi.ts"() {
     "use strict";
-    import_express166 = __toESM(require_express2());
+    import_express189 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
     init_middleware();
     init_zod();
-    router166 = import_express166.default.Router();
-    getTaskApi_default = router166.post(
+    router189 = import_express189.default.Router();
+    getTaskApi_default = router189.post(
       "/",
       validateFields({
         state: external_exports.string().optional().nullable(),
@@ -256106,15 +259118,15 @@ var init_getTaskApi = __esm({
 });
 
 // src/routes/task/getTaskCategories.ts
-var import_express167, router167, getTaskCategories_default;
+var import_express190, router190, getTaskCategories_default;
 var init_getTaskCategories = __esm({
   "src/routes/task/getTaskCategories.ts"() {
     "use strict";
-    import_express167 = __toESM(require_express2());
+    import_express190 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
-    router167 = import_express167.default.Router();
-    getTaskCategories_default = router167.post("/", async (req, res) => {
+    router190 = import_express190.default.Router();
+    getTaskCategories_default = router190.post("/", async (req, res) => {
       const list2 = await utils_default.db("o_tasks").select("taskClass").groupBy("taskClass");
       const data = list2.filter((item) => item.taskClass);
       res.status(200).send(success3(data));
@@ -256123,17 +259135,17 @@ var init_getTaskCategories = __esm({
 });
 
 // src/routes/task/taskDetails.ts
-var import_express168, router168, taskDetails_default;
+var import_express191, router191, taskDetails_default;
 var init_taskDetails = __esm({
   "src/routes/task/taskDetails.ts"() {
     "use strict";
-    import_express168 = __toESM(require_express2());
+    import_express191 = __toESM(require_express2());
     init_utils3();
     init_responseFormat();
     init_middleware();
     init_zod();
-    router168 = import_express168.default.Router();
-    taskDetails_default = router168.post(
+    router191 = import_express191.default.Router();
+    taskDetails_default = router191.post(
       "/",
       validateFields({
         taskId: external_exports.number()
@@ -256148,18 +259160,18 @@ var init_taskDetails = __esm({
 });
 
 // src/routes/test/test.ts
-var import_express169, import_fs18, router169, test_default;
+var import_express192, import_fs21, router192, test_default;
 var init_test = __esm({
   "src/routes/test/test.ts"() {
     "use strict";
-    import_express169 = __toESM(require_express2());
+    import_express192 = __toESM(require_express2());
     init_utils3();
-    import_fs18 = __toESM(require("fs"));
-    router169 = import_express169.default.Router();
-    test_default = router169.get("/", async (req, res) => {
+    import_fs21 = __toESM(require("fs"));
+    router192 = import_express192.default.Router();
+    test_default = router192.get("/", async (req, res) => {
       return res.send("ok");
       const test2 = await utils_default.db("o_vendorConfig").select("*");
-      import_fs18.default.writeFileSync("test.json", JSON.stringify(test2, null, 2));
+      import_fs21.default.writeFileSync("test.json", JSON.stringify(test2, null, 2));
       res.send(test2);
     });
   }
@@ -256200,6 +259212,32 @@ var init_router = __esm({
     init_cancelGenerate();
     init_generateAssets();
     init_polishAssetsPrompt();
+    init_addEdge();
+    init_cancelGeneration();
+    init_createAsset();
+    init_createNode();
+    init_createStateAsset();
+    init_deleteNode();
+    init_duplicateNodes();
+    init_generateAudio();
+    init_generateImage();
+    init_generateText();
+    init_generateVideo();
+    init_getCanvas();
+    init_getPresets();
+    init_listArtStyles();
+    init_listHistory();
+    init_polishPreset();
+    init_polishVideoPrompt();
+    init_pollVersions();
+    init_removeEdge();
+    init_reorderEdges();
+    init_restoreNode();
+    init_saveLayout();
+    init_saveNodeToAssets();
+    init_setCurrentVersion();
+    init_updateNode();
+    init_upload();
     init_getBigImage();
     init_batchBindAudio();
     init_getAllAssets();
@@ -256228,16 +259266,12 @@ var init_router = __esm({
     init_batchGenerateAssetsImage();
     init_deleteAssetsDireve();
     init_pollingImage();
-    init_updateAssetsUrl();
-    init_generateFlowImage();
-    init_getImageDefaultModle();
-    init_getImageFlow();
-    init_saveImageFlow();
-    init_updateImageFlow();
-    init_uploadImage();
     init_getFlowData();
     init_getStoryboardData();
     init_saveFlowData();
+    init_getShots();
+    init_setSegment();
+    init_trackRefs();
     init_addStoryboard();
     init_batchAddStoryboardInfo();
     init_batchDelete2();
@@ -256248,7 +259282,6 @@ var init_router = __esm({
     init_pollingImage2();
     init_previewImage();
     init_removeFrame();
-    init_updateStoryboardUrl();
     init_addTrack();
     init_batchGeneratePrompt();
     init_batchGenerateVideo();
@@ -256256,7 +259289,7 @@ var init_router = __esm({
     init_checkVideoStateList();
     init_deleteTrack();
     init_delVideo();
-    init_generateVideo();
+    init_generateVideo2();
     init_generateVideoPrompt();
     init_getAudioBindAssetsList();
     init_getFileUrl();
@@ -256299,6 +259332,8 @@ var init_router = __esm({
     init_getAgentUseMode();
     init_updateAgentModel();
     init_updateUseMode();
+    init_getAssetModels();
+    init_setAssetModels();
     init_clearData();
     init_clearTable();
     init_dbInfo();
@@ -256370,6 +259405,32 @@ var init_router = __esm({
       app2.use("/api/assetsGenerate/cancelGenerate", cancelGenerate_default);
       app2.use("/api/assetsGenerate/generateAssets", generateAssets_default);
       app2.use("/api/assetsGenerate/polishAssetsPrompt", polishAssetsPrompt_default);
+      app2.use("/api/canvas/addEdge", addEdge_default);
+      app2.use("/api/canvas/cancelGeneration", cancelGeneration_default);
+      app2.use("/api/canvas/createAsset", createAsset_default);
+      app2.use("/api/canvas/createNode", createNode_default);
+      app2.use("/api/canvas/createStateAsset", createStateAsset_default);
+      app2.use("/api/canvas/deleteNode", deleteNode_default);
+      app2.use("/api/canvas/duplicateNodes", duplicateNodes_default);
+      app2.use("/api/canvas/generateAudio", generateAudio_default);
+      app2.use("/api/canvas/generateImage", generateImage_default);
+      app2.use("/api/canvas/generateText", generateText_default);
+      app2.use("/api/canvas/generateVideo", generateVideo_default);
+      app2.use("/api/canvas/getCanvas", getCanvas_default);
+      app2.use("/api/canvas/getPresets", getPresets_default);
+      app2.use("/api/canvas/listArtStyles", listArtStyles_default);
+      app2.use("/api/canvas/listHistory", listHistory_default);
+      app2.use("/api/canvas/polishPreset", polishPreset_default);
+      app2.use("/api/canvas/polishVideoPrompt", polishVideoPrompt_default);
+      app2.use("/api/canvas/pollVersions", pollVersions_default);
+      app2.use("/api/canvas/removeEdge", removeEdge_default);
+      app2.use("/api/canvas/reorderEdges", reorderEdges_default);
+      app2.use("/api/canvas/restoreNode", restoreNode_default);
+      app2.use("/api/canvas/saveLayout", saveLayout_default);
+      app2.use("/api/canvas/saveNodeToAssets", saveNodeToAssets_default);
+      app2.use("/api/canvas/setCurrentVersion", setCurrentVersion_default);
+      app2.use("/api/canvas/updateNode", updateNode_default);
+      app2.use("/api/canvas/upload", upload_default);
       app2.use("/api/common/getBigImage", getBigImage_default);
       app2.use("/api/cornerScape/batchBindAudio", batchBindAudio_default);
       app2.use("/api/cornerScape/getAllAssets", getAllAssets_default);
@@ -256398,16 +259459,12 @@ var init_router = __esm({
       app2.use("/api/production/assets/batchGenerateAssetsImage", batchGenerateAssetsImage_default);
       app2.use("/api/production/assets/deleteAssetsDireve", deleteAssetsDireve_default);
       app2.use("/api/production/assets/pollingImage", pollingImage_default);
-      app2.use("/api/production/assets/updateAssetsUrl", updateAssetsUrl_default);
-      app2.use("/api/production/editImage/generateFlowImage", generateFlowImage_default);
-      app2.use("/api/production/editImage/getImageDefaultModle", getImageDefaultModle_default);
-      app2.use("/api/production/editImage/getImageFlow", getImageFlow_default);
-      app2.use("/api/production/editImage/saveImageFlow", saveImageFlow_default);
-      app2.use("/api/production/editImage/updateImageFlow", updateImageFlow_default);
-      app2.use("/api/production/editImage/uploadImage", uploadImage_default);
       app2.use("/api/production/getFlowData", getFlowData_default);
       app2.use("/api/production/getStoryboardData", getStoryboardData_default);
       app2.use("/api/production/saveFlowData", saveFlowData_default);
+      app2.use("/api/production/shots/getShots", getShots_default);
+      app2.use("/api/production/shots/setSegment", setSegment_default);
+      app2.use("/api/production/shots/trackRefs", trackRefs_default);
       app2.use("/api/production/storyboard/addStoryboard", addStoryboard_default);
       app2.use("/api/production/storyboard/batchAddStoryboardInfo", batchAddStoryboardInfo_default);
       app2.use("/api/production/storyboard/batchDelete", batchDelete_default2);
@@ -256418,7 +259475,6 @@ var init_router = __esm({
       app2.use("/api/production/storyboard/pollingImage", pollingImage_default2);
       app2.use("/api/production/storyboard/previewImage", previewImage_default);
       app2.use("/api/production/storyboard/removeFrame", removeFrame_default);
-      app2.use("/api/production/storyboard/updateStoryboardUrl", updateStoryboardUrl_default);
       app2.use("/api/production/workbench/addTrack", addTrack_default);
       app2.use("/api/production/workbench/batchGeneratePrompt", batchGeneratePrompt_default);
       app2.use("/api/production/workbench/batchGenerateVideo", batchGenerateVideo_default);
@@ -256426,7 +259482,7 @@ var init_router = __esm({
       app2.use("/api/production/workbench/checkVideoStateList", checkVideoStateList_default);
       app2.use("/api/production/workbench/deleteTrack", deleteTrack_default);
       app2.use("/api/production/workbench/delVideo", delVideo_default);
-      app2.use("/api/production/workbench/generateVideo", generateVideo_default);
+      app2.use("/api/production/workbench/generateVideo", generateVideo_default2);
       app2.use("/api/production/workbench/generateVideoPrompt", generateVideoPrompt_default);
       app2.use("/api/production/workbench/getAudioBindAssetsList", getAudioBindAssetsList_default);
       app2.use("/api/production/workbench/getFileUrl", getFileUrl_default);
@@ -256469,6 +259525,8 @@ var init_router = __esm({
       app2.use("/api/setting/agentDeploy/getAgentUseMode", getAgentUseMode_default);
       app2.use("/api/setting/agentDeploy/updateAgentModel", updateAgentModel_default);
       app2.use("/api/setting/agentDeploy/updateUseMode", updateUseMode_default);
+      app2.use("/api/setting/assetModels/getAssetModels", getAssetModels_default);
+      app2.use("/api/setting/assetModels/setAssetModels", setAssetModels_default);
       app2.use("/api/setting/dbConfig/clearData", clearData_default);
       app2.use("/api/setting/dbConfig/clearTable", clearTable_default);
       app2.use("/api/setting/dbConfig/dbInfo", dbInfo_default);
@@ -256568,7 +259626,7 @@ if (!env) {
 }
 
 // src/app.ts
-var import_express170 = __toESM(require_express2());
+var import_express193 = __toESM(require_express2());
 
 // node_modules/socket.io/wrapper.mjs
 var import_dist = __toESM(require_dist3(), 1);
@@ -256641,8 +259699,8 @@ import { Express } from "express";
 }
 
 // src/app.ts
-var import_path29 = __toESM(require("path"));
-var import_fs19 = __toESM(require("fs"));
+var import_path33 = __toESM(require("path"));
+var import_fs22 = __toESM(require("fs"));
 init_utils3();
 var import_jsonwebtoken5 = __toESM(require_jsonwebtoken());
 
@@ -256706,8 +259764,8 @@ var Memory = class {
 ${list2}` }]
     });
     try {
-      const ids = JSON.parse(text2);
-      if (Array.isArray(ids)) return ids.map(String);
+      const ids2 = JSON.parse(text2);
+      if (Array.isArray(ids2)) return ids2.map(String);
     } catch {
     }
     return [];
@@ -256935,8 +259993,8 @@ function createSkillTools(skills, skillPaths, rootDir = getPath_default("skills"
         content += "\u4F7F\u7528 read_skill_file \u5DE5\u5177\u8BFB\u53D6\u8D44\u6E90\u6587\u4EF6\u3002\n";
         if (skillPaths.secondarySkills.length > 0) {
           content += "\n<skill_resources>\n";
-          for (const path34 of skillPaths.secondarySkills) {
-            content += `  <file>${path34}</file>
+          for (const path38 of skillPaths.secondarySkills) {
+            content += `  <file>${path38}</file>
 `;
           }
           content += "</skill_resources>\n";
@@ -256979,8 +260037,8 @@ function createSkillTools(skills, skillPaths, rootDir = getPath_default("skills"
         content += "\u53EF\u4EE5\u4F7F\u7528 read_skill_file \u5DE5\u5177\u8BFB\u53D6\u8D44\u6E90\u6587\u4EF6\u3002\n";
         if (skillPaths.tertiarySkills.length > 0) {
           content += "\n<skill_resources>\n";
-          for (const path34 of skillPaths.tertiarySkills) {
-            content += `  <file>${path34}</file>
+          for (const path38 of skillPaths.tertiarySkills) {
+            content += `  <file>${path38}</file>
 `;
           }
           content += "</skill_resources>\n";
@@ -257165,9 +260223,9 @@ var tools_default = (toolCpnfig) => {
           ids: external_exports.array(external_exports.number()).describe("\u9700\u8981\u751F\u6210\u7684 \u884D\u751F\u8D44\u4EA7ID")
         }).toJSONSchema()
       ),
-      execute: async ({ ids }) => {
+      execute: async ({ ids: ids2 }) => {
         const thinking = msg.thinking("\u6B63\u5728\u751F\u6210\u884D\u751F\u8D44\u4EA7...");
-        new Promise((resolve3) => socket.emit("generateDeriveAsset", { ids }, (res) => resolve3(res))).then((res) => {
+        new Promise((resolve3) => socket.emit("generateDeriveAsset", { ids: ids2 }, (res) => resolve3(res))).then((res) => {
           thinking.appendText(`\u5DF2\u751F\u6210\u884D\u751F\u8D44\u4EA7\uFF0CID: ${JSON.stringify(res, null, 2)}
 `);
           thinking.updateTitle("\u884D\u751F\u8D44\u4EA7\u5F00\u59CB\u5B8C\u6210");
@@ -257187,11 +260245,11 @@ var tools_default = (toolCpnfig) => {
           ids: external_exports.array(external_exports.number()).describe("\u5FC5\u987B\u83B7\u53D6\u771F\u5B9E\u7684\u5206\u955CID\uFF0C\u652F\u6301\u6279\u91CF\u751F\u6210")
         }).toJSONSchema()
       ),
-      execute: async ({ ids }) => {
+      execute: async ({ ids: ids2 }) => {
         const thinking = msg.thinking("\u6B63\u5728\u751F\u6210\u5206\u955C...");
         socketQueue(
           () => new Promise(
-            (resolve3, reject) => socket.emit("generateStoryboard", { ids }, (res) => {
+            (resolve3, reject) => socket.emit("generateStoryboard", { ids: ids2 }, (res) => {
               if (res?.error) return reject(new Error(res.error));
               resolve3(res);
             })
@@ -258402,10 +261460,10 @@ var tools_default2 = (toolCpnfig) => {
           ids: external_exports.array(external_exports.string()).describe("\u811A\u672Cid")
         }).toJSONSchema()
       ),
-      execute: async ({ ids }) => {
-        console.log("[tools] get_script_content", "[tools] get_script_content", ids);
+      execute: async ({ ids: ids2 }) => {
+        console.log("[tools] get_script_content", "[tools] get_script_content", ids2);
         const thinking = msg.thinking(`\u6B63\u5728\u83B7\u53D6\u811A\u672C\u5185\u5BB9...`);
-        const data = await utils_default.db("o_script").whereIn("id", ids).select("content", "name");
+        const data = await utils_default.db("o_script").whereIn("id", ids2).select("content", "name");
         const text2 = data && data.length ? data.map((d) => `<scriptItem name="${d.name}">${d.content}</scriptItem>`).join("\n") : "";
         thinking.appendText(`\u83B7\u53D6\u5230\u811A\u672C\u5185\u5BB9:
 ` + JSON.stringify(data, null, 2));
@@ -258798,16 +261856,16 @@ async function ensureThumbnail(originalPath, thumbnailPath, size) {
 }
 
 // src/app.ts
-var app = (0, import_express170.default)();
+var app = (0, import_express193.default)();
 var server = import_node_http.default.createServer(app);
 async function checkPermissions() {
   if (!isEletron()) return true;
   const userDataPath = utils_default.getPath();
   try {
-    import_fs19.default.mkdirSync(userDataPath, { recursive: true });
-    const testFile = import_path29.default.join(userDataPath, ".access_test");
-    import_fs19.default.writeFileSync(testFile, "test");
-    import_fs19.default.unlinkSync(testFile);
+    import_fs22.default.mkdirSync(userDataPath, { recursive: true });
+    const testFile = import_path33.default.join(userDataPath, ".access_test");
+    import_fs22.default.writeFileSync(testFile, "test");
+    import_fs22.default.unlinkSync(testFile);
   } catch (e) {
     const { dialog, app: app2 } = require("electron");
     const { response } = await dialog.showMessageBox({
@@ -258835,11 +261893,11 @@ async function startServe(randomPort = false) {
   (0, import_express_ws.default)(app);
   app.use((0, import_morgan.default)("dev"));
   app.use((0, import_cors.default)({ origin: "*" }));
-  app.use(import_express170.default.json({ limit: "100mb" }));
-  app.use(import_express170.default.urlencoded({ extended: true, limit: "100mb" }));
+  app.use(import_express193.default.json({ limit: "100mb" }));
+  app.use(import_express193.default.urlencoded({ extended: true, limit: "100mb" }));
   const ossDir = utils_default.getPath("oss");
-  if (!import_fs19.default.existsSync(ossDir)) {
-    import_fs19.default.mkdirSync(ossDir, { recursive: true });
+  if (!import_fs22.default.existsSync(ossDir)) {
+    import_fs22.default.mkdirSync(ossDir, { recursive: true });
   }
   console.log("\u6587\u4EF6\u76EE\u5F55:", ossDir);
   app.use(
@@ -258847,8 +261905,8 @@ async function startServe(randomPort = false) {
     (req, res, next) => {
       if (req.query.size) {
         const size = req.query.size;
-        const smallImageBaseDir = import_path29.default.join(ossDir, "smallImage");
-        const originalPath = import_path29.default.join(ossDir, req.path);
+        const smallImageBaseDir = import_path33.default.join(ossDir, "smallImage");
+        const originalPath = import_path33.default.join(ossDir, req.path);
         let sizeSubDir;
         let sizeOpts;
         const dimensMatch = size.match(/^(\d+)x(\d+)$/i);
@@ -258863,29 +261921,29 @@ async function startServe(randomPort = false) {
           sizeSubDir = `${percentMatch[1]}p`;
           sizeOpts = { type: "percentage", value: pct };
         } else {
-          import_express170.default.static(ossDir, { acceptRanges: false })(req, res, next);
+          import_express193.default.static(ossDir, { acceptRanges: true })(req, res, next);
           return;
         }
-        const ext = import_path29.default.extname(req.path);
-        const base = import_path29.default.basename(req.path, ext);
-        const dir = import_path29.default.dirname(req.path);
-        const smallImagePath = import_path29.default.join(smallImageBaseDir, dir, `${base}_${sizeSubDir}${ext}`);
+        const ext = import_path33.default.extname(req.path);
+        const base = import_path33.default.basename(req.path, ext);
+        const dir = import_path33.default.dirname(req.path);
+        const smallImagePath = import_path33.default.join(smallImageBaseDir, dir, `${base}_${sizeSubDir}${ext}`);
         ensureThumbnail(originalPath, smallImagePath, sizeOpts).then((thumbnailPath) => {
           if (thumbnailPath) {
             res.sendFile(thumbnailPath);
           } else {
-            import_express170.default.static(ossDir, { acceptRanges: false })(req, res, next);
+            import_express193.default.static(ossDir, { acceptRanges: true })(req, res, next);
           }
         });
         return;
       }
       next();
     },
-    import_express170.default.static(ossDir, { acceptRanges: false })
+    import_express193.default.static(ossDir, { acceptRanges: true })
   );
   const skillsDir = utils_default.getPath("skills");
-  if (!import_fs19.default.existsSync(skillsDir)) {
-    import_fs19.default.mkdirSync(skillsDir, { recursive: true });
+  if (!import_fs22.default.existsSync(skillsDir)) {
+    import_fs22.default.mkdirSync(skillsDir, { recursive: true });
   }
   console.log("\u6587\u4EF6\u76EE\u5F55:", skillsDir);
   app.use(
@@ -258893,18 +261951,18 @@ async function startServe(randomPort = false) {
     (req, res, next) => {
       /\.(jpe?g|png|gif|webp|svg|ico|bmp)$/i.test(req.path) ? next() : res.status(403).end();
     },
-    import_express170.default.static(skillsDir, { acceptRanges: false })
+    import_express193.default.static(skillsDir, { acceptRanges: false })
   );
   const assetsDir = utils_default.getPath("assets");
-  if (!import_fs19.default.existsSync(assetsDir)) {
-    import_fs19.default.mkdirSync(assetsDir, { recursive: true });
+  if (!import_fs22.default.existsSync(assetsDir)) {
+    import_fs22.default.mkdirSync(assetsDir, { recursive: true });
   }
   console.log("\u6587\u4EF6\u76EE\u5F55:", assetsDir);
-  app.use("/assets", import_express170.default.static(assetsDir, { acceptRanges: false }));
+  app.use("/assets", import_express193.default.static(assetsDir, { acceptRanges: false }));
   const webDir = utils_default.getPath("web");
-  if (import_fs19.default.existsSync(webDir)) {
+  if (import_fs22.default.existsSync(webDir)) {
     console.log("\u9759\u6001\u7F51\u7AD9\u76EE\u5F55:", webDir);
-    app.use(import_express170.default.static(webDir, { acceptRanges: false }));
+    app.use(import_express193.default.static(webDir, { acceptRanges: false }));
   } else {
     console.warn("\u9759\u6001\u7F51\u7AD9\u76EE\u5F55\u4E0D\u5B58\u5728:", webDir);
   }
@@ -258924,8 +261982,8 @@ async function startServe(randomPort = false) {
       return res.status(401).send({ message: "\u65E0\u6548\u7684token" });
     }
   });
-  const router170 = await Promise.resolve().then(() => (init_router(), router_exports));
-  await router170.default(app);
+  const router193 = await Promise.resolve().then(() => (init_router(), router_exports));
+  await router193.default(app);
   app.use((_, res, next) => {
     return res.status(404).send({ message: "API 404 Not Found" });
   });

@@ -45,8 +45,23 @@ export default router.post(
     // 删除项目下的资产
     await u.db("o_assets").where("projectId", id).delete();
     //删除项目下的视频轨道和视频
+    const trackIds = (await u.db("o_videoTrack").where("projectId", id).select("id")).map((t: any) => t.id);
     await u.db("o_videoTrack").where("projectId", id).delete();
     await u.db("o_video").where("projectId", id).delete();
+    // 画布：布局、自由节点、连线、回收站，以及分镜 / 片段 / 自由节点名下的版本图
+    const nodeIds = (await u.db("o_canvasNode").where("projectId", id).select("id")).map((n: any) => n.id);
+    if (nodeIds.length > 0) await u.db("o_canvasNode").whereIn("id", nodeIds).update({ imageId: null });
+    await u.db("o_image")
+      .where((qb) => {
+        qb.whereIn("canvasNodeId", nodeIds.length ? nodeIds : [-1])
+          .orWhereIn("storyboardId", storyboardIds.length ? storyboardIds : [-1])
+          .orWhereIn("videoTrackId", trackIds.length ? trackIds : [-1]);
+      })
+      .delete();
+    await u.db("o_canvasEdge").where("projectId", id).delete();
+    await u.db("o_canvasNode").where("projectId", id).delete();
+    await u.db("o_canvasTrash").where("projectId", id).delete();
+    await u.db("o_canvas").where("projectId", id).delete();
     //删除项目下的资源
 
     await u.db("memories").where("isolationKey", "like", `${id}:%`).delete();

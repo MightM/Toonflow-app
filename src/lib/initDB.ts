@@ -1033,6 +1033,63 @@ export default async (knex: Knex, forceInit: boolean = false): Promise<void> => 
         table.unique(["assetsAudioId", "assetsRoleId"]);
       },
     },
+    //资产画布（每个项目一张）
+    {
+      name: "o_canvas",
+      builder: (table) => {
+        table.integer("id").notNullable();
+        table.integer("projectId").notNullable();
+        table.text("viewport"); // {x,y,zoom}
+        table.text("layout"); // {positions, nodeMeta, pinned, hidden}
+        table.integer("updateTime");
+        table.primary(["id"]);
+        table.unique(["projectId"]);
+      },
+    },
+    //画布自由节点（图片/视频），不进 o_assets，版本记在 o_image.canvasNodeId
+    {
+      name: "o_canvasNode",
+      builder: (table) => {
+        table.integer("id").notNullable();
+        table.integer("projectId").notNullable();
+        table.text("kind").notNullable(); // image | video
+        table.text("name");
+        table.text("prompt");
+        table.integer("imageId");
+        table.text("params");
+        table.integer("createTime");
+        table.primary(["id"]);
+        table.index(["projectId"]);
+      },
+    },
+    //画布参考连线，key 形如 a:<assetId> / n:<canvasNodeId>，sort 决定参考图顺序
+    {
+      name: "o_canvasEdge",
+      builder: (table) => {
+        table.integer("id").notNullable();
+        table.integer("projectId").notNullable();
+        table.text("sourceKey").notNullable();
+        table.text("targetKey").notNullable();
+        table.integer("sort").defaultTo(0);
+        table.integer("createTime");
+        table.primary(["id"]);
+        table.index(["projectId"]);
+        table.index(["targetKey"]);
+      },
+    },
+    //画布回收站：删除节点时的数据快照，供撤销恢复；文件在过期清理时才删
+    {
+      name: "o_canvasTrash",
+      builder: (table) => {
+        table.integer("id").notNullable();
+        table.integer("projectId").notNullable();
+        table.text("key").notNullable();
+        table.text("snapshot").notNullable();
+        table.integer("createTime").notNullable();
+        table.primary(["id"]);
+        table.index(["projectId"]);
+      },
+    },
   ];
 
   for (const t of tables) {

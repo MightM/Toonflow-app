@@ -55,3 +55,7 @@ database.d.ts
 data/oss/*
 data/test.sqlite
 version.txt
+# 本地数据与备份，不进仓库
+data/db2.sqlite*
+data/oss/
+*.bak-*

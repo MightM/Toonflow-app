@@ -1,4 +1,5 @@
 import { VM } from "vm2";
+import { genContext } from "@/lib/genQueue";
 import sharp from "sharp";
 import axios from "axios";
 import { createOpenAI } from "@ai-sdk/openai";
@@ -87,6 +88,7 @@ export async function urlToBase64(url: string): Promise<string> {
   return `data:${mime};base64,${b64}`;
 }
 
+export const CANCELLED = "已取消";
 export async function pollTask(
   fn: () => Promise<{ completed: boolean; data?: string; error?: string }>,
   interval = 3000,
@@ -94,6 +96,8 @@ export async function pollTask(
 ): Promise<{ completed: boolean; data?: string; error?: string }> {
   const start = Date.now();
   while (Date.now() - start < timeout) {
+    // 画布生成队列里的任务被用户终止：不再等结果（供应商脚本拿到这个 error 后可顺手把远端任务撤掉）
+    if (genContext.getStore()?.signal.aborted) return { completed: false, error: CANCELLED };
     try {
       const result = await fn();
       if (result.completed) return result;

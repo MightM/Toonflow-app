@@ -8,7 +8,7 @@ const router = express.Router();
 export default router.post(
   "/",
   validateFields({
-    type: z.enum(["text", "image", "video", "all"]),
+    type: z.enum(["text", "image", "video", "tts", "all"]),
   }),
   async (req, res) => {
     const { type } = req.body;
@@ -23,7 +23,7 @@ export default router.post(
         const models = modelList[index];
         const filtered =
           type === "all"
-            ? models.filter((item: { type: string }) => item.type !== "video")
+            ? models.filter((item: { type: string }) => item.type !== "video" && item.type !== "tts")
             : models.filter((item: { type: string }) => item.type === type);
         return filtered.map((item: { name: string; modelName: string; type: string }) => ({
           id: data.id,
