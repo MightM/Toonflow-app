@@ -131,7 +131,7 @@ scene design sheet，environment concept art，no people，no characters，no hu
 | X4 | 场景无纵深/无层次 |
 | X5 | 出现任何人物、人影、人体剪影或人体轮廓 |
 | X7 | 卡通/动漫/低多边形/游戏低质量贴图感 |
-| X8 | 情色暗示道具陈列（成人用品、散落内衣等） |
+| X8 | 任何人物或人影出现在场景图中 |
 
 ---
 

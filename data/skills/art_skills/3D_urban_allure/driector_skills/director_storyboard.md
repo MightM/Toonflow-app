@@ -10,7 +10,7 @@ metaData: director_skills
 
 ## 适用范围
 
-本 Skill 专用于**都市魅惑 · 超写实3D真人**风格的分镜提示词生成。所有角色均为成年人。
+本 Skill 专用于**都市魅惑 · 超写实3D真人**风格的分镜提示词生成。主角、配角、路人、子女、长辈都可以出现；未成年角色只以日常、家庭、校园方式呈现。
 
 ---
 
@@ -29,6 +29,15 @@ metaData: director_skills
 | 羞赧 / 慌乱 | 脸颊泛红，神情局促 | 眼神躲闪，目光下垂 | 咬唇，耳尖微红 |
 | 愤怒 / 决裂 | 眉眼凌厉，神情冰冷 | 目光如刃，眼眶微红 | 唇线紧绷，下颌微颤 |
 | 慵懒 / 余温 | 神情松弛，睡意朦胧 | 眼神柔软，半睁半闭 | 嘴角浅笑，发丝凌乱 |
+| 情动 / 沉溺 | 面色潮红，双唇微张 | 眼神失焦，眼尾泛红 | 仰头，颈线绷直，指尖攥紧床单 |
+| 恐惧 / 被胁迫 | 面色发白，嘴唇发抖 | 瞳孔放大，眼眶含泪 | 后背抵墙，双臂护胸，喉咙滚动 |
+| 挣扎 / 反抗 | 眉头紧锁，牙关咬紧 | 目光凶狠，泪水未落 | 手腕被攥住仍在扭动，发丝散乱贴脸 |
+| 施压 / 狠戾 | 神情阴冷，嘴角冷笑 | 目光如鹰，居高临下 | 单手掐住对方下巴，青筋暴起 |
+| 保护 / 英雄 | 神情冷硬，下颌绷紧 | 目光锁定威胁者，杀气 | 一手把人护在身后，指节泛白 |
+| 疼痛 / 受伤 | 面色苍白，冷汗 | 眼神涣散又强撑 | 嘴角血迹，一手按住伤口 |
+| 慈爱 / 父母 | 神情柔和，眼角细纹舒展 | 目光温暖，落在孩子身上 | 嘴角上扬，微微俯身 |
+| 天真 / 孩童 | 面颊圆润，表情直白 | 眼神明亮好奇 | 咧嘴笑，露出牙缝 |
+| 嫉妒 / 酸意 | 笑容僵硬，脸颊肌肉紧 | 目光扫向对方，眼底发冷 | 攥紧酒杯，指甲掐进掌心 |
 
 ---
 
@@ -45,6 +54,8 @@ metaData: director_skills
 | E 烛光近景 | 摇曳烛光自下侧照亮面部 | 琥珀暖 + 酒红 | 亲密心动，温热 |
 | F 晨光逆光 | 纱帘逆光，发丝与肩头透光 | 珍珠白 + 蜜桃暖 | 慵懒余温，温柔 |
 | 晚宴高光 | 水晶吊灯顶光 + 首饰闪光 | 丝缎黑 + 香槟金 | 流光溢彩，气场 |
+| G 家庭暖光 | 客厅落地灯 + 暖白顶光，中等对比 | 珍珠白 + 琥珀暖 | 亲子、家常、松弛 |
+| H 胁迫冷光 | 单一冷光源打在受害者脸上，大面积黑，车库顶灯频闪 | 冷白 + 深灰 | 恐惧、压迫、绝望 |
 | 冲突冷光 | 冷白硬侧光，阴影硬朗 | 午夜蓝 + 深灰 | 危险压迫，决裂 |
 
 ---
@@ -62,6 +73,13 @@ metaData: director_skills
 | 车内 | 真皮座椅质感，车窗雨滴，霓虹倒影，仪表盘暖光 |
 | 雨夜街头 | 湿润沥青倒影，霓虹招牌虚化，雨丝逆光 |
 | 泳池 | 池水蓝光焦散映在肌肤上，湿润肌肤水珠，城市夜景 |
+| 浴室 | 水汽雾面玻璃，湿发贴肩，水珠沿锁骨滑落，暖白灯 |
+| 家庭客厅/餐厅 | 暖白顶光，落地灯，餐桌残羹，儿童玩具或书包 |
+| 儿童房/学校 | 明亮日光，卡通床品或课桌，日常童装 |
+| 医院病房 | 冷白荧光灯，白床单，输液架，窗外城市 |
+| 地下车库 | 频闪顶灯，水泥柱阴影，车灯扫光，回声感 |
+| 废弃仓库/地下室 | 单一吊灯或手电光，铁锈与水泥，大面积黑 |
+| 后巷/私人会所包间 | 霓虹侧漏光，垃圾桶与铁门 / 丝绒沙发与低顶灯 |
 
 ---
 
@@ -73,11 +91,19 @@ metaData: director_skills
 
 **人物质感（含人物镜头时必选）：**
 
-成年人物，成熟面容，轮廓分明，非幼态，完美面容，面容细腻渲染，肌肤细腻光泽，次表面散射，五官立体，发丝根根分明，发丝细腻渲染，身材线条优美
+按角色写年龄感与辨识特征（如「28岁冷白皮丹凤眼的高挑女性」「41岁古铜肤刀疤的矮壮男人」「7岁圆脸虎牙的小女孩」），面容细腻渲染，肌肤细腻光泽，次表面散射，五官立体，发丝根根分明，发丝细腻渲染；成年主角另加「身材线条优美」
+
+**人物区分（多人镜头时必选）：**
+
+同框两人以上时，每个人物用「参考图编号 + 一句可辨特征」点名（发色、体型、肤色、服装），例如「图2 左一金发丰满的女助理、左二黑色寸头刀疤壮汉」，防止两张脸生成成一张
 
 **服饰质感（含人物镜头时必选）：**
 
-服装剪裁贴合身形，丝缎/亮片/皮革材质高光反射，纹理细节超清晰，衣物随动态自然垂坠
+服装剪裁贴合身形，丝缎/亮片/皮革/蕾丝材质高光反射，纹理细节超清晰，衣物随动态自然垂坠；内衣、睡衣、浴袍、湿身贴衣、撕破或滑落的衣物按分镜如实写
+
+**戏剧动作（有则必写）：**
+
+撩人姿势、暗示动作、坐上大腿、抵墙、深吻、扑倒在床、隔衣或贴肤抚摸、解扣、褪肩带、脱去外衣、床单下相拥；拖拽、压制、掐颈、撕扯衣物、扇耳光、恐惧与挣扎、破门、护在身后、血迹淤青——都直接写成画面里的具体姿态；只有生殖器、女性乳头与性交动作本身用床单、手臂、头发或前景遮挡，或改成剪影
 
 **一致性锚定（参考图模式必选）：**
 
@@ -101,28 +127,27 @@ metaData: director_skills
 超清4K画质，高细节，自然锐度，写实清晰感，画面无字幕、无水印、无标题叠字
 
 模式B（英文）——默认：
-mature adult characters with defined facial structure, ultra-sharp 4K, high detail, crisp textures, hyperrealistic 3D render clarity, no subtitles, no captions, no watermark, no title overlay
+ultra-sharp 4K, high detail, crisp textures, hyperrealistic 3D render clarity, no subtitles, no captions, no watermark, no title overlay
 
 模式B（英文）——画内文字场景：
 ultra-sharp 4K, high detail, crisp textures, hyperrealistic 3D render clarity, no subtitles, no captions, no watermark, no title overlay, legible text on in-scene props such as screens, posters, and signage
 
 **负向词模板（模式B 必须包含，置于提示词末尾）：**
 
-> ⚠️ Seedream（模式A）**不支持负向提示词**，负向词仅适用于模式B。模式A 通过正向词中的「成年人物」「服装完整覆盖」等描述保证画面边界。
+> ⚠️ Seedream（模式A）**不支持负向提示词**，负向词仅适用于模式B。模式A 在需要遮挡时用正向词写「床单遮住胸口」「手臂挡住」来守住底线。
 
 模式B（英文）：
-no nudity, no nipples, no exposed buttocks, no genitals, no see-through clothing, no lingerie-only outfit, no sexual act, no explicit content, no minors, no childlike features, no school uniform, no plastic skin, no wax figure look, no deformed body, no extra fingers, no cartoon, no anime, no flat lighting, no oversaturated neon, no blurry, no subtitles, no captions, no watermark, no title overlay, no UI text, no ancient costume, no hanfu
+no exposed nipples, no genitals, no explicit sex act, no sexualized minors, no plastic skin, no wax figure look, no deformed body, no extra fingers, no identical faces, no cartoon, no anime, no flat lighting, no oversaturated neon, no blurry, no subtitles, no captions, no watermark, no title overlay, no UI text, no ancient costume, no hanfu
 
 ---
 
 ## 美学禁止项（生成时严格规避）
 
-以下词汇/风格不得出现于输出提示词中：
+以下内容不得出现于输出提示词中（只有这些）：
 
-- ❌ 学生、少女、萝莉、童颜、校服等任何未成年或幼态化词汇
-- ❌ 裸体、半裸、全裸、露点、透视、走光、内衣外穿（仅穿内衣）等词
-- ❌ 性行为、床戏、脱衣、爱抚敏感部位等性动作词
-- ❌ 胸部/臀部特写、裙底、偷拍视角等低俗机位
+- ❌ 未成年角色的性感化：子女、学生等未成年角色只写日常童装与日常动作，不出现在亲密/撩人/暗示画面，不与成年人亲密戏同框；也不给成年角色套「萝莉」「少女感」「校服」这类幼态化词
+- ❌ 直接露出生殖器、女性乳头、性交动作本身（用遮挡、剪影、转场处理；内衣、睡衣、脱衣、床上相拥、抚摸、撩人姿势都可以写）
+- ❌ 「完美面容」「标准身材」这类抹平角色差异的模板词——换成该角色的具体特征
 - ❌ 动漫/二次元/插画/卡通相关词
 - ❌ 平均无暗部的照明、低对比灰蒙滤镜
 - ❌ 大面积荧光色铺满画面
@@ -130,8 +155,6 @@ no nudity, no nipples, no exposed buttocks, no genitals, no see-through clothing
 - ❌ 画外叠加文字（字幕、水印、标题卡、旁白叠字等 UI 层文字）
 
 > 💡 **例外**：故事世界内的道具文字（手机屏幕、霓虹招牌、酒单等）**不属于禁止范围**。当分镜画面描述中包含此类内容时，应如实描写并要求文字清晰。
-
----
 
 ## 完整生成示例
 
@@ -146,7 +169,7 @@ no nudity, no nipples, no exposed buttocks, no genitals, no see-through clothing
 ### 示例输出A（模式A · Seedream）
 
 [Prompt]
-超写实3D真人渲染，photorealistic CG，电影级画质，电影级氛围灯光，高对比低调光，极致细节，材质纹理超清晰，中近景构图，成年人物，完美面容，面容细腻渲染，肌肤细腻光泽，次表面散射，发丝根根分明，身材线条优美，前景：成熟女性倚在黄铜吧台边，身穿酒红丝缎吊带裙露出锁骨与肩颈，锁骨链闪光，指尖轻划马天尼杯沿，缓慢抬眼，眼神迷离勾人，红唇似笑非笑；后景：成熟男性身穿黑色衬衫，单手松开领带，下颌线紧绷，目光深沉地锁定她，两人之间薄烟流动，45° 侧前暖钨丝灯照亮她的面部与肩头，洋红霓虹边缘光勾勒他的轮廓，背光酒柜光斑虚化，丝缎面料高光反射，都市夜色魅惑美学，成熟荷尔蒙张力，电影级分镜构图，超清4K画质，高细节，自然锐度，写实清晰感，画面无字幕、无水印、无标题叠字。
+超写实3D真人渲染，photorealistic CG，电影级画质，电影级氛围灯光，高对比低调光，极致细节，材质纹理超清晰，中近景构图，面容细腻渲染，肌肤细腻光泽，次表面散射，发丝根根分明，身材线条优美，前景：28岁冷白皮、深棕大波浪、左眼下泪痣的高挑女性倚在黄铜吧台边，身穿酒红丝缎吊带裙露出锁骨与肩颈，锁骨链闪光，指尖轻划马天尼杯沿，缓慢抬眼，眼神迷离勾人，红唇似笑非笑；后景：32岁小麦肤、黑色短发、下颌线锋利的宽肩男性身穿黑色衬衫，单手松开领带，下颌线紧绷，目光深沉地锁定她，两人之间薄烟流动，45° 侧前暖钨丝灯照亮她的面部与肩头，洋红霓虹边缘光勾勒他的轮廓，背光酒柜光斑虚化，丝缎面料高光反射，都市夜色魅惑美学，成熟荷尔蒙张力，电影级分镜构图，超清4K画质，高细节，自然锐度，写实清晰感，画面无字幕、无水印、无标题叠字。
 Based on the reference images of 苏曼 and 陆沉, maintain consistent: face features, hairstyle, costume details. Generate a new scene: at a dim bar counter, she traces the rim of her glass and slowly looks up at him through light haze while he loosens his tie. Keep character appearance identical to reference.
 
 ### 示例输出B（模式B · Nanobanana）
@@ -170,7 +193,7 @@ Image [2]: 陆沉 — adult man around 32, short dark hair, black fitted shirt w
 Medium close-up, hyperrealistic 3D human render. In the foreground the woman leans against a brass bar counter, fingertip slowly tracing the rim of a martini glass, lifting her gaze with a hazy, alluring look and a faint smile; her satin slip dress reveals her collarbones and shoulders. In the background the man loosens his tie, jaw tense, eyes dark and locked on her. Thin haze drifts between them, warm tungsten key light at 45 degrees on her face and shoulders, magenta neon rim light outlining his silhouette, backlit liquor shelves melting into bokeh, glossy satin reflections, moody cinematic low-key lighting, sensual modern urban night, ultra-sharp 4K, high detail, crisp textures, hyperrealistic 3D render clarity, no subtitles, no captions, no watermark, no title overlay.
 </shot>
 <negative>
-no nudity, no nipples, no exposed buttocks, no genitals, no see-through clothing, no lingerie-only outfit, no sexual act, no explicit content, no minors, no childlike features, no school uniform, no plastic skin, no wax figure look, no deformed body, no extra fingers, no cartoon, no anime, no flat lighting, no oversaturated neon, no blurry, no subtitles, no captions, no watermark, no title overlay, no UI text, no ancient costume, no hanfu
+no exposed nipples, no genitals, no explicit sex act, no sexualized minors, no plastic skin, no wax figure look, no deformed body, no extra fingers, no identical faces, no cartoon, no anime, no flat lighting, no oversaturated neon, no blurry, no subtitles, no captions, no watermark, no title overlay, no UI text, no ancient costume, no hanfu
 </negative>
 ```
 
@@ -187,3 +210,7 @@ no nudity, no nipples, no exposed buttocks, no genitals, no see-through clothing
 | 占有欲 | 目光锁定，气场压迫 | 冲突冷光 / B |
 | 私密心事 | 眼神低垂，唇线微抿 | D 雨夜反射 |
 | 慵懒余温 | 眼神柔软，嘴角浅笑 | F 晨光逆光 |
+| 情动沉溺 | 面色潮红，眼神失焦 | B / E |
+| 恐惧被胁迫 | 面色发白，瞳孔放大 | H 胁迫冷光 |
+| 保护英雄 | 下颌绷紧，目光锁定威胁者 | H → B（救援后转暖） |
+| 家庭亲子 | 眼角舒展，目光落在孩子身上 | G 家庭暖光 |
