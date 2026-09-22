@@ -33,6 +33,10 @@ extraResources:
       - "!db2.sqlite"
       - "!logs/**"
       - "!oss/**"
+      - "!skills/**/*.bak-*"
+  # Windows 收尾脚本（安装后写库配置），见 deploy/README.md
+  - from: deploy
+    to: deploy
 
 win:
   target:

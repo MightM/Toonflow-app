@@ -237427,7 +237427,7 @@ var init_writeVersion = __esm({
     init_getPath();
     APP_VERSION = (() => {
       if (true) {
-        return "1.1.8";
+        return "1.1.9";
       }
       const pkgPath = import_path7.default.resolve(process.cwd(), "package.json");
       const pkg = JSON.parse(import_fs5.default.readFileSync(pkgPath, "utf8"));
@@ -257147,7 +257147,7 @@ var init_checkUpdate = __esm({
     router139 = import_express139.default.Router();
     APP_VERSION2 = (() => {
       if (true) {
-        return "1.1.8";
+        return "1.1.9";
       }
       const pkgPath = import_path25.default.resolve(process.cwd(), "package.json");
       const pkg = JSON.parse(import_fs18.default.readFileSync(pkgPath, "utf8"));

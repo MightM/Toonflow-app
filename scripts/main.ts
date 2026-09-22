@@ -11,7 +11,10 @@ app.commandLine.appendSwitch("disable-features", "CalculateNativeWinOcclusion");
 // 画布是 2D DOM，CPU 合成足够；要用回硬件加速设 TOONFLOW_HW_ACCEL=1。
 if (process.env.TOONFLOW_HW_ACCEL !== "1") app.disableHardwareAcceleration();
 
-const TARGET_ENTRIES = new Set(["assets", "models", "serve", "skills", "web", "vendor"]);
+// 首启 / 升级时从安装包 resources\data 复制到数据目录的条目。modelPrompt 是 H3 视频提示词模板，也要带上
+const TARGET_ENTRIES = new Set(["assets", "models", "serve", "skills", "web", "vendor", "modelPrompt"]);
+// 升级时只增不改的条目：skills 是用户自己编辑的手册 / 模板，整体替换会把改动冲掉，只补缺的文件
+const MERGE_ONLY_ENTRIES = new Set(["skills"]);
 
 function copyDir(src: string, dest: string): void {
   if (!fs.existsSync(src)) return;
@@ -62,8 +65,8 @@ function initializeData(): void {
   for (const dir of TARGET_ENTRIES) {
     const targetDir = path.join(destDir, dir);
     if (shouldForceReplace) {
-      fs.rmSync(targetDir, { recursive: true, force: true });
-      copyDir(path.join(srcDir, dir), targetDir);
+      if (!MERGE_ONLY_ENTRIES.has(dir)) fs.rmSync(targetDir, { recursive: true, force: true });
+      copyDir(path.join(srcDir, dir), targetDir); // copyDir 不覆盖已有文件，所以 skills 只补缺的
       continue;
     }
     if (!fs.existsSync(targetDir)) {
