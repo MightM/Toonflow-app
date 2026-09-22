@@ -6,6 +6,10 @@ import Module from "module";
 // 加速 Electron 启动：跳过 GPU 信息收集，减少初始化耗时
 app.commandLine.appendSwitch("disable-gpu-shader-disk-cache");
 app.commandLine.appendSwitch("disable-features", "CalculateNativeWinOcclusion");
+// 默认不用 GPU 合成窗口：生产机上 ComfyUI 出图时显卡 100%、显存占满，Chromium 的 GPU 进程拿不到时间片，
+// 整个窗口会卡到出图结束才恢复（实测 ToonFlow 自己的进程延迟只有几毫秒，卡的是画面合成）。
+// 画布是 2D DOM，CPU 合成足够；要用回硬件加速设 TOONFLOW_HW_ACCEL=1。
+if (process.env.TOONFLOW_HW_ACCEL !== "1") app.disableHardwareAcceleration();
 
 const TARGET_ENTRIES = new Set(["assets", "models", "serve", "skills", "web", "vendor"]);
 
