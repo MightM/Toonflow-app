@@ -238723,8 +238723,8 @@ async function getAssetModels(projectId) {
 }
 function bindingKeyFor(type, isDerived, hasRefs) {
   if (type === "role") return hasRefs ? "roleSheetRef" : isDerived ? "roleDerive" : "roleSheet";
-  if (type === "scene") return isDerived ? "sceneDerive" : "scene";
-  return isDerived ? "propDerive" : "prop";
+  if (type === "scene") return isDerived ? "sceneDerive" : hasRefs ? "sceneRef" : "scene";
+  return isDerived ? "propDerive" : hasRefs ? "propRef" : "prop";
 }
 async function resolveBinding(projectId, key) {
   const models = await getAssetModels(projectId);
@@ -238901,14 +238901,16 @@ var init_assetGen = __esm({
     init_utils3();
     init_getPath();
     init_dist_node();
-    ASSET_MODEL_KEYS = ["roleSheet", "roleSheetRef", "roleDerive", "scene", "sceneDerive", "prop", "propDerive"];
+    ASSET_MODEL_KEYS = ["roleSheet", "roleSheetRef", "roleDerive", "scene", "sceneRef", "sceneDerive", "prop", "propRef", "propDerive"];
     BUILTIN_DEFAULTS = {
       roleSheet: { model: "", aspectRatio: "16:9" },
       roleSheetRef: { model: "", aspectRatio: "16:9" },
       roleDerive: { model: "", aspectRatio: "16:9" },
       scene: { model: "", aspectRatio: "16:9" },
+      sceneRef: { model: "", aspectRatio: "16:9" },
       sceneDerive: { model: "", aspectRatio: "16:9" },
       prop: { model: "", aspectRatio: "16:9" },
+      propRef: { model: "", aspectRatio: "16:9" },
       propDerive: { model: "", aspectRatio: "16:9" }
     };
     LEGACY_KEY_MAP = { roleFourView: "roleSheetRef" };
@@ -240579,7 +240581,7 @@ var init_canvasPresets = __esm({
 function pickImageModel(shape) {
   const refs = shape.scenes + shape.subjects + shape.frames;
   if (refs <= 0) return "krea2_t2i";
-  if (refs === 1) return "krea2_edit";
+  if (refs === 1) return "krea2_restyle";
   if (refs === 2) return "krea2_dual";
   return "krea2_multi";
 }
@@ -256978,17 +256980,14 @@ var init_updateScript = __esm({
       "/",
       validateFields({
         id: external_exports.number(),
-        name: external_exports.string(),
+        name: external_exports.string().optional(),
         content: external_exports.string(),
-        assets: external_exports.array(external_exports.number())
+        assets: external_exports.array(external_exports.number()).optional()
       }),
       async (req, res) => {
         const { id, name: name28, content, assets } = req.body;
-        await utils_default.db("o_script").where({ id }).update({
-          name: name28,
-          content
-        });
-        if (assets.length) {
+        await utils_default.db("o_script").where({ id }).update(name28 === void 0 ? { content } : { name: name28, content });
+        if (assets?.length) {
           const assetsData = await utils_default.db("o_assets").whereIn("id", assets).select();
           await utils_default.db("o_scriptAssets").where({ scriptId: id }).delete();
           if (assetsData.length) {

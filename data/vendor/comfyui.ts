@@ -172,6 +172,7 @@ const vendor: VendorConfig = {
     { name: "Krea2 人物定妆照 · 不用参考图（竖图）", modelName: "krea2_portrait", type: "image", mode: ["text"] },
     { name: "Krea2 人物多视图 · 需 1 张定妆照，会重新排版", modelName: "krea2_4view", type: "image", mode: ["singleImage"] },
     { name: "Krea2 改图 · 保留原图只改指定处，尺寸跟随原图", modelName: "krea2_edit", type: "image", mode: ["singleImage"] },
+    { name: "Krea2 参照改写 · 1 张参考定样式，按目标尺寸出新图", modelName: "krea2_restyle", type: "image", mode: ["singleImage"] },
     { name: "Krea2 双图合成 · 任意 2 张参考合成一张（有场景就放图1）", modelName: "krea2_dual", type: "image", mode: ["singleImage", "multiReference"] },
     { name: "Krea2 多图合成 · 最多 5 张（图1 独占一位，图2~5 拼成一张主体图）", modelName: "krea2_multi", type: "image", mode: ["singleImage", "multiReference"] },
     {

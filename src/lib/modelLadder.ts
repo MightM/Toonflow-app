@@ -26,11 +26,16 @@ export interface RefShape {
  * 分镜图用哪个 krea2：按参考总数走固定档位。
  * krea2_portrait（定妆照）/ krea2_4view（四视图）不在档位里——它们是资产模板专用的，
  * 让参考数量把它们选中只会出一张人物设定图而不是分镜。
+ *
+ * 1 张参考走 krea2_restyle 而不是 krea2_edit：两者都只吃一张图，但 krea2_edit 的输出尺寸
+ * 跟随输入图（工作流里没有 @aspect / @megapixels 标记），而分镜图必须按项目比例出。
+ * krea2_edit 仍留给显式声明它的改图模板（场景状态 / 道具使用状态 / 换装定妆照）——
+ * 那些场合「保住原尺寸」正是要的行为。
  */
 export function pickImageModel(shape: RefShape): string {
   const refs = shape.scenes + shape.subjects + shape.frames;
   if (refs <= 0) return "krea2_t2i";
-  if (refs === 1) return "krea2_edit";
+  if (refs === 1) return "krea2_restyle";
   if (refs === 2) return "krea2_dual";
   return "krea2_multi"; // 3~5 张；再多由 fitRefsToMode / 工作流槽位截断
 }

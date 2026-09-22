@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 export type AssetType = "role" | "scene" | "tool";
 export type ImageSize = "1K" | "2K" | "4K";
 
-export const ASSET_MODEL_KEYS = ["roleSheet", "roleSheetRef", "roleDerive", "scene", "sceneDerive", "prop", "propDerive"] as const;
+export const ASSET_MODEL_KEYS = ["roleSheet", "roleSheetRef", "roleDerive", "scene", "sceneRef", "sceneDerive", "prop", "propRef", "propDerive"] as const;
 export type AssetModelKey = (typeof ASSET_MODEL_KEYS)[number];
 
 export interface AssetModelBinding {
@@ -26,8 +26,10 @@ const BUILTIN_DEFAULTS: AssetModels = {
   roleSheetRef: { model: "", aspectRatio: "16:9" },
   roleDerive: { model: "", aspectRatio: "16:9" },
   scene: { model: "", aspectRatio: "16:9" },
+  sceneRef: { model: "", aspectRatio: "16:9" },
   sceneDerive: { model: "", aspectRatio: "16:9" },
   prop: { model: "", aspectRatio: "16:9" },
+  propRef: { model: "", aspectRatio: "16:9" },
   propDerive: { model: "", aspectRatio: "16:9" },
 };
 
@@ -94,8 +96,9 @@ export async function getAssetModels(projectId: number): Promise<AssetModels> {
 /** 选绑定：显式参考（画布连线 / 上传参考图）优先；衍生资产默认以父资产为参考 */
 export function bindingKeyFor(type: AssetType, isDerived: boolean, hasRefs: boolean): AssetModelKey {
   if (type === "role") return hasRefs ? "roleSheetRef" : isDerived ? "roleDerive" : "roleSheet";
-  if (type === "scene") return isDerived ? "sceneDerive" : "scene";
-  return isDerived ? "propDerive" : "prop";
+  // 衍生在前：场景状态 / 道具使用状态本来就以父资产为参考，不该被「有参考」抢走
+  if (type === "scene") return isDerived ? "sceneDerive" : hasRefs ? "sceneRef" : "scene";
+  return isDerived ? "propDerive" : hasRefs ? "propRef" : "prop";
 }
 
 /** 绑定的模型为空时回退到项目图片模型 */
