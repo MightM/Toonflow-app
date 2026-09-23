@@ -216,6 +216,7 @@ export interface GenerateStageInput {
   resolveReferences?: () => Promise<string[]>; // 执行时才取的参考图（如工作流上一步的产物），排在显式参考之后
   stage?: string; // o_image.stage；缺省：角色 sheet，其余空
   setCurrent?: boolean; // false = 只留在历史里，不设为资产当前图（工作流中间步骤）
+  outputExt?: "jpg" | "png"; // 落盘扩展名；透明结果（去背景）要 png
 }
 
 export interface PreparedStage {
@@ -291,7 +292,7 @@ export async function prepareAssetStage(input: GenerateStageInput): Promise<Prep
 
   const cfg = TYPE_CONFIG[type];
   const run = async () => {
-    const imagePath = `/${input.projectId}/${cfg.dir}/${uuidv4()}.jpg`;
+    const imagePath = `/${input.projectId}/${cfg.dir}/${uuidv4()}.${input.outputExt ?? "jpg"}`;
     try {
       if (input.resolveReferences) {
         for (const base64 of await input.resolveReferences()) referenceList.push({ type: "image", base64 });

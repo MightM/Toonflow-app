@@ -26,6 +26,7 @@ export interface CanvasPreset {
   order: number;
   pre: string; // 工作流前置步骤的模板 id：先按它生成一张图，再把结果作为本模板的参考图
   hidden: boolean; // true = 只作为别的模板的前置步骤，不出现在选择面板里
+  optional: boolean; // true = 正文里的 {{需求}} 可以留空（模板本身已是完整指令，如镜头推拉）
   body: string;
 }
 
@@ -60,6 +61,7 @@ function parsePreset(id: string, text: string): CanvasPreset | null {
     order: Number(meta.order) || 100,
     pre: meta.pre || "",
     hidden: meta.hidden === "true",
+    optional: meta.optional === "true",
     body: match[2].trim(),
   };
 }

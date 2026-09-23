@@ -7,7 +7,7 @@ import { assetKey, EMPTY_LAYOUT, type CanvasLayout, type Owner } from "@/lib/can
 // 画布回收站：删除节点时把相关行做成快照再删，文件留在磁盘上，撤销时按快照原样写回。
 // 超过保留期的快照在下次删除 / 打开画布时清理，那时才真正删文件。
 
-const TRASH_TTL = 24 * 60 * 60 * 1000;
+export const TRASH_TTL = 24 * 60 * 60 * 1000;
 
 interface LayoutSlice {
   positions: CanvasLayout["positions"];

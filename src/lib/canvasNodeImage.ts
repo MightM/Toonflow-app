@@ -17,6 +17,7 @@ export interface NodeImageInput {
   refKeys?: string[];
   stage?: string | null;
   setCurrent?: boolean; // false = 只留在历史里，不设为节点当前图
+  outputExt?: "jpg" | "png"; // 落盘扩展名；透明结果（去背景）要 png，否则缩略图会丢 alpha、MIME 也会报成 jpeg
 }
 
 export async function prepareNodeImage(input: NodeImageInput): Promise<PreparedStage> {
@@ -34,7 +35,7 @@ export async function prepareNodeImage(input: NodeImageInput): Promise<PreparedS
     createTime: Date.now(),
   });
   const run = async () => {
-    const filePath = `/${input.projectId}/canvas/${uuidv4()}.jpg`;
+    const filePath = `/${input.projectId}/canvas/${uuidv4()}.${input.outputExt ?? "jpg"}`;
     try {
       const referenceList = [...(input.referenceBase64 ?? []), ...(input.resolveReferences ? await input.resolveReferences() : [])]
         .filter(Boolean)

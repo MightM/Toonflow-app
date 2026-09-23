@@ -32,6 +32,8 @@ export default function runCode(code: string, vendor?: Record<string, any>) {
     zipImage,
     zipImageResolution,
     urlToBase64,
+    uploadBase64File,
+    httpRequest,
     mergeImages,
     pollTask,
     fetch: fetch,
@@ -80,12 +82,55 @@ export async function zipImageResolution(completeBase64: string, width: number, 
   return `data:image/jpeg;base64,${out.toString("base64")}`;
 }
 
-//url转Base64
-export async function urlToBase64(url: string): Promise<string> {
-  const res = await axios.get(url, { responseType: "arraybuffer" });
-  const mime = res.headers["content-type"] || "image/jpeg";
+// url 转 Base64（在宿主里下载并编码，可带请求头）。
+// 供应商脚本别在沙盒里对二进制逐字节操作：vm2 的膜会把 Buffer.from(沙盒外的 Buffer) 变成几百万次代理调用，
+// 实测 3MB 一张图要 1.2 秒并且阻塞主进程（Electron 里等于整个窗口无响应）。
+export async function urlToBase64(url: string, headers?: Record<string, string>): Promise<string> {
+  const res = await axios.get(url, { responseType: "arraybuffer", headers }).catch(rethrowPlain);
+  const mime = String(res.headers["content-type"] || "image/jpeg").split(";")[0];
   const b64 = Buffer.from(res.data).toString("base64");
   return `data:${mime};base64,${b64}`;
+}
+
+/**
+ * 沙盒里的 vm2（3.10）会把每个从宿主进入沙盒的对象递归遍历所有自有属性（containsDangerousConstructor），
+ * axios 的响应 / 错误对象背后挂着 request → socket → agent 整张图，Electron 主进程里一次要走几秒到几十秒。
+ * 所以给供应商脚本的 HTTP 只传回 status / headers / 正文文本这三样，错误也只抛纯 Error（带 code / response 两个小字段）。
+ */
+function rethrowPlain(e: any): never {
+  const err: any = new Error(e?.message || String(e));
+  if (e?.code) err.code = e.code;
+  if (e?.response) err.response = { status: e.response.status, data: typeof e.response.data === "string" ? e.response.data.slice(0, 2000) : safeJson(e.response.data) };
+  throw err;
+}
+const safeJson = (value: unknown) => {
+  try {
+    return JSON.parse(JSON.stringify(value ?? null));
+  } catch {
+    return null;
+  }
+};
+export async function httpRequest(
+  url: string,
+  options: { method?: string; headers?: Record<string, string>; body?: string; timeout?: number } = {},
+): Promise<{ status: number; headers: Record<string, string>; text: string }> {
+  const res = await axios
+    .request({
+      url,
+      method: options.method ?? "GET",
+      headers: options.headers,
+      data: options.body,
+      timeout: options.timeout,
+      responseType: "text",
+      transformResponse: [(d: unknown) => d],
+      validateStatus: () => true,
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity,
+    })
+    .catch(rethrowPlain);
+  const headers: Record<string, string> = {};
+  for (const [key, value] of Object.entries(res.headers ?? {})) if (typeof value === "string") headers[key] = value;
+  return { status: res.status, headers, text: typeof res.data === "string" ? res.data : JSON.stringify(res.data ?? "") };
 }
 
 export const CANCELLED = "已取消";
@@ -184,10 +229,29 @@ function parseSize(size: string): number {
 }
 
 /**
- * 将base64字符串转换为Buffer
+ * 在宿主里把 base64 当文件字段 multipart 上传，返回响应体。给供应商脚本用：
+ * 二进制绝不能进沙盒——vm2 会把跨膜的 Buffer 逐字节复制（实测 3MB 一张图 1.3 秒，且阻塞 Electron 主进程），
+ * 字符串跨膜只是一次拷贝。
  */
-function base64ToBuffer(base64: string): Buffer {
-  const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
+export async function uploadBase64File(
+  url: string,
+  base64: string,
+  options: { field?: string; filename: string; contentType?: string; headers?: Record<string, string>; fields?: Record<string, string> },
+): Promise<any> {
+  const form = new FormData();
+  form.append(options.field ?? "file", base64ToBuffer(base64), { filename: options.filename, contentType: options.contentType });
+  for (const [key, value] of Object.entries(options.fields ?? {})) form.append(key, value);
+  const res = await axios
+    .post(url, form, { headers: { ...form.getHeaders(), ...(options.headers ?? {}) }, maxBodyLength: Infinity, maxContentLength: Infinity })
+    .catch(rethrowPlain);
+  return safeJson(res.data); // 只让纯 JSON 进沙盒，别把响应对象带过去
+}
+
+/**
+ * 将 base64 字符串（可带 data: 头）转换为宿主 Buffer（宿主内部用，不暴露给沙盒）
+ */
+export function base64ToBuffer(base64: string): Buffer {
+  const base64Data = base64.replace(/^data:[^;]+;base64,/, "");
   return Buffer.from(base64Data, "base64");
 }
 

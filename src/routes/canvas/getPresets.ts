@@ -28,6 +28,7 @@ export default router.post(
           ratio: p.ratio,
           size: p.size,
           requiresRef: p.requiresRef,
+          optionalInput: p.optional,
           canPolish: !!p.polish,
           steps: p.pre ? [getPreset(p.pre)?.name ?? p.pre, p.name] : [],
           hint: p.hint,

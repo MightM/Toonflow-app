@@ -1,6 +1,6 @@
 /**
  * Toonflow 供应商适配：ComfyUI（本地/局域网）
- * @version 1.7
+ * @version 1.9
  *
  * 工作流约定：
  * - 在 ComfyUI 中用「导出 (API)」导出工作流，保存到 ComfyUI 的 user/default/workflows/<工作流目录>/<modelName>.json
@@ -42,6 +42,7 @@ interface ImageModel {
   type: "image";
   mode: ("text" | "singleImage" | "multiReference")[];
   associationSkills?: string;
+  utility?: boolean; // 工具型工作流（如去背景）：不吃提示词，工作流里可以没有 @prompt 标记
 }
 
 interface VideoModel {
@@ -120,7 +121,16 @@ declare const jsonwebtoken: any; // JWT处理库
 declare const zipImage: (base64: string, size: number) => Promise<string>; // 图片压缩函数，返回有头base64字符串
 declare const zipImageResolution: (base64: string, w: number, h: number) => Promise<string>; // 图片分辨率调整函数，返回有头base64字符串
 declare const mergeImages: (base64Arr: string[], maxSize?: string) => Promise<string>; // 图片合成函数，返回有头base64字符串
-declare const urlToBase64: (url: string) => Promise<string>; // URL转Base64函数，返回有头base64字符串
+declare const urlToBase64: (url: string, headers?: Record<string, string>) => Promise<string>; // URL转Base64函数（宿主下载并编码），返回有头base64字符串
+// 宿主端 HTTP：只传回 status / headers / 正文文本（新版 ToonFlow 才有，旧版回落到 axios）。
+// axios 的响应对象背后挂着 socket / agent 整张图，vm2 会递归遍历每个进沙盒的对象，Electron 主进程里一次要走几秒
+declare const httpRequest:
+  | ((url: string, options?: { method?: string; headers?: Record<string, string>; body?: string; timeout?: number }) => Promise<{ status: number; headers: Record<string, string>; text: string }>)
+  | undefined;
+// 宿主端 multipart 上传（新版 ToonFlow 才有，旧版回落到沙盒里 Buffer.from + FormData）
+declare const uploadBase64File:
+  | ((url: string, base64: string, options: { field?: string; filename: string; contentType?: string; headers?: Record<string, string>; fields?: Record<string, string> }) => Promise<any>)
+  | undefined;
 declare const pollTask: (fn: () => Promise<PollResult>, interval?: number, timeout?: number) => Promise<PollResult>; // 轮询函数，fn为异步函数，interval为轮询间隔，timeout为超时时间，返回fn的结果
 declare const createOpenAI: any;
 declare const createDeepSeek: any;
@@ -154,7 +164,7 @@ const H3_DURATION_MAP = [{ duration: Array.from({ length: 13 }, (_, i) => i + 3)
 
 const vendor: VendorConfig = {
   id: "comfyui",
-  version: "1.7",
+  version: "1.9",
   author: "local",
   name: "ComfyUI",
   description:
@@ -175,6 +185,7 @@ const vendor: VendorConfig = {
     { name: "Krea2 参照改写 · 1 张参考定样式，按目标尺寸出新图", modelName: "krea2_restyle", type: "image", mode: ["singleImage"] },
     { name: "Krea2 双图合成 · 任意 2 张参考合成一张（有场景就放图1）", modelName: "krea2_dual", type: "image", mode: ["singleImage", "multiReference"] },
     { name: "Krea2 多图合成 · 最多 5 张（图1 独占一位，图2~5 拼成一张主体图）", modelName: "krea2_multi", type: "image", mode: ["singleImage", "multiReference"] },
+    { name: "去背景 · 抠出主体，白底 + 透明 PNG（rembg，不用提示词）", modelName: "rmbg", type: "image", mode: ["singleImage"], utility: true },
     {
       name: "H3 首帧生视频 · 锁定这张图当第 0 秒",
       modelName: "h3_i2v",
@@ -234,6 +245,36 @@ const getBaseUrl = (): string => {
 const getHeaders = (): Record<string, string> => {
   const token = String(vendor.inputValues.token || "").trim().replace(/^Bearer\s+/i, "");
   return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+type HttpResp = { status: number; headers: Record<string, string>; data: any };
+/** 所有对 ComfyUI 的 JSON / 文本请求都走这里：宿主只返回文本，沙盒自己 JSON.parse，响应对象不进沙盒；非 2xx 抛带 response 的 Error */
+const http = async (method: "GET" | "POST", url: string, options: { headers?: Record<string, string>; json?: unknown } = {}): Promise<HttpResp> => {
+  const headers = { ...(options.json !== undefined ? { "Content-Type": "application/json" } : {}), ...(options.headers || {}) };
+  const body = options.json !== undefined ? JSON.stringify(options.json) : undefined;
+  let status: number;
+  let respHeaders: Record<string, string>;
+  let text: string;
+  if (typeof httpRequest === "function") {
+    ({ status, headers: respHeaders, text } = await httpRequest(url, { method, headers, body }));
+  } else {
+    const resp = await axios.request({ url, method, headers, data: body, responseType: "text", transformResponse: [(d: any) => d], validateStatus: () => true });
+    status = resp.status;
+    respHeaders = resp.headers || {};
+    text = typeof resp.data === "string" ? resp.data : JSON.stringify(resp.data ?? "");
+  }
+  let data: any = text;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    // 非 JSON 保持文本
+  }
+  if (status >= 400) {
+    const err: any = new Error(`HTTP ${status}`);
+    err.response = { status, data };
+    throw err;
+  }
+  return { status, headers: respHeaders, data };
 };
 
 const describeAxiosError = (err: any): string => {
@@ -428,14 +469,21 @@ const classifyReferences = (referenceList: ReferenceList[] = []): MediaLists => 
 const uploadMedia = async (base64: string, kind: MediaKind): Promise<string> => {
   const { mime, data } = parseDataUrl(base64);
   const ext = MEDIA_EXTENSIONS[mime] || { image: "png", audio: "mp3", video: "mp4" }[kind];
-  const buffer = Buffer.from(data, "base64");
-  const fileName = `toonflow_${crypto.createHash("sha1").update(buffer).digest("hex").slice(0, 16)}.${ext}`;
-  const form = new FormData();
-  form.append("image", buffer, { filename: fileName, contentType: mime });
-  form.append("overwrite", "true");
+  // 二进制不进沙盒：文件名哈希直接算 base64 字符串，上传交给宿主的 uploadBase64File。
+  // 沙盒里 Buffer.from(...) 会让 vm2 逐字节复制（3MB 一张图 1.3 秒，且阻塞 Electron 主进程 → 整个窗口无响应）
+  const fileName = `toonflow_${crypto.createHash("sha1").update(data).digest("hex").slice(0, 16)}.${ext}`;
+  const url = `${getBaseUrl()}/upload/image`;
   try {
-    const resp = await axios.post(`${getBaseUrl()}/upload/image`, form, { headers: { ...form.getHeaders(), ...getHeaders() } });
-    const { name, subfolder } = resp.data;
+    let result: any;
+    if (typeof uploadBase64File === "function") {
+      result = await uploadBase64File(url, data, { field: "image", filename: fileName, contentType: mime, headers: getHeaders(), fields: { overwrite: "true" } });
+    } else {
+      const form = new FormData();
+      form.append("image", Buffer.from(data, "base64"), { filename: fileName, contentType: mime });
+      form.append("overwrite", "true");
+      result = (await axios.post(url, form, { headers: { ...form.getHeaders(), ...getHeaders() } })).data;
+    }
+    const { name, subfolder } = result;
     return subfolder ? `${subfolder}/${name}` : name;
   } catch (err) {
     throw new Error(`上传${MEDIA_LABELS[kind]}失败：${describeAxiosError(err)}`);
@@ -447,7 +495,7 @@ const loadWorkflow = async (modelName: string): Promise<Record<string, any>> => 
   const filePath = `workflows/${dir}/${modelName}.json`;
   let workflow: any;
   try {
-    const resp = await axios.get(`${getBaseUrl()}/api/userdata/${encodeURIComponent(filePath)}`, { headers: getHeaders(), responseType: "text" });
+    const resp = await http("GET", `${getBaseUrl()}/api/userdata/${encodeURIComponent(filePath)}`, { headers: getHeaders() });
     workflow = typeof resp.data === "string" ? JSON.parse(resp.data) : resp.data;
   } catch (err: any) {
     if (err?.response?.status === 404) throw new Error(`ComfyUI 上找不到工作流 user/default/${filePath}`);
@@ -483,10 +531,10 @@ const CANCELLED = "已取消";
 const cancelPrompt = async (promptId: string) => {
   const baseUrl = getBaseUrl();
   try {
-    const resp = await axios.get(`${baseUrl}/queue`, { headers: getHeaders() });
+    const resp = await http("GET", `${baseUrl}/queue`, { headers: getHeaders() });
     const isRunning = (resp.data?.queue_running || []).some((item: any) => item?.[1] === promptId);
-    if (isRunning) await axios.post(`${baseUrl}/interrupt`, {}, { headers: getHeaders() });
-    else await axios.post(`${baseUrl}/queue`, { delete: [promptId] }, { headers: { "Content-Type": "application/json", ...getHeaders() } });
+    if (isRunning) await http("POST", `${baseUrl}/interrupt`, { headers: getHeaders(), json: {} });
+    else await http("POST", `${baseUrl}/queue`, { headers: getHeaders(), json: { delete: [promptId] } });
     logger(`ComfyUI 任务已${isRunning ? "中断" : "从队列移除"} prompt_id=${promptId}`);
   } catch (err) {
     logger(`撤销 ComfyUI 任务失败 prompt_id=${promptId}：${describeAxiosError(err)}`);
@@ -497,11 +545,7 @@ const runWorkflow = async (workflow: Record<string, any>, outputNodeIds: string[
   const baseUrl = getBaseUrl();
   let promptId = "";
   try {
-    const resp = await axios.post(
-      `${baseUrl}/prompt`,
-      { prompt: workflow, client_id: `toonflow-${crypto.randomUUID()}` },
-      { headers: { "Content-Type": "application/json", ...getHeaders() } },
-    );
+    const resp = await http("POST", `${baseUrl}/prompt`, { headers: getHeaders(), json: { prompt: workflow, client_id: `toonflow-${crypto.randomUUID()}` } });
     promptId = resp.data.prompt_id;
   } catch (err) {
     throw new Error(`提交工作流失败：${describeAxiosError(err)}`);
@@ -513,7 +557,7 @@ const runWorkflow = async (workflow: Record<string, any>, outputNodeIds: string[
   const timeoutMinutes = Number(vendor.inputValues[timeoutKey]) || (kind === "video" ? 180 : 30);
   const result = await pollTask(
     async () => {
-      const resp = await axios.get(`${baseUrl}/history/${promptId}`, { headers: getHeaders() });
+      const resp = await http("GET", `${baseUrl}/history/${promptId}`, { headers: getHeaders() });
       const entry = resp.data?.[promptId];
       if (!entry) return { completed: false };
       const status = entry.status || {};
@@ -545,11 +589,11 @@ const runWorkflow = async (workflow: Record<string, any>, outputNodeIds: string[
   const query = `filename=${encodeURIComponent(file.filename)}&subfolder=${encodeURIComponent(file.subfolder || "")}&type=${encodeURIComponent(file.type || "output")}`;
   logger(`ComfyUI 任务完成，下载 ${file.subfolder ? `${file.subfolder}/` : ""}${file.filename}`);
   try {
-    const resp = await axios.get(`${baseUrl}/view?${query}`, { headers: getHeaders(), responseType: "arraybuffer" });
+    // 下载与 base64 编码都在宿主里做（urlToBase64），沙盒只拿到一个字符串；沙盒里 Buffer.from(resp.data) 会逐字节穿越 vm2 的膜
+    const dataUrl = await urlToBase64(`${baseUrl}/view?${query}`, getHeaders());
     const fallbackMime = { image: "image/png", video: "video/mp4", audio: "audio/mpeg" }[kind];
-    const contentType = String(resp.headers["content-type"] || "");
-    const mime = contentType.startsWith(`${kind}/`) ? contentType.split(";")[0] : fallbackMime;
-    return `data:${mime};base64,${Buffer.from(resp.data).toString("base64")}`;
+    const { mime } = parseDataUrl(dataUrl);
+    return mime.startsWith(`${kind}/`) ? dataUrl : `data:${fallbackMime};base64,${parseDataUrl(dataUrl).data}`;
   } catch (err) {
     throw new Error(`下载结果失败：${describeAxiosError(err)}`);
   }
@@ -561,7 +605,7 @@ const loadNodeDefs = async (workflow: Record<string, any>): Promise<Record<strin
   const entries = await Promise.all(
     classTypes.map(async (classType) => {
       try {
-        const resp = await axios.get(`${getBaseUrl()}/object_info/${encodeURIComponent(classType)}`, { headers: getHeaders() });
+        const resp = await http("GET", `${getBaseUrl()}/object_info/${encodeURIComponent(classType)}`, { headers: getHeaders() });
         return [classType, resp.data?.[classType]];
       } catch (err) {
         logger(`读取节点定义 ${classType} 失败：${describeAxiosError(err)}`);
@@ -587,7 +631,10 @@ const generate = async (modelName: string, kind: OutputKind, prompt: string, med
   const megapixels = Math.round(((values.width * values.height) / (1024 * 1024)) * 100) / 100;
   const tagged = applyTags(workflow, { megapixels, ...values, ...mediaValues, prompt, seed: Math.floor(Math.random() * 2 ** 32) }, nodeDefs);
 
-  if (!tagged.applied.has("prompt")) throw new Error(`工作流 ${modelName} 缺少 @prompt 标记`);
+  // 工具型工作流（去背景）不吃提示词，只要求至少有一张图进去了
+  const isUtility = vendor.models.some((m) => m.modelName === modelName && m.type === "image" && m.utility);
+  if (!tagged.applied.has("prompt") && !isUtility) throw new Error(`工作流 ${modelName} 缺少 @prompt 标记`);
+  if (isUtility && !tagged.applied.has("image1")) throw new Error(`工作流 ${modelName} 需要一张图（@image1）`);
   for (const mediaKind of Object.keys(media) as MediaKind[]) {
     const uploaded = Object.keys(mediaValues).filter((key) => key.startsWith(mediaKind)).length;
     const used = [...tagged.applied].filter((key) => new RegExp(`^${mediaKind}\\d+$`).test(key)).length;

@@ -55,6 +55,8 @@ export default router.post(
     const latestBy = (column: "assetsId" | "canvasNodeId", id: number) => images.filter((i: any) => i[column] === id).sort((a, b) => b.id - a.id)[0];
     const pendingBy = (column: "assetsId" | "canvasNodeId", id: number) => images.filter((i: any) => i[column] === id && i.state === "生成中").map((i) => i.id);
 
+    // 从剧本正文里提取出来（o_scriptAssets 关联到某一集）的资产：删除前要二次确认
+    const scriptLinked = new Set(assetIds.length ? (await u.db("o_scriptAssets").whereIn("assetId", assetIds).select("assetId")).map((r) => r.assetId) : []);
     const voiceRows = await u
       .db("o_assetsRole2Audio")
       .leftJoin("o_assets", "o_assets.id", "o_assetsRole2Audio.assetsAudioId")
@@ -73,6 +75,7 @@ export default router.post(
         prompt: a.prompt,
         promptState: a.promptState,
         audioBindState: a.audioBindState ?? null,
+        inScript: scriptLinked.has(a.id!) || (a.assetsId != null && scriptLinked.has(a.assetsId)),
         current: await imageDto(a.imageId ? imageById.get(a.imageId) : undefined),
         latest: await imageDto(latestBy("assetsId", a.id!)),
         pendingImageIds: pendingBy("assetsId", a.id!),

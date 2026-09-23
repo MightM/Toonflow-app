@@ -11,6 +11,7 @@
   ratio       默认比例，如 16:9
   size        默认分辨率：1K / 2K / 4K
   requiresRef true = 必须先连入参考图
+  optional  true = 正文里的 {{需求}} 可以留空（模板本身已是完整指令，如镜头推拉），不填也能生成
   polish      「扩写」用的视觉手册文件名（取项目画风目录下的 art_prompt），如 art_character
   hint        输入框占位提示
   order       排序（数字小的在前）
